@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supash Bhat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Supash Bhat | Physics & Computational Science</title>
     <style>
         * {
             margin: 0;
@@ -13,26 +13,48 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: #0a0a1a;
             color: #e2e8f0;
             line-height: 1.6;
         }
 
-        .container {
+        /* Canvas for physics demo */
+        #physicsCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
 
+        /* Glass morphism */
+        .glass {
+            background: rgba(15, 25, 45, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+
         header {
             text-align: center;
-            padding: 4rem 0;
+            padding: 4rem 2rem;
+            margin-bottom: 2rem;
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 4rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -45,63 +67,82 @@
             margin-bottom: 2rem;
         }
 
-        .links {
+        .social-links {
             display: flex;
             justify-content: center;
             gap: 1.5rem;
             flex-wrap: wrap;
-        }
-
-        .links a {
-            color: #60a5fa;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .links a:hover {
-            color: #a78bfa;
-        }
-
-        .section {
-            background: rgba(30, 41, 59, 0.5);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(100, 116, 139, 0.3);
-        }
-
-        .section h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #60a5fa;
-        }
-
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
             margin-top: 1rem;
         }
 
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 2rem;
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: #60a5fa;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(96, 165, 250, 0.4);
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            padding: 2rem;
+        }
+
+        .section h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
         .project-card {
-            background: #1e293b;
-            border-radius: 0.75rem;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 1rem;
             padding: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 1px solid #334155;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(100, 116, 139, 0.3);
         }
 
         .project-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
             border-color: #60a5fa;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
         .project-card h3 {
             font-size: 1.25rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             color: #f1f5f9;
         }
 
@@ -111,82 +152,437 @@
             margin-bottom: 1rem;
         }
 
-        .project-card a {
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(96, 165, 250, 0.2);
+            border-radius: 1rem;
+            color: #60a5fa;
+        }
+
+        .project-link {
             color: #60a5fa;
             text-decoration: none;
             font-size: 0.875rem;
             font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
         }
 
-        .project-card a:hover {
+        .project-link:hover {
             color: #a78bfa;
+        }
+
+        .interactive-demo {
+            margin: 2rem 0;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .demo-container {
+            background: #0f172a;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        canvas {
+            background: #0a0a1a;
+            border-radius: 0.5rem;
+            display: block;
+            margin: 0 auto;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 0.25rem 0.75rem;
+            background: rgba(100, 116, 139, 0.3);
+            border: none;
+            border-radius: 0.5rem;
+            color: #e2e8f0;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .demo-btn:hover {
+            background: #60a5fa;
         }
 
         footer {
             text-align: center;
-            padding: 2rem 0;
+            padding: 2rem;
+            margin-top: 2rem;
             color: #64748b;
             font-size: 0.875rem;
         }
 
         @media (max-width: 768px) {
-            .container {
+            .content {
                 padding: 1rem;
             }
             h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
+            }
+            .section {
+                padding: 1.5rem;
+            }
+            canvas {
+                width: 100%;
+                height: auto;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
+    <div class="content">
+        <header class="glass">
             <h1>Supash Bhat</h1>
-            <div class="tagline">Physics | Astrophysics | Music | Computational Physics</div>
-            <div class="links">
-                <a href="https://github.com/sb808bit" target="_blank">GitHub</a>
-                <a href="https://linkedin.com/in/supash-bhat" target="_blank">LinkedIn</a>
-                <a href="mailto:supashbhat@gmail.com">Email</a>
-                <a href="https://github.com/sb808bit/physics-engine" target="_blank">Physics Engine</a>
+            <div class="tagline">Physics & Astrophysics @ UC Berkeley | Computational Physics | Music Technology</div>
+            <div class="social-links">
+                <a href="https://github.com/supashbhat" class="btn" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/supash-bhat" class="btn" target="_blank">LinkedIn</a>
+                <a href="mailto:supash_bhat@berkeley.edu" class="btn">supash_bhat@berkeley.edu</a>
             </div>
         </header>
 
-        <div class="section">
-            <h2>About</h2>
-            <p>I'm a physics student at UC Berkeley exploring the intersection of computational physics, numerical methods, and music technology. I build things that bridge theory and application—from physics engines to audio processing tools.</p>
+        <!-- Live Physics Demo -->
+        <div class="section glass interactive-demo">
+            <h2>Live Physics Demo</h2>
+            <p>Click and drag to throw balls | WASD to change gravity | Drag the window to shake</p>
+            <div class="demo-container">
+                <canvas id="demoCanvas" width="800" height="400" style="width:100%; height:auto; max-width:800px; aspect-ratio:800/400"></canvas>
+                <div class="demo-controls">
+                    <button class="demo-btn" onclick="addBall()">Add Ball</button>
+                    <button class="demo-btn" onclick="resetBalls()">Reset</button>
+                    <button class="demo-btn" onclick="clearBalls()">Clear All</button>
+                </div>
+                <p style="font-size:0.75rem; margin-top:0.5rem;">Gravity: <span id="gravityDir">DOWN</span> | Balls: <span id="ballCount">0</span></p>
+            </div>
         </div>
 
-        <div class="section">
+        <div class="section glass">
             <h2>Projects</h2>
-            <div class="projects">
+            <div class="projects-grid">
                 <div class="project-card">
                     <h3>Physics Engine</h3>
-                    <p>C++ rigid-body simulator with RK4 integration, sphere-sphere collision, and real-time Python visualization. Includes benchmarks proving numerical accuracy.</p>
-                    <a href="https://github.com/sb808bit/physics-engine" target="_blank">GitHub →</a>
+                    <div class="project-tags">
+                        <span class="tag">C++</span>
+                        <span class="tag">RK4</span>
+                        <span class="tag">Collision Detection</span>
+                        <span class="tag">Python</span>
+                    </div>
+                    <p>Complete rigid-body physics engine with Euler and RK4 integration, sphere-sphere collision, multi-body simulation, and real-time Python visualization with interactive features.</p>
+                    <a href="https://github.com/supashbhat/physics-engine" class="project-link" target="_blank">GitHub →</a>
                 </div>
                 <div class="project-card">
                     <h3>FFT Audio Equalizer</h3>
-                    <p>Presentation on Fourier analysis and real-time audio processing. Implementation coming soon as a JUCE plugin.</p>
-                    <a href="#">View Presentation →</a>
+                    <div class="project-tags">
+                        <span class="tag">DSP</span>
+                        <span class="tag">JUCE</span>
+                        <span class="tag">C++</span>
+                    </div>
+                    <p>Real-time audio plugin under development. Based on Fourier analysis principles from my UC Berkeley presentation. Coming soon as a VST/AU plugin.</p>
+                    <a href="#" class="project-link">In Development →</a>
                 </div>
                 <div class="project-card">
                     <h3>Research</h3>
-                    <p>Gamma-ray spectroscopy at LBNL, asteroid detection with Zwicky Transient Facility, and timbre perception at CNMAT.</p>
-                    <a href="#">Learn More →</a>
+                    <div class="project-tags">
+                        <span class="tag">Gamma Spectroscopy</span>
+                        <span class="tag">Asteroid Detection</span>
+                        <span class="tag">Timbre Perception</span>
+                    </div>
+                    <p>Geant4 simulations at LBNL, ZTF asteroid discovery (MPEC 2025-F16), and perceptual geometry research at CNMAT.</p>
+                    <a href="#" class="project-link">Learn More →</a>
                 </div>
             </div>
         </div>
 
-        <div class="section">
+        <div class="section glass">
             <h2>Teaching & Mentorship</h2>
-            <p><strong>NewSpace @ Berkeley</strong> — Course instructor for space systems engineering, collaborating with Amazon Kuiper, Planet Labs, and Airbus.</p>
-            <p><strong>Music Instruction</strong> — Trumpet, piano, guitar instructor. UC Jazz mentor.</p>
+            <p><strong>NewSpace @ Berkeley</strong> — Lead instructor for space systems engineering course. Coordinating with Amazon Kuiper, Planet Labs, Airbus, and US Space Force affiliates.</p>
+            <p><strong>Music Instruction</strong> — Trumpet, piano, guitar instructor for 20+ students. UC Jazz mentor and ensemble performer.</p>
         </div>
 
         <footer>
             <p>UC Berkeley — Physics, Astrophysics, Music</p>
+            <p>supash_bhat@berkeley.edu</p>
         </footer>
     </div>
+
+    <script>
+        // Canvas setup
+        const canvas = document.getElementById('demoCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width = 800;
+        let height = 400;
+        let groundY = height - 40;
+        
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            width = canvas.width;
+            height = canvas.height;
+            groundY = height - 40;
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        
+        // Ball class
+        class Ball {
+            constructor(x, y, vx, vy, restitution, radius, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.restitution = restitution;
+                this.radius = radius;
+                this.color = color;
+            }
+        }
+        
+        let balls = [];
+        let gravity = { x: 0, y: 500 };
+        let gravityDir = 'DOWN';
+        let dragging = null;
+        let dragOffset = { x: 0, y: 0 };
+        let lastMouse = { x: 0, y: 0 };
+        let throwVel = null;
+        
+        function createBalls() {
+            balls = [];
+            for (let i = 0; i < 8; i++) {
+                balls.push(new Ball(
+                    Math.random() * (width - 100) + 50,
+                    Math.random() * (groundY - 100) + 50,
+                    (Math.random() - 0.5) * 300,
+                    (Math.random() - 0.5) * 200,
+                    0.7 + Math.random() * 0.25,
+                    8 + Math.random() * 8,
+                    `hsl(${Math.random() * 360}, 70%, 60%)`
+                ));
+            }
+            balls.push(new Ball(
+                width/2, groundY - 80,
+                100, -200,
+                0.95, 16,
+                '#ff6666'
+            ));
+            updateDisplay();
+        }
+        
+        function updateDisplay() {
+            document.getElementById('ballCount').innerText = balls.length;
+            const dirMap = { 'DOWN': '⬇️ DOWN', 'UP': '⬆️ UP', 'LEFT': '⬅️ LEFT', 'RIGHT': '➡️ RIGHT' };
+            document.getElementById('gravityDir').innerText = dirMap[gravityDir] || gravityDir;
+        }
+        
+        function addBall() {
+            balls.push(new Ball(
+                Math.random() * (width - 100) + 50,
+                Math.random() * (groundY - 100) + 50,
+                (Math.random() - 0.5) * 300,
+                (Math.random() - 0.5) * 200 - 100,
+                0.6 + Math.random() * 0.3,
+                8 + Math.random() * 8,
+                `hsl(${Math.random() * 360}, 70%, 60%)`
+            ));
+            updateDisplay();
+        }
+        
+        function resetBalls() {
+            createBalls();
+        }
+        
+        function clearBalls() {
+            balls = [];
+            updateDisplay();
+        }
+        
+        // Set gravity with WASD
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'w') { gravity = { x: 0, y: -500 }; gravityDir = 'UP'; updateDisplay(); e.preventDefault(); }
+            if (e.key === 's') { gravity = { x: 0, y: 500 }; gravityDir = 'DOWN'; updateDisplay(); e.preventDefault(); }
+            if (e.key === 'a') { gravity = { x: -500, y: 0 }; gravityDir = 'LEFT'; updateDisplay(); e.preventDefault(); }
+            if (e.key === 'd') { gravity = { x: 500, y: 0 }; gravityDir = 'RIGHT'; updateDisplay(); e.preventDefault(); }
+        });
+        
+        // Mouse interaction
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            return {
+                x: (e.clientX - rect.left) * scaleX,
+                y: (e.clientY - rect.top) * scaleY
+            };
+        }
+        
+        canvas.addEventListener('mousedown', (e) => {
+            const mouse = getMousePos(e);
+            for (let i = balls.length-1; i >= 0; i--) {
+                const b = balls[i];
+                const dx = mouse.x - b.x;
+                const dy = mouse.y - b.y;
+                if (Math.hypot(dx, dy) < b.radius) {
+                    dragging = b;
+                    dragOffset = { x: b.x - mouse.x, y: b.y - mouse.y };
+                    lastMouse = { x: mouse.x, y: mouse.y };
+                    break;
+                }
+            }
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            const mouse = getMousePos(e);
+            if (dragging) {
+                const dx = mouse.x - lastMouse.x;
+                const dy = mouse.y - lastMouse.y;
+                throwVel = { x: dx / 0.016, y: dy / 0.016 };
+                dragging.x = mouse.x + dragOffset.x;
+                dragging.y = mouse.y + dragOffset.y;
+                dragging.vx = 0;
+                dragging.vy = 0;
+                lastMouse = { x: mouse.x, y: mouse.y };
+                
+                // Bounds
+                dragging.x = Math.max(dragging.radius, Math.min(width - dragging.radius, dragging.x));
+                dragging.y = Math.max(dragging.radius, Math.min(groundY - dragging.radius, dragging.y));
+            }
+        });
+        
+        canvas.addEventListener('mouseup', () => {
+            if (dragging && throwVel) {
+                dragging.vx = throwVel.x;
+                dragging.vy = throwVel.y;
+            }
+            dragging = null;
+            throwVel = null;
+        });
+        
+        function resolveCollision(a, b) {
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist === 0) return;
+            const minDist = a.radius + b.radius;
+            if (dist < minDist) {
+                const nx = dx / dist;
+                const ny = dy / dist;
+                const overlap = minDist - dist;
+                a.x += nx * overlap * 0.5;
+                a.y += ny * overlap * 0.5;
+                b.x -= nx * overlap * 0.5;
+                b.y -= ny * overlap * 0.5;
+                
+                const rvx = a.vx - b.vx;
+                const rvy = a.vy - b.vy;
+                const velAlong = rvx * nx + rvy * ny;
+                if (velAlong > 0) return;
+                const e = (a.restitution + b.restitution) / 2;
+                const j = -(1 + e) * velAlong / 2;
+                a.vx += j * nx;
+                a.vy += j * ny;
+                b.vx -= j * nx;
+                b.vy -= j * ny;
+            }
+        }
+        
+        function updatePhysics(dt) {
+            for (let b of balls) {
+                if (b === dragging) continue;
+                b.vx += gravity.x * dt;
+                b.vy += gravity.y * dt;
+                b.x += b.vx * dt;
+                b.y += b.vy * dt;
+                
+                // Ground
+                if (b.y + b.radius > groundY) {
+                    b.y = groundY - b.radius;
+                    b.vy = -b.vy * b.restitution;
+                    if (Math.abs(b.vy) < 20) b.vy = 0;
+                }
+                // Walls
+                if (b.x - b.radius < 0) { b.x = b.radius; b.vx = -b.vx * b.restitution; }
+                if (b.x + b.radius > width) { b.x = width - b.radius; b.vx = -b.vx * b.restitution; }
+                if (b.y - b.radius < 0) { b.y = b.radius; b.vy = -b.vy * b.restitution; }
+            }
+            
+            for (let i = 0; i < balls.length; i++) {
+                for (let j = i+1; j < balls.length; j++) {
+                    resolveCollision(balls[i], balls[j]);
+                }
+            }
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Ground
+            ctx.fillStyle = '#2d3e5f';
+            ctx.fillRect(0, groundY, width, height - groundY);
+            ctx.fillStyle = '#1e2a3a';
+            for (let i = 0; i < width; i += 20) {
+                ctx.fillRect(i, groundY - 2, 10, 4);
+            }
+            
+            // Balls
+            for (let b of balls) {
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+                ctx.fillStyle = b.color;
+                ctx.fill();
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                if (b === dragging) {
+                    ctx.beginPath();
+                    ctx.arc(b.x, b.y, b.radius + 3, 0, Math.PI * 2);
+                    ctx.strokeStyle = '#60a5fa';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+            
+            // Instructions overlay
+            ctx.font = '10px monospace';
+            ctx.fillStyle = '#64748b';
+            ctx.fillText('Click & drag to throw | WASD = gravity', 10, 20);
+        }
+        
+        let lastTime = performance.now();
+        function animate() {
+            const now = performance.now();
+            let dt = Math.min(0.033, (now - lastTime) / 1000);
+            if (dt > 0.001) {
+                updatePhysics(dt);
+                draw();
+            }
+            lastTime = now;
+            requestAnimationFrame(animate);
+        }
+        
+        createBalls();
+        animate();
+    </script>
 </body>
 </html>
