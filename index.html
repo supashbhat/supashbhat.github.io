@@ -24,8 +24,12 @@
         .section h2 { font-size: 1.75rem; margin-bottom: 1.5rem; color: #60a5fa; }
         .demo-card { background: #0f172a; border-radius: 1rem; padding: 1.5rem; margin-top: 1rem; text-align: center; }
         .demo-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
-        .demo-btn { padding: 0.75rem 1.5rem; background: #60a5fa; color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 500; transition: transform 0.2s; display: inline-block; }
+        .demo-btn { padding: 0.75rem 1.5rem; background: #60a5fa; color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 500; transition: transform 0.2s; display: inline-block; cursor: pointer; border: none; font-size: 1rem; }
         .demo-btn:hover { transform: translateY(-2px); background: #3b82f6; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .feature-card { background: rgba(15, 25, 45, 0.6); border-radius: 0.75rem; padding: 1rem; text-align: center; }
+        .feature-check { color: #4ade80; font-size: 1.2rem; }
+        .feature-x { color: #f87171; font-size: 1.2rem; }
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
         .project-card { background: rgba(30, 41, 59, 0.6); border-radius: 1rem; padding: 1.5rem; border: 1px solid rgba(100, 116, 139, 0.3); transition: all 0.3s; }
         .project-card:hover { transform: translateY(-4px); border-color: #60a5fa; }
@@ -35,6 +39,7 @@
         .tag { font-size: 0.7rem; padding: 0.25rem 0.75rem; background: rgba(96, 165, 250, 0.2); border-radius: 1rem; color: #60a5fa; }
         .project-link { color: #60a5fa; text-decoration: none; font-size: 0.875rem; }
         footer { text-align: center; padding: 2rem; color: #64748b; font-size: 0.875rem; }
+        .highlight { background: #60a5fa20; border-left: 3px solid #60a5fa; padding: 1rem; margin: 1rem 0; border-radius: 0.5rem; }
         @media (max-width: 768px) { .container { padding: 1rem; } h1 { font-size: 2.5rem; } }
     </style>
 </head>
@@ -53,12 +58,30 @@
         <div class="section">
             <h2>Interactive Physics Demos</h2>
             <div class="demo-card">
-                <p style="margin-bottom: 1rem;">🎮 <strong>Try the physics engines live in your browser</strong></p>
+                <p style="margin-bottom: 1rem;">🎮 <strong>Try the physics engines in your browser</strong></p>
                 <div class="demo-buttons">
-                    <a href="3d-physics.html" class="demo-btn" target="_blank">🚀 Launch 3D Physics Engine</a>
-                    <a href="2d-physics.html" class="demo-btn" target="_blank">⚡ Launch 2D Physics Engine</a>
+                    <a href="3d-physics.html" class="demo-btn" target="_blank">🚀 3D Physics Engine</a>
+                    <a href="2d-physics.html" class="demo-btn" target="_blank">⚡ 2D Physics Engine</a>
                 </div>
-                <p style="margin-top: 1rem; font-size: 0.8rem; color: #94a3b8;">WASD = rotate view | Drag balls to throw | Window shake = inertia | Number keys (1-6) change gravity direction</p>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <span class="feature-check">✅</span> Drag to throw balls
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-check">✅</span> WASD / Number keys gravity
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-x">❌</span> Window shake (browser limitation)
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    💡 <strong>Want the full experience?</strong><br>
+                    Clone the <a href="https://github.com/supashbhat/physics-engine" style="color:#60a5fa;">GitHub repo</a> and run the Python version:<br>
+                    <code style="background:#00000050; padding:0.25rem 0.5rem; border-radius:0.25rem;">python3 visualize_realtime.py</code><br>
+                    Features: Window shake inertia, real-time gravity slider, throw balls, trails, and more!
+                </div>
             </div>
         </div>
 
@@ -66,16 +89,16 @@
             <h2>Projects</h2>
             <div class="projects-grid">
                 <div class="project-card">
-                    <h3>3D Physics Engine</h3>
-                    <div class="tags"><span class="tag">Three.js</span><span class="tag">WebGL</span><span class="tag">3D Physics</span></div>
-                    <p>Full 3D rigid-body simulation with sphere collisions, realistic lighting, and camera controls. Gravity in any direction. Window shake effect.</p>
-                    <a href="3d-physics.html" class="project-link" target="_blank">Play Demo →</a>
+                    <h3>Physics Engine</h3>
+                    <div class="tags"><span class="tag">C++</span><span class="tag">RK4</span><span class="tag">Python</span><span class="tag">Pygame</span></div>
+                    <p>Complete rigid-body physics engine with Euler and RK4 integration, sphere-sphere collision, multi-body simulation. Python visualization with drag-to-throw, gravity slider, and window shake inertia.</p>
+                    <a href="https://github.com/supashbhat/physics-engine" class="project-link" target="_blank">GitHub →</a>
                 </div>
                 <div class="project-card">
-                    <h3>2D Physics Engine</h3>
-                    <div class="tags"><span class="tag">C++</span><span class="tag">RK4</span><span class="tag">Python</span></div>
-                    <p>C++ engine with RK4 integration, sphere-sphere collision, benchmarks. Python visualization with interactive features.</p>
-                    <a href="https://github.com/supashbhat/physics-engine" class="project-link" target="_blank">GitHub →</a>
+                    <h3>3D Web Demo</h3>
+                    <div class="tags"><span class="tag">Three.js</span><span class="tag">WebGL</span></div>
+                    <p>3D physics simulation in the browser with camera controls and 6-direction gravity. Best experienced in the Python version for full interactivity.</p>
+                    <a href="3d-physics.html" class="project-link" target="_blank">Play Demo →</a>
                 </div>
                 <div class="project-card">
                     <h3>FFT Audio Equalizer</h3>

@@ -6,7 +6,7 @@
     <title>2D Physics Demo | Supash Bhat</title>
     <style>
         body { margin: 0; overflow: hidden; font-family: monospace; background: #0a0a1a; }
-        canvas { display: block; margin: 0 auto; cursor: grab; }
+        canvas { display: block; width: 100%; height: 100vh; cursor: grab; }
         #info {
             position: absolute; top: 20px; left: 20px;
             background: rgba(0,0,0,0.7); color: white;
@@ -32,35 +32,37 @@
             font-family: monospace; font-weight: bold;
             pointer-events: none; z-index: 10;
         }
-        @media (max-width: 768px) {
-            #info { font-size: 10px; top: 10px; left: 10px; }
-            #controls { font-size: 10px; bottom: 10px; left: 10px; }
-            #gravity { font-size: 10px; bottom: 10px; right: 10px; }
+        .note {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(0,0,0,0.5); color: #94a3b8;
+            padding: 8px 12px; border-radius: 8px;
+            font-size: 10px; pointer-events: none;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
-    <div id="info">🎮 2D PHYSICS | Click & drag to throw | WASD = gravity | Drag window to shake</div>
+    <div id="info">🎮 2D PHYSICS | Click & drag to throw balls | WASD = change gravity</div>
     <div id="controls">
         <button onclick="addBall()">➕ Add Ball</button>
         <button onclick="resetBalls()">🔄 Reset</button>
         <button onclick="clearBalls()">🗑️ Clear All</button>
     </div>
     <div id="gravity">🌍 GRAVITY: <span id="gravityDir">DOWN</span></div>
-    <canvas id="physicsCanvas" width="1000" height="600" style="width:100%; height:auto; max-width:1000px; aspect-ratio:1000/600"></canvas>
+    <div class="note">💡 For window shake & full features → clone repo & run python3 visualize_realtime.py</div>
+    <canvas id="physicsCanvas"></canvas>
 
     <script>
         const canvas = document.getElementById('physicsCanvas');
         const ctx = canvas.getContext('2d');
-        let width = 1000, height = 600, groundY = height - 50;
+        let width, height, groundY;
         
         function resizeCanvas() {
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-            width = canvas.width;
-            height = canvas.height;
+            width = window.innerWidth;
+            height = window.innerHeight;
             groundY = height - 50;
+            canvas.width = width;
+            canvas.height = height;
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
@@ -208,7 +210,7 @@
                 ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
                 if (b === dragging) { ctx.beginPath(); ctx.arc(b.x, b.y, b.radius+3, 0, Math.PI*2); ctx.strokeStyle = '#60a5fa'; ctx.lineWidth = 2; ctx.stroke(); }
             }
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.fillText('WASD = gravity | Click & drag to throw', 10, 20);
+            ctx.fillStyle = '#94a3b8'; ctx.font = '12px monospace'; ctx.fillText('WASD = gravity | Click & drag to throw', 20, 30);
         }
         
         let lastTime = performance.now();
@@ -219,18 +221,6 @@
             lastTime = now;
             requestAnimationFrame(animate);
         }
-        
-        // Window shake detection
-        let lastWinX = window.screenX, lastWinY = window.screenY;
-        function checkShake() {
-            const dx = window.screenX - lastWinX, dy = window.screenY - lastWinY;
-            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-                for (let b of balls) { b.vx += dx * 0.2; b.vy += dy * 0.2; }
-            }
-            lastWinX = window.screenX; lastWinY = window.screenY;
-            requestAnimationFrame(checkShake);
-        }
-        checkShake();
         
         createBalls();
         animate();
