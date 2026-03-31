@@ -13,112 +13,170 @@
             line-height: 1.6;
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        header { text-align: center; padding: 4rem 2rem; background: rgba(15, 25, 45, 0.7); backdrop-filter: blur(12px); border-radius: 1.5rem; margin-bottom: 2rem; }
-        h1 { font-size: 4rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 1rem; }
-        .tagline { font-size: 1.25rem; color: #94a3b8; margin-bottom: 2rem; }
-        .links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
-        .btn { display: inline-flex; padding: 0.75rem 1.5rem; background: rgba(96, 165, 250, 0.1); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 2rem; color: #60a5fa; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+        
+        /* Header */
+        header { 
+            text-align: center; 
+            padding: 3rem 2rem; 
+            background: rgba(15, 25, 45, 0.7); 
+            backdrop-filter: blur(12px); 
+            border-radius: 1.5rem; 
+            margin-bottom: 2rem; 
+        }
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #60a5fa;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+        }
+        .profile-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+            border: 3px solid white;
+        }
+        h1 { font-size: 3rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.5rem; }
+        .tagline { font-size: 1.1rem; color: #94a3b8; margin-bottom: 1.5rem; }
+        .links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .btn { display: inline-flex; padding: 0.6rem 1.2rem; background: rgba(96, 165, 250, 0.1); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 2rem; color: #60a5fa; text-decoration: none; font-weight: 500; transition: all 0.3s; font-size: 0.9rem; }
         .btn:hover { background: rgba(96, 165, 250, 0.2); transform: translateY(-2px); }
-        .btn-primary { background: linear-gradient(135deg, #60a5fa, #a78bfa); border: none; color: white; }
-        .section { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border-radius: 1.5rem; padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(100, 116, 139, 0.3); }
-        .section h2 { font-size: 1.75rem; margin-bottom: 1.5rem; color: #60a5fa; }
-        .demo-card { background: #0f172a; border-radius: 1rem; padding: 1.5rem; margin-top: 1rem; text-align: center; }
+        
+        /* Sections */
+        .section { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border-radius: 1.5rem; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid rgba(100, 116, 139, 0.3); }
+        .section h2 { font-size: 1.5rem; margin-bottom: 1rem; color: #60a5fa; display: flex; align-items: center; gap: 0.5rem; }
+        
+        /* About section */
+        .about-text { color: #cbd5e1; margin-bottom: 1rem; }
+        
+        /* Demo cards */
+        .demo-card { background: #0f172a; border-radius: 1rem; padding: 1.2rem; margin-top: 1rem; text-align: center; }
         .demo-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
-        .demo-btn { padding: 0.75rem 1.5rem; background: #60a5fa; color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 500; transition: transform 0.2s; display: inline-block; cursor: pointer; border: none; font-size: 1rem; }
+        .demo-btn { padding: 0.6rem 1.2rem; background: #60a5fa; color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 500; transition: transform 0.2s; display: inline-block; cursor: pointer; border: none; font-size: 0.9rem; }
         .demo-btn:hover { transform: translateY(-2px); background: #3b82f6; }
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .feature-card { background: rgba(15, 25, 45, 0.6); border-radius: 0.75rem; padding: 1rem; text-align: center; }
-        .feature-check { color: #4ade80; font-size: 1.2rem; }
-        .feature-x { color: #f87171; font-size: 1.2rem; }
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .project-card { background: rgba(30, 41, 59, 0.6); border-radius: 1rem; padding: 1.5rem; border: 1px solid rgba(100, 116, 139, 0.3); transition: all 0.3s; }
-        .project-card:hover { transform: translateY(-4px); border-color: #60a5fa; }
-        .project-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; color: #f1f5f9; }
-        .project-card p { color: #94a3b8; font-size: 0.875rem; margin-bottom: 1rem; }
-        .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
-        .tag { font-size: 0.7rem; padding: 0.25rem 0.75rem; background: rgba(96, 165, 250, 0.2); border-radius: 1rem; color: #60a5fa; }
-        .project-link { color: #60a5fa; text-decoration: none; font-size: 0.875rem; }
-        footer { text-align: center; padding: 2rem; color: #64748b; font-size: 0.875rem; }
-        .highlight { background: #60a5fa20; border-left: 3px solid #60a5fa; padding: 1rem; margin: 1rem 0; border-radius: 0.5rem; }
-        @media (max-width: 768px) { .container { padding: 1rem; } h1 { font-size: 2.5rem; } }
+        
+        /* Feature grid */
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; margin-top: 1rem; }
+        .feature-card { background: rgba(15, 25, 45, 0.6); border-radius: 0.75rem; padding: 0.8rem; text-align: center; font-size: 0.85rem; }
+        .feature-check { color: #4ade80; font-size: 1rem; }
+        .feature-x { color: #f87171; font-size: 1rem; }
+        
+        /* Projects grid */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+        .project-card { background: rgba(30, 41, 59, 0.6); border-radius: 1rem; padding: 1.2rem; border: 1px solid rgba(100, 116, 139, 0.3); transition: all 0.3s; }
+        .project-card:hover { transform: translateY(-3px); border-color: #60a5fa; }
+        .project-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #f1f5f9; }
+        .project-card p { color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.8rem; }
+        .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.8rem; }
+        .tag { font-size: 0.65rem; padding: 0.2rem 0.6rem; background: rgba(96, 165, 250, 0.2); border-radius: 1rem; color: #60a5fa; }
+        .project-link { color: #60a5fa; text-decoration: none; font-size: 0.8rem; }
+        
+        .highlight { background: #60a5fa20; border-left: 3px solid #60a5fa; padding: 0.8rem; margin: 1rem 0; border-radius: 0.5rem; font-size: 0.85rem; }
+        code { background: #00000050; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.8rem; }
+        footer { text-align: center; padding: 1.5rem; color: #64748b; font-size: 0.75rem; }
+        
+        @media (max-width: 768px) { .container { padding: 1rem; } h1 { font-size: 2rem; } .profile-section { gap: 1rem; } }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Supash Bhat</h1>
-            <div class="tagline">Physics & Astrophysics @ UC Berkeley | Computational Physics | Music Technology</div>
+            <div class="profile-section">
+                <img src="sb.jpeg" alt="Supash Bhat" class="profile-img">
+                <div style="text-align: left;">
+                    <h1>Supash Bhat</h1>
+                    <div class="tagline">Physics & Astrophysics @ UC Berkeley | Computational Physics | Music Technology</div>
+                </div>
+            </div>
             <div class="links">
                 <a href="https://github.com/supashbhat" class="btn" target="_blank">GitHub</a>
                 <a href="https://linkedin.com/in/supash-bhat" class="btn" target="_blank">LinkedIn</a>
-                <a href="mailto:supash_bhat@berkeley.edu" class="btn">supash_bhat@berkeley.edu</a>
+                <a href="mailto:supash_bhat@berkeley.edu" class="btn">Email</a>
             </div>
         </header>
 
         <div class="section">
-            <h2>Interactive Physics Demos</h2>
+            <h2>👋 About Me</h2>
+            <div class="about-text">
+                <p>I'm a physics student at UC Berkeley interested in the intersection of computational physics, numerical methods, and music technology. I build things that bridge theory and application—from physics engines to audio processing tools.</p>
+                <p style="margin-top: 0.5rem;">Currently, I'm exploring real-time simulation, GPU acceleration, and audio DSP. I also teach space systems engineering at Berkeley and mentor students in music and physics.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎮 Interactive Physics Demos</h2>
             <div class="demo-card">
-                <p style="margin-bottom: 1rem;">🎮 <strong>Try the physics engines in your browser</strong></p>
+                <p style="margin-bottom: 0.8rem;">Try the physics engines in your browser</p>
                 <div class="demo-buttons">
                     <a href="3d-physics.html" class="demo-btn" target="_blank">🚀 3D Physics Engine</a>
                     <a href="2d-physics.html" class="demo-btn" target="_blank">⚡ 2D Physics Engine</a>
                 </div>
                 
                 <div class="feature-grid">
-                    <div class="feature-card">
-                        <span class="feature-check">✅</span> Drag to throw balls
-                    </div>
-                    <div class="feature-card">
-                        <span class="feature-check">✅</span> WASD / Number keys gravity
-                    </div>
-                    <div class="feature-card">
-                        <span class="feature-x">❌</span> Window shake (browser limitation)
-                    </div>
+                    <div class="feature-card"><span class="feature-check">✅</span> Drag to throw balls (2D)</div>
+                    <div class="feature-card"><span class="feature-check">✅</span> WASD / Number keys gravity</div>
+                    <div class="feature-card"><span class="feature-x">❌</span> Window shake (browser limit)</div>
                 </div>
                 
                 <div class="highlight">
                     💡 <strong>Want the full experience?</strong><br>
                     Clone the <a href="https://github.com/supashbhat/physics-engine" style="color:#60a5fa;">GitHub repo</a> and run the Python version:<br>
-                    <code style="background:#00000050; padding:0.25rem 0.5rem; border-radius:0.25rem;">python3 visualize_realtime.py</code><br>
-                    Features: Window shake inertia, real-time gravity slider, throw balls, trails, and more!
+                    <code>python3 visualize_realtime.py</code><br>
+                    Features: Window shake inertia, real-time gravity slider, throw balls, energy trails, and more!
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2>Projects</h2>
+            <h2>📁 Projects</h2>
             <div class="projects-grid">
                 <div class="project-card">
                     <h3>Physics Engine</h3>
                     <div class="tags"><span class="tag">C++</span><span class="tag">RK4</span><span class="tag">Python</span><span class="tag">Pygame</span></div>
-                    <p>Complete rigid-body physics engine with Euler and RK4 integration, sphere-sphere collision, multi-body simulation. Python visualization with drag-to-throw, gravity slider, and window shake inertia.</p>
+                    <p>Complete rigid-body physics engine with Euler/RK4 integration, sphere-sphere collision, multi-body simulation, and Python visualization with window shake inertia.</p>
                     <a href="https://github.com/supashbhat/physics-engine" class="project-link" target="_blank">GitHub →</a>
                 </div>
                 <div class="project-card">
                     <h3>3D Web Demo</h3>
                     <div class="tags"><span class="tag">Three.js</span><span class="tag">WebGL</span></div>
-                    <p>3D physics simulation in the browser with camera controls and 6-direction gravity. Best experienced in the Python version for full interactivity.</p>
+                    <p>3D physics simulation with camera controls and 6-direction gravity (keys 1-6). Best experienced in the Python version.</p>
                     <a href="3d-physics.html" class="project-link" target="_blank">Play Demo →</a>
                 </div>
                 <div class="project-card">
                     <h3>FFT Audio Equalizer</h3>
                     <div class="tags"><span class="tag">DSP</span><span class="tag">JUCE</span><span class="tag">C++</span></div>
-                    <p>Real-time audio plugin under development. Based on Fourier analysis principles from UC Berkeley presentation.</p>
+                    <p>Real-time audio plugin in development. Based on Fourier analysis principles from my UC Berkeley presentation.</p>
                     <a href="#" class="project-link">In Development →</a>
                 </div>
                 <div class="project-card">
                     <h3>Research</h3>
                     <div class="tags"><span class="tag">Geant4</span><span class="tag">Astrophysics</span><span class="tag">ML</span></div>
-                    <p>Gamma spectroscopy at LBNL, asteroid detection (MPEC 2025-F16), and timbre perception at CNMAT.</p>
-                    <a href="https://linkedin.com/in/supash-bhat" class="project-link">See LinkedIn →</a>
+                    <p>Gamma spectroscopy at LBNL, asteroid detection (MPEC 2025-F16), timbre perception at CNMAT.</p>
+                    <a href="https://linkedin.com/in/supash-bhat" class="project-link" target="_blank">View on LinkedIn →</a>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2>Teaching & Mentorship</h2>
-            <p><strong>NewSpace @ Berkeley</strong> — Lead instructor for space systems engineering course. Coordinating with Amazon Kuiper, Planet Labs, Airbus, and US Space Force affiliates.</p>
-            <p><strong>Music Instruction</strong> — Trumpet, piano, guitar instructor for 20+ students. UC Jazz mentor and ensemble performer.</p>
+            <h2>📚 Teaching & Mentorship</h2>
+            <p><strong>NewSpace @ Berkeley</strong> — Lead instructor for space systems engineering. Coordinating with Amazon Kuiper, Planet Labs, Airbus, and US Space Force affiliates.</p>
+            <p style="margin-top: 0.5rem;"><strong>Music Instruction</strong> — Trumpet, piano, guitar instructor for 20+ students. UC Jazz mentor and ensemble performer.</p>
         </div>
 
         <footer>
