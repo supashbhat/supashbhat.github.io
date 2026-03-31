@@ -6,23 +6,83 @@
     <title>Supash Bhat | Physics & Computational Science</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Starfield animation */
+        @keyframes starMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+
+        .star {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: starMove linear infinite;
+            z-index: 0;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #0a0a2a 0%, #1a1a3a 100%);
             color: #e2e8f0;
             line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        
-        /* Header */
-        header { 
-            text-align: center; 
-            padding: 3rem 2rem; 
-            background: rgba(15, 25, 45, 0.7); 
-            backdrop-filter: blur(12px); 
-            border-radius: 1.5rem; 
-            margin-bottom: 2rem; 
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
+
+        /* Glow animation for header */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #60a5fa; }
+            50% { text-shadow: 0 0 20px #60a5fa, 0 0 30px #a78bfa; }
+            100% { text-shadow: 0 0 5px #60a5fa; }
+        }
+
+        /* Float animation for profile */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Fade in animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Pulse animation for buttons */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(96, 165, 250, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0); }
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(15, 25, 45, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
         .profile-section {
             display: flex;
             align-items: center;
@@ -31,14 +91,17 @@
             flex-wrap: wrap;
             margin-bottom: 1.5rem;
         }
+
         .profile-img {
             width: 150px;
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid #60a5fa;
-            box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+            box-shadow: 0 0 30px rgba(96, 165, 250, 0.3);
+            animation: float 3s ease-in-out infinite;
         }
+
         .profile-placeholder {
             width: 150px;
             height: 150px;
@@ -51,57 +114,232 @@
             font-weight: bold;
             color: white;
             border: 3px solid white;
+            animation: float 3s ease-in-out infinite;
         }
-        h1 { font-size: 3rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 0.5rem; }
-        .tagline { font-size: 1.1rem; color: #94a3b8; margin-bottom: 1.5rem; }
-        .links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-        .btn { display: inline-flex; padding: 0.6rem 1.2rem; background: rgba(96, 165, 250, 0.1); border: 1px solid rgba(96, 165, 250, 0.3); border-radius: 2rem; color: #60a5fa; text-decoration: none; font-weight: 500; transition: all 0.3s; font-size: 0.9rem; }
-        .btn:hover { background: rgba(96, 165, 250, 0.2); transform: translateY(-2px); }
-        
-        /* Sections */
-        .section { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border-radius: 1.5rem; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid rgba(100, 116, 139, 0.3); }
-        .section h2 { font-size: 1.5rem; margin-bottom: 1rem; color: #60a5fa; display: flex; align-items: center; gap: 0.5rem; }
-        
-        /* About section */
-        .about-text { color: #cbd5e1; margin-bottom: 1rem; }
-        
-        /* Demo cards */
-        .demo-card { background: #0f172a; border-radius: 1rem; padding: 1.2rem; margin-top: 1rem; text-align: center; }
-        .demo-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
-        .demo-btn { padding: 0.6rem 1.2rem; background: #60a5fa; color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 500; transition: transform 0.2s; display: inline-block; cursor: pointer; border: none; font-size: 0.9rem; }
-        .demo-btn:hover { transform: translateY(-2px); background: #3b82f6; }
-        
-        /* Feature grid */
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; margin-top: 1rem; }
-        .feature-card { background: rgba(15, 25, 45, 0.6); border-radius: 0.75rem; padding: 0.8rem; text-align: center; font-size: 0.85rem; }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            padding: 0.6rem 1.2rem;
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 2rem;
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background: rgba(96, 165, 250, 0.2);
+            transform: translateY(-2px);
+            animation: pulse 0.5s ease-out;
+        }
+
+        .section {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        .section:nth-child(5) { animation-delay: 0.4s; }
+
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .about-text {
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .demo-card {
+            background: #0f172a;
+            border-radius: 1rem;
+            padding: 1.2rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 0.6rem 1.2rem;
+            background: #60a5fa;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            background: #3b82f6;
+            animation: pulse 0.5s ease-out;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .feature-card {
+            background: rgba(15, 25, 45, 0.6);
+            border-radius: 0.75rem;
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.02);
+            border: 1px solid #60a5fa;
+        }
+
         .feature-check { color: #4ade80; font-size: 1rem; }
         .feature-x { color: #f87171; font-size: 1rem; }
-        
-        /* Projects grid */
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
-        .project-card { background: rgba(30, 41, 59, 0.6); border-radius: 1rem; padding: 1.2rem; border: 1px solid rgba(100, 116, 139, 0.3); transition: all 0.3s; }
-        .project-card:hover { transform: translateY(-3px); border-color: #60a5fa; }
-        .project-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #f1f5f9; }
-        .project-card p { color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.8rem; }
-        .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.8rem; }
-        .tag { font-size: 0.65rem; padding: 0.2rem 0.6rem; background: rgba(96, 165, 250, 0.2); border-radius: 1rem; color: #60a5fa; }
-        .project-link { color: #60a5fa; text-decoration: none; font-size: 0.8rem; }
-        
-        .highlight { background: #60a5fa20; border-left: 3px solid #60a5fa; padding: 0.8rem; margin: 1rem 0; border-radius: 0.5rem; font-size: 0.85rem; }
-        code { background: #00000050; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.8rem; }
-        footer { text-align: center; padding: 1.5rem; color: #64748b; font-size: 0.75rem; }
-        
-        @media (max-width: 768px) { .container { padding: 1rem; } h1 { font-size: 2rem; } .profile-section { gap: 1rem; } }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .project-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 1rem;
+            padding: 1.2rem;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+            transition: all 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            border-color: #60a5fa;
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #f1f5f9;
+        }
+
+        .project-card p {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .tag {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(96, 165, 250, 0.2);
+            border-radius: 1rem;
+            color: #60a5fa;
+        }
+
+        .project-link {
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .highlight {
+            background: #60a5fa20;
+            border-left: 3px solid #60a5fa;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        code {
+            background: #00000050;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .profile-section { gap: 1rem; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="profile-section">
-                <img src="sb.jpeg" alt="Supash Bhat" class="profile-img">
+                <div class="profile-placeholder">SB</div>
                 <div style="text-align: left;">
                     <h1>Supash Bhat</h1>
-                    <div class="tagline">Physics Astrophysics & Music @ UC Berkeley | Computational Physics | Music Technology</div>
+                    <div class="tagline">Physics & Astrophysics @ UC Berkeley | Computational Physics | Music Technology</div>
                 </div>
             </div>
             <div class="links">
@@ -115,7 +353,7 @@
             <h2>👋 About Me</h2>
             <div class="about-text">
                 <p>I'm a physics student at UC Berkeley interested in the intersection of computational physics, numerical methods, and music technology. I build things that bridge theory and application—from physics engines to audio processing tools.</p>
-                <p style="margin-top: 0.5rem;">Currently, I'm exploring real-time simulation, GPU acceleration, and audio DSP. I also teach space economy at Berkeley and mentor students in music and physics.</p>
+                <p style="margin-top: 0.5rem;">Currently, I'm exploring real-time simulation, GPU acceleration, and audio DSP. I also teach the space economy at Berkeley and mentor students in music and physics.</p>
             </div>
         </div>
 
@@ -175,7 +413,7 @@
 
         <div class="section">
             <h2>📚 Teaching & Mentorship</h2>
-            <p><strong>NewSpace @ Berkeley</strong> — Lead instructor for space economy class. Coordinating with Amazon Kuiper, Planet Labs, Airbus, and US Space Force affiliates.</p>
+            <p><strong>NewSpace @ Berkeley</strong> — Lead instructor for space economy course. Coordinating with Amazon Kuiper, Planet Labs, Airbus, and US Space Force affiliates.</p>
             <p style="margin-top: 0.5rem;"><strong>Music Instruction</strong> — Trumpet, piano, guitar instructor for 20+ students. UC Jazz mentor and ensemble performer.</p>
         </div>
 
@@ -184,5 +422,26 @@
             <p>supash_bhat@berkeley.edu</p>
         </footer>
     </div>
+
+    <script>
+        // Starfield generation
+        function createStars() {
+            const starCount = 200;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 3;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDuration = Math.random() * 10 + 5 + 's';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                document.body.appendChild(star);
+            }
+        }
+        createStars();
+    </script>
 </body>
 </html>
