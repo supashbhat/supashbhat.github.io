@@ -156,9 +156,9 @@
 
         .hero {
             display: grid;
-            grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+            grid-template-columns: minmax(0, 1fr) 320px;
             gap: 1.4rem;
-            align-items: stretch;
+            align-items: start;
             padding: 1.3rem;
             border-radius: 2rem;
             background: linear-gradient(180deg, rgba(7, 23, 29, 0.84), rgba(5, 18, 24, 0.72));
@@ -242,6 +242,11 @@
             gap: 1rem;
         }
 
+        .hero-meta {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: stretch;
+        }
+
         .card {
             position: relative;
             padding: 1.1rem;
@@ -292,6 +297,7 @@
                 radial-gradient(circle at 50% 12%, rgba(120, 255, 216, 0.13), transparent 26%),
                 rgba(8, 24, 30, 0.66);
             border: 1px solid rgba(120, 255, 216, 0.10);
+            align-self: start;
         }
 
         .icon-panel {
@@ -302,6 +308,7 @@
             border-radius: 1.25rem;
             background: rgba(255, 255, 255, 0.035);
             border: 1px solid rgba(120, 255, 216, 0.10);
+            min-height: 0;
         }
 
         .icon-panel img {
@@ -427,6 +434,10 @@
 
             h1 {
                 font-size: clamp(2.5rem, 13vw, 4.2rem);
+            }
+
+            .hero-meta {
+                grid-template-columns: 1fr;
             }
         }
     </style>
