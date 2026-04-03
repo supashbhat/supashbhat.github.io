@@ -36,6 +36,7 @@
                 radial-gradient(circle at 55% 70%, rgba(120, 255, 216, 0.10), transparent 28%),
                 linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-mid) 48%, #0a1d28 100%);
             overflow-x: hidden;
+            --scroll-shift: 0px;
         }
 
         body::before,
@@ -317,6 +318,8 @@
             overflow: hidden;
             border: 1px solid rgba(119, 204, 255, 0.16);
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+            transform: translateY(calc(var(--scroll-shift) * -0.08));
+            transition: transform 0.18s ease-out;
         }
 
         .hero-shot img {
@@ -349,28 +352,6 @@
             margin-bottom: 1rem;
             font-size: 1.55rem;
             color: var(--mint);
-        }
-
-        .showcase {
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
-            gap: 1rem;
-            align-items: stretch;
-        }
-
-        .showcase .shot {
-            padding: 0;
-            border-radius: 1.25rem;
-            overflow: hidden;
-            border: 1px solid rgba(119, 204, 255, 0.18);
-            background: linear-gradient(135deg, rgba(120, 255, 216, 0.08), rgba(119, 204, 255, 0.04));
-        }
-
-        .showcase .shot img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
         }
 
         .stat {
@@ -447,8 +428,7 @@
         }
 
         @media (max-width: 900px) {
-            .hero,
-            .showcase {
+            .hero {
                 grid-template-columns: 1fr;
             }
         }
@@ -571,29 +551,6 @@
             </div>
         </section>
 
-        <section class="section reveal">
-            <h2>Showcase</h2>
-            <div class="showcase">
-                <div class="shot reveal" style="--delay: 60ms;">
-                    <img src="assets/Vayu-Demo-photo.png" alt="Vayu demo screenshot">
-                </div>
-                <div class="stats-grid">
-                    <div class="card stat reveal" style="--delay: 100ms;">
-                        <strong>8</strong>
-                        <p>Effect modules in the rack, including compressor, stereo, modulation, delay, and reverb.</p>
-                    </div>
-                    <div class="card stat reveal" style="--delay: 150ms;">
-                        <strong>5</strong>
-                        <p>EQ bands with a clean visual workflow for broad tone shaping and balancing.</p>
-                    </div>
-                    <div class="card stat reveal" style="--delay: 200ms;">
-                        <strong>3</strong>
-                        <p>Core release targets planned for direct download: macOS, Windows, and Linux.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section class="section reveal" id="downloads">
             <h2>Downloads</h2>
             <div class="download-grid">
@@ -674,6 +631,13 @@
         }, { threshold: 0.14 });
 
         document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+
+        const updateScrollMotion = () => {
+            document.body.style.setProperty("--scroll-shift", `${window.scrollY}px`);
+        };
+
+        updateScrollMotion();
+        window.addEventListener("scroll", updateScrollMotion, { passive: true });
     </script>
 </body>
 </html>
