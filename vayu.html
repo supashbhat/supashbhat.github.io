@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vayu | Supash Bhat</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(83, 240, 211, 0.18), transparent 30%),
+                radial-gradient(circle at top right, rgba(108, 201, 255, 0.14), transparent 28%),
+                linear-gradient(135deg, #041316 0%, #082229 45%, #0d1d29 100%);
+            color: #eafffb;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container { max-width: 1180px; margin: 0 auto; padding: 2rem; }
+        .hero {
+            padding: 3rem;
+            border-radius: 1.75rem;
+            background: rgba(4, 19, 22, 0.72);
+            border: 1px solid rgba(123, 255, 232, 0.18);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+            margin-bottom: 2rem;
+        }
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.78rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #8bf5e8;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-size: clamp(3rem, 7vw, 5.8rem);
+            line-height: 0.95;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #e9fffb 0%, #81ffe2 45%, #7fd3ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .subhead {
+            max-width: 760px;
+            font-size: 1.08rem;
+            color: #c8f4ef;
+            margin-bottom: 1.5rem;
+        }
+        .cta-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 1.4rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary {
+            background: linear-gradient(135deg, #50f0d3, #5bc1ff);
+            color: #052127;
+        }
+        .btn-secondary {
+            border: 1px solid rgba(123, 255, 232, 0.24);
+            color: #bffbf2;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .section {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            background: rgba(7, 22, 27, 0.72);
+            border: 1px solid rgba(123, 255, 232, 0.12);
+            backdrop-filter: blur(14px);
+        }
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #8ff8ea;
+        }
+        .feature-grid, .download-grid, .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+        .hero-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.9rem;
+            margin-top: 1.5rem;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(123, 255, 232, 0.10);
+            border-radius: 1.15rem;
+            padding: 1.15rem;
+        }
+        .card h3 {
+            margin-bottom: 0.55rem;
+            color: #e8fffb;
+        }
+        .card p {
+            color: #b9ddd7;
+            font-size: 0.95rem;
+        }
+        .download-card .buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .mini-btn {
+            display: inline-flex;
+            padding: 0.72rem 1rem;
+            border-radius: 0.85rem;
+            text-decoration: none;
+            font-weight: 600;
+            background: rgba(80, 240, 211, 0.10);
+            border: 1px solid rgba(80, 240, 211, 0.18);
+            color: #9af8eb;
+        }
+        .mini-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .shot {
+            min-height: 220px;
+            border-radius: 1rem;
+            border: 1px dashed rgba(127, 211, 255, 0.28);
+            background: linear-gradient(135deg, rgba(80, 240, 211, 0.06), rgba(91, 193, 255, 0.03));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #90c9c1;
+            padding: 1rem;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 0.9rem;
+            border: 1px solid rgba(127, 211, 255, 0.18);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+        }
+        .hero-shot {
+            margin-top: 2rem;
+            border-radius: 1.3rem;
+            overflow: hidden;
+            border: 1px solid rgba(127, 211, 255, 0.16);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+        }
+        .hero-shot img {
+            width: 100%;
+            display: block;
+        }
+        .note {
+            margin-top: 1rem;
+            color: #9ec7c1;
+            font-size: 0.95rem;
+        }
+        .kicker {
+            font-size: 0.76rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #7fd3ff;
+            margin-bottom: 0.55rem;
+        }
+        .footer {
+            text-align: center;
+            color: #7ea29d;
+            padding: 1rem 0 2rem;
+        }
+        code {
+            background: rgba(0, 0, 0, 0.28);
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.35rem;
+        }
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .hero, .section { padding: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="hero">
+            <div class="eyebrow">Vayu</div>
+            <h1>Shape Motion Into Sound</h1>
+            <p class="subhead">
+                Vayu is a modular effect rack built for fast sound design. It combines EQ, modulation, delay, reverb, distortion,
+                stereo imaging, and compression into one visual plugin with drag-to-reorder processing and standalone playback.
+            </p>
+            <div class="cta-row">
+                <a href="#downloads" class="btn btn-primary">Download Vayu</a>
+                <a href="#learn-more" class="btn btn-secondary">Learn More</a>
+                <a href="index.html" class="btn btn-secondary">Back To Portfolio</a>
+            </div>
+            <div class="hero-meta">
+                <div class="card">
+                    <div class="kicker">Signal Flow</div>
+                    <h3>Drag The Rack</h3>
+                    <p>Move modules around to reshape the chain in seconds and save entire processing states as rack presets.</p>
+                </div>
+                <div class="card">
+                    <div class="kicker">Visual Control</div>
+                    <h3>Fast To Read</h3>
+                    <p>Live EQ curve, analyzer feedback, meters, and focused effect panels keep the plugin playable instead of crowded.</p>
+                </div>
+                <div class="card">
+                    <div class="kicker">Release Model</div>
+                    <h3>Install And Use</h3>
+                    <p>Official builds are packaged for direct download so users can install Vayu without touching JUCE or build tools.</p>
+                </div>
+            </div>
+            <div class="hero-shot">
+                <img src="assets/Vayu-Demo-photo.png" alt="Vayu plugin interface">
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>What Vayu Includes</h2>
+            <div class="feature-grid">
+                <div class="card">
+                    <h3>Five-Band EQ</h3>
+                    <p>Shape lows, mids, and highs with a responsive visual curve and real-time analyzer feedback.</p>
+                </div>
+                <div class="card">
+                    <h3>Modular Rack</h3>
+                    <p>Drag effect modules to change processing order and save full rack states as presets.</p>
+                </div>
+                <div class="card">
+                    <h3>Eight Effects</h3>
+                    <p>Distortion, chorus, flanger, phaser, delay, stereo, reverb, and compressor in one chain.</p>
+                </div>
+                <div class="card">
+                    <h3>Standalone + Plugin</h3>
+                    <p>Use Vayu as a standalone desktop app or install it as AU and VST3 in your DAW.</p>
+                </div>
+                <div class="card">
+                    <h3>Preset Workflow</h3>
+                    <p>Load factory starting points, save your own rack states, and keep effect-level patches ready for repeat sessions.</p>
+                </div>
+                <div class="card">
+                    <h3>Built For Atmosphere</h3>
+                    <p>From subtle width and glue to motion-heavy textures, Vayu is designed for colour, movement, and space.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Gallery</h2>
+            <div class="shot-grid">
+                <div class="shot"><img src="assets/Vayu-Demo-photo.png" alt="Vayu demo screenshot"></div>
+                <div class="shot">Drop a rack/effect view screenshot here.</div>
+                <div class="shot">Drop a standalone app screenshot here.</div>
+            </div>
+            <p class="note">More screenshots can be added here as you capture close-up views of the rack, presets, and standalone app.</p>
+        </section>
+
+        <section class="section" id="downloads">
+            <h2>Downloads</h2>
+            <div class="download-grid">
+                <div class="card download-card">
+                    <h3>macOS</h3>
+                    <p>Download the standalone app or install Vayu as AU and VST3 in any compatible macOS host.</p>
+                    <div class="buttons">
+                        <a class="mini-btn" href="https://github.com/supashbhat/vayu/releases/latest" target="_blank">Release Page</a>
+                        <a class="mini-btn disabled" href="#">Standalone</a>
+                        <a class="mini-btn disabled" href="#">AU</a>
+                        <a class="mini-btn disabled" href="#">VST3</a>
+                    </div>
+                </div>
+                <div class="card download-card">
+                    <h3>Windows</h3>
+                    <p>Windows download buttons can point to packaged VST3 and standalone releases as soon as the first build is uploaded.</p>
+                    <div class="buttons">
+                        <a class="mini-btn" href="https://github.com/supashbhat/vayu/releases/latest" target="_blank">Release Page</a>
+                        <a class="mini-btn disabled" href="#">Standalone</a>
+                        <a class="mini-btn disabled" href="#">VST3</a>
+                    </div>
+                </div>
+                <div class="card download-card">
+                    <h3>Linux</h3>
+                    <p>Linux download buttons can point to packaged VST3 and standalone releases as soon as the first build is uploaded.</p>
+                    <div class="buttons">
+                        <a class="mini-btn" href="https://github.com/supashbhat/vayu/releases/latest" target="_blank">Release Page</a>
+                        <a class="mini-btn disabled" href="#">Standalone</a>
+                        <a class="mini-btn disabled" href="#">VST3</a>
+                    </div>
+                </div>
+            </div>
+            <p class="note">
+                Each button can be wired directly to a packaged release asset once the first public downloads are uploaded.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Installation</h2>
+            <div class="feature-grid">
+                <div class="card">
+                    <h3>Standalone</h3>
+                    <p>Move <code>Vayu.app</code> into Applications and launch it like any normal macOS app.</p>
+                </div>
+                <div class="card">
+                    <h3>AU</h3>
+                    <p>Copy <code>Vayu.component</code> into <code>~/Library/Audio/Plug-Ins/Components</code> and rescan plugins in your DAW.</p>
+                </div>
+                <div class="card">
+                    <h3>VST3</h3>
+                    <p>Copy <code>Vayu.vst3</code> into <code>~/Library/Audio/Plug-Ins/VST3</code> and rescan plugins in your DAW.</p>
+                </div>
+                <div class="card">
+                    <h3>Official Builds</h3>
+                    <p>Vayu is meant to be downloaded and installed directly. End users do not need JUCE, CMake, or source setup.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="learn-more">
+            <h2>Learn More</h2>
+            <p>
+                Want release notes, version history, screenshots, and project updates? The GitHub page is the main source for that information.
+            </p>
+            <div class="cta-row" style="margin-top: 1rem;">
+                <a href="https://github.com/supashbhat/vayu" class="btn btn-primary" target="_blank">Open GitHub</a>
+            </div>
+        </section>
+
+        <div class="footer">
+            Vayu by Supash Bhat
+        </div>
+    </div>
+</body>
+</html>
