@@ -157,6 +157,9 @@
         .hero {
             display: grid;
             grid-template-columns: minmax(0, 1fr) 320px;
+            grid-template-areas:
+                "copy visual"
+                "meta meta";
             gap: 1.4rem;
             align-items: start;
             padding: 1.3rem;
@@ -175,6 +178,7 @@
         }
 
         .hero-copy {
+            grid-area: copy;
             padding: 2rem;
             background:
                 linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%),
@@ -243,8 +247,10 @@
         }
 
         .hero-meta {
+            grid-area: meta;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             align-items: stretch;
+            margin-top: -0.15rem;
         }
 
         .card {
@@ -289,6 +295,7 @@
         }
 
         .hero-visual {
+            grid-area: visual;
             display: grid;
             grid-template-rows: auto;
             gap: 1rem;
@@ -411,6 +418,10 @@
         @media (max-width: 900px) {
             .hero {
                 grid-template-columns: 1fr;
+                grid-template-areas:
+                    "copy"
+                    "visual"
+                    "meta";
             }
         }
 
@@ -473,28 +484,6 @@
                     <a href="#learn-more" class="btn btn-secondary">Learn More</a>
                     <a href="index.html" class="btn btn-secondary">Back To Portfolio</a>
                 </div>
-                <div class="hero-meta">
-                    <div class="card reveal" style="--delay: 60ms;">
-                        <div class="kicker">Signal Flow</div>
-                        <h3>Drag The Rack</h3>
-                        <p>Move modules around to reshape the chain instantly and save entire processing states as rack presets.</p>
-                    </div>
-                    <div class="card reveal" style="--delay: 120ms;">
-                        <div class="kicker">Visual Control</div>
-                        <h3>Fast To Read</h3>
-                        <p>Live EQ curves, analyzer feedback, meters, and focused panels keep the interface clear and musical.</p>
-                    </div>
-                    <div class="card reveal" style="--delay: 180ms;">
-                        <div class="kicker">Release Model</div>
-                        <h3>Install And Use</h3>
-                        <p>Official builds are meant to be downloaded and installed directly without JUCE, CMake, or source setup.</p>
-                    </div>
-                    <div class="card reveal" style="--delay: 240ms;">
-                        <div class="kicker">Formats</div>
-                        <h3>Standalone, AU, VST3</h3>
-                        <p>Vayu is being packaged for direct use across desktop and DAW workflows without a developer setup process.</p>
-                    </div>
-                </div>
             </div>
             <div class="hero-visual">
                 <div class="icon-panel reveal" style="--delay: 120ms;">
@@ -504,6 +493,28 @@
                         <h3>Air, Depth, Movement</h3>
                         <p>Vayu leans into cool glass, flowing modulation, and atmospheric space instead of a flat utilitarian rack.</p>
                     </div>
+                </div>
+            </div>
+            <div class="hero-meta">
+                <div class="card reveal" style="--delay: 60ms;">
+                    <div class="kicker">Signal Flow</div>
+                    <h3>Drag The Rack</h3>
+                    <p>Move modules around to reshape the chain instantly and save entire processing states as rack presets.</p>
+                </div>
+                <div class="card reveal" style="--delay: 120ms;">
+                    <div class="kicker">Visual Control</div>
+                    <h3>Fast To Read</h3>
+                    <p>Live EQ curves, analyzer feedback, meters, and focused panels keep the interface clear and musical.</p>
+                </div>
+                <div class="card reveal" style="--delay: 180ms;">
+                    <div class="kicker">Release Model</div>
+                    <h3>Install And Use</h3>
+                    <p>Official builds are meant to be downloaded and installed directly without JUCE, CMake, or source setup.</p>
+                </div>
+                <div class="card reveal" style="--delay: 240ms;">
+                    <div class="kicker">Formats</div>
+                    <h3>Standalone, AU, VST3</h3>
+                    <p>Vayu is being packaged for direct use across desktop and DAW workflows without a developer setup process.</p>
                 </div>
             </div>
         </section>
