@@ -240,7 +240,8 @@
         .feature-grid,
         .stats-grid,
         .download-grid,
-        .install-grid {
+        .install-grid,
+        .reference-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1rem;
@@ -342,6 +343,25 @@
             color: var(--mint);
         }
 
+        .reference-grid {
+            grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+            align-items: stretch;
+        }
+
+        .reference-shot {
+            border-radius: 1.35rem;
+            overflow: hidden;
+            border: 1px solid rgba(119, 204, 255, 0.18);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+        }
+
+        .reference-shot img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
         .stat {
             display: flex;
             flex-direction: column;
@@ -422,6 +442,10 @@
                     "copy"
                     "visual"
                     "meta";
+            }
+
+            .reference-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -556,32 +580,47 @@
                     <h3>macOS</h3>
                     <p>Standalone app, AU, and VST3 are the first official release targets for Vayu on Mac.</p>
                     <div class="buttons">
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/latest" target="_blank">Release Page</a>
-                        <a class="mini-btn disabled" href="#">Standalone</a>
-                        <a class="mini-btn disabled" href="#">AU</a>
-                        <a class="mini-btn disabled" href="#">VST3</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank">Release Page</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-Standalone.zip">Standalone</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-AU.zip">AU</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-VST3.zip">VST3</a>
                     </div>
                 </div>
                 <div class="card download-card reveal" style="--delay: 90ms;">
                     <h3>Windows</h3>
                     <p>Windows VST3 and standalone downloads will slot in here as soon as the first packaged builds are produced.</p>
                     <div class="buttons">
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/latest" target="_blank">Release Page</a>
-                        <a class="mini-btn disabled" href="#">Standalone</a>
-                        <a class="mini-btn disabled" href="#">VST3</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank">Release Page</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Windows-Standalone.zip">Standalone</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Windows-VST3.zip">VST3</a>
                     </div>
                 </div>
                 <div class="card download-card reveal" style="--delay: 140ms;">
                     <h3>Linux</h3>
                     <p>Linux VST3 and standalone downloads will appear here once the first cross-platform release assets are uploaded.</p>
                     <div class="buttons">
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/latest" target="_blank">Release Page</a>
-                        <a class="mini-btn disabled" href="#">Standalone</a>
-                        <a class="mini-btn disabled" href="#">VST3</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank">Release Page</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Linux-Standalone.tar.gz">Standalone</a>
+                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Linux-VST3.tar.gz">VST3</a>
                     </div>
                 </div>
             </div>
-            <p class="note">The per-platform download buttons can point directly to release assets as soon as the first packaged binaries are published.</p>
+            <p class="note">These links target the public nightly release assets generated from the latest successful build on the main branch.</p>
+        </section>
+
+        <section class="section reveal">
+            <h2>Interface</h2>
+            <div class="reference-grid">
+                <div class="reference-shot reveal" style="--delay: 60ms;">
+                    <img src="assets/Vayu-Demo-photo.png" alt="Vayu interface screenshot">
+                </div>
+                <div class="card reveal" style="--delay: 120ms;">
+                    <div class="kicker">Reference</div>
+                    <h3>Designed For Fast Decisions</h3>
+                    <p>The Vayu interface keeps the EQ curve, rack order, meters, and active module controls close together so sound design changes stay immediate and readable.</p>
+                    <p style="margin-top: 0.85rem;">This view also gives new users a quick sense of what they are downloading before they jump into the release builds.</p>
+                </div>
+            </div>
         </section>
 
         <section class="section reveal">
