@@ -127,12 +127,168 @@
             50% { border-color: rgba(255, 194, 182, 0.16); }
         }
 
+        @keyframes ribbonSweep {
+            0% {
+                transform: translate3d(-6%, 0, 0) rotate(-2deg) scale(1);
+                opacity: 0.12;
+            }
+            50% {
+                transform: translate3d(4%, -2%, 0) rotate(1deg) scale(1.04);
+                opacity: 0.2;
+            }
+            100% {
+                transform: translate3d(-4%, 2%, 0) rotate(-1deg) scale(0.99);
+                opacity: 0.1;
+            }
+        }
+
+        @keyframes introWordReveal {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+                letter-spacing: -0.02em;
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+                letter-spacing: -0.04em;
+            }
+        }
+
+        @keyframes introSweep {
+            0% { transform: translateX(-180%) skewX(-18deg); opacity: 0; }
+            14% { opacity: 1; }
+            100% { transform: translateX(440%) skewX(-18deg); opacity: 0; }
+        }
+
         .shell {
             position: relative;
             z-index: 1;
             width: min(1160px, calc(100% - 1.5rem));
             margin: 0 auto;
             padding: 1rem 0 2.8rem;
+            opacity: 1;
+            filter: blur(0);
+            transition: opacity 0.8s ease, filter 0.8s ease;
+        }
+
+        body.is-loading .shell {
+            opacity: 0;
+            filter: blur(10px);
+            pointer-events: none;
+        }
+
+        .intro-splash {
+            position: fixed;
+            inset: 0;
+            z-index: 25;
+            display: grid;
+            place-items: center;
+            background:
+                radial-gradient(circle at 50% 40%, rgba(255, 111, 127, 0.12), transparent 20%),
+                linear-gradient(155deg, rgba(5, 11, 20, 0.98) 0%, rgba(11, 21, 36, 0.98) 46%, rgba(18, 33, 49, 0.98) 100%);
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        body.page-ready .intro-splash {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 1.5rem;
+        }
+
+        .intro-mark {
+            position: relative;
+            width: 4.8rem;
+            height: 4.8rem;
+            border-radius: 1.4rem;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255, 124, 120, 0.18);
+            background: linear-gradient(135deg, rgba(255, 111, 127, 0.14), rgba(255, 194, 182, 0.08));
+            box-shadow: 0 0 30px rgba(255, 111, 127, 0.16);
+        }
+
+        .intro-mark::before {
+            content: "";
+            position: absolute;
+            inset: -0.38rem;
+            border-radius: 1.7rem;
+            background: radial-gradient(circle, rgba(255, 111, 127, 0.22), transparent 70%);
+            filter: blur(12px);
+            animation: haloPulse 3.8s ease-in-out infinite;
+        }
+
+        .intro-mark span {
+            position: relative;
+            z-index: 1;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #fff1ee;
+        }
+
+        .icosa-shell {
+            position: relative;
+            z-index: 1;
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            touch-action: none;
+        }
+
+        .icosa-shell.dragging {
+            cursor: grabbing;
+        }
+
+        .intro-title {
+            position: relative;
+            font-family: "Space Grotesk", "Manrope", sans-serif;
+            font-size: clamp(2.3rem, 6vw, 4.4rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            color: transparent;
+            background: linear-gradient(135deg, #fff4f1 0%, #ffcfbf 22%, #ff9f95 54%, #ffd8c8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            overflow: hidden;
+            white-space: nowrap;
+            opacity: 0;
+            animation: introWordReveal 1.05s cubic-bezier(.2,.8,.2,1) forwards 0.28s;
+        }
+
+        .intro-title::after {
+            content: "";
+            position: absolute;
+            top: -16%;
+            bottom: -16%;
+            left: -26%;
+            width: 7rem;
+            background: linear-gradient(90deg, transparent, rgba(255, 194, 182, 0.36), rgba(255, 255, 255, 0.9), rgba(255, 111, 127, 0.42), transparent);
+            filter: blur(3px);
+            transform: skewX(-18deg);
+            animation: introSweep 1.45s ease forwards 0.42s;
+        }
+
+        .intro-caption {
+            position: absolute;
+            left: 50%;
+            top: calc(50% + 4.7rem);
+            transform: translateX(-50%);
+            font-size: 0.88rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            opacity: 0.86;
         }
 
         .ambient {
@@ -320,6 +476,7 @@
             display: grid;
             grid-template-columns: minmax(0, 1.08fr) minmax(390px, 0.92fr);
             gap: 1rem;
+            align-items: stretch;
             padding: 1.1rem;
             border-radius: 2rem;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%), var(--panel-strong);
@@ -411,7 +568,7 @@
             max-width: 11.7ch;
             margin-bottom: 1rem;
             font-size: clamp(2.7rem, 5.4vw, 4.75rem);
-            line-height: 1.1;
+            line-height: 1.14;
             color: transparent;
             background: linear-gradient(135deg, #fff4f1 0%, #ffcfbf 22%, #ff9f95 54%, #ffd8c8 100%);
             -webkit-background-clip: text;
@@ -420,7 +577,7 @@
 
         .lede {
             max-width: 42rem;
-            color: #c6d7e4;
+            color: #d7c6c8;
             font-size: 1.03rem;
             line-height: 1.85;
         }
@@ -522,6 +679,7 @@
             grid-template-columns: 1fr;
             gap: 0.9rem;
             align-content: start;
+            min-height: 100%;
         }
 
         .profile-panel,
@@ -593,7 +751,9 @@
         }
 
         .research-panel {
-            min-height: 18.75rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 16.25rem;
         }
 
         .research-panel::before {
@@ -609,34 +769,71 @@
             pointer-events: none;
         }
 
-        .research-split {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.85rem;
-            margin-top: 0.2rem;
+        .research-panel::after {
+            content: "";
+            position: absolute;
+            left: -12%;
+            right: -10%;
+            top: 30%;
+            height: 7.5rem;
+            border-radius: 999px;
+            background:
+                linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(255, 124, 120, 0.04) 16%,
+                    rgba(255, 158, 143, 0.06) 34%,
+                    rgba(255, 194, 182, 0.14) 52%,
+                    rgba(255, 124, 120, 0.05) 70%,
+                    transparent 100%);
+            filter: blur(20px);
+            animation: ribbonSweep 15s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        .research-block {
+        .research-story {
             position: relative;
-            min-height: 100%;
-            padding: 0.95rem;
-            border-radius: 1.15rem;
-            background: rgba(255, 255, 255, 0.02);
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.05rem;
+            margin-top: 0.25rem;
+            border-radius: 1.2rem;
+            background: rgba(255, 255, 255, 0.025);
             border: 1px solid rgba(255, 124, 120, 0.1);
             backdrop-filter: blur(8px);
         }
 
-        .research-block::after {
+        .research-story::after {
             content: "";
             position: absolute;
             top: 0;
             bottom: 0;
-            left: -28%;
-            width: 4.2rem;
+            left: -20%;
+            width: 4.8rem;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
             transform: skewX(-18deg);
             animation: cardSheen 15s linear infinite;
             pointer-events: none;
+        }
+
+        .research-story p {
+            max-width: 48rem;
+            line-height: 1.82;
+        }
+
+        .research-note {
+            margin-top: 0.9rem;
+            color: var(--text-faint);
+            font-size: 0.94rem;
+            line-height: 1.72;
+        }
+
+        .story-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 1rem;
         }
 
         .section {
@@ -924,7 +1121,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .research-split,
             .research-spotlight-grid {
                 grid-template-columns: 1fr;
             }
@@ -940,7 +1136,14 @@
         }
     </style>
 </head>
-<body>
+<body class="is-loading">
+        <div class="intro-splash" aria-hidden="true">
+        <div class="intro-wrap">
+            <div class="intro-mark"><canvas class="icosa-shell" data-shell-size="76" aria-hidden="true"></canvas></div>
+            <div class="intro-title">Supash Bhat</div>
+        </div>
+        <div class="intro-caption">Physics, astrophysics, and music</div>
+    </div>
     <div class="scroll-meter" aria-hidden="true"><span id="scroll-meter-fill"></span></div>
     <div class="ambient" aria-hidden="true">
         <span class="orb orb-a"></span>
@@ -950,7 +1153,7 @@
     <div class="shell">
         <header class="nav reveal">
             <a class="brand" href="#top" aria-label="Supash Bhat home">
-                <span class="brand-mark"><span>SB</span></span>
+                <span class="brand-mark"><canvas class="icosa-shell" data-shell-size="43" aria-hidden="true"></canvas></span>
                 <span class="brand-copy">
                     <strong>Supash Bhat</strong>
                     <span>Physics, astrophysics, music, and simulation</span>
@@ -1020,19 +1223,16 @@
 
                 <div class="research-panel reveal" style="--delay: 170ms;">
                     <div class="kicker">Research And Current Work</div>
-                    <div class="research-split">
-                        <div class="research-block">
-                            <div class="kicker">Current Focus</div>
-                            <h3>DSP tools, CNMAT, and ML-linked audio work</h3>
-                            <p>I am especially interested in building more audio software while continuing research directions around machine learning, timbre, perception, and CNMAT-adjacent work.</p>
+                    <div class="research-story">
+                        <div>
+                            <h3>Right now, I mostly want to keep building things that feel alive.</h3>
+                            <p>I want to keep building fascinating audio plugins, do deeper DSP work through my work at CNMAT, and stay close to the kinds of questions that sit between timbre, perception, interface feel, and real musical use. At the same time, I want to keep growing in physics and astrophysics research in ways that stay experimental, hands-on, and genuinely connected to the world.</p>
+                            <p>The through-line is probably just that I care about tools and ideas that feel both rigorous and alive. Berkeley ULAB work on asteroid 2025 FD reinforced that for me, and so has music technology: strong systems matter, but careful listening, interpretation, and human judgment matter just as much.</p>
+                            <p class="research-note">A lot of what I want to do next lives in the overlap between research, creative software, and explanation. If you are building in that space too, or you just want to talk shop, I would genuinely love to hear from you.</p>
                         </div>
-                        <div class="research-block">
-                            <div class="kicker">Research Highlight</div>
-                            <h3>Finding what the pipeline missed</h3>
-                            <p>Berkeley ULAB work led to the discovery of asteroid 2025 FD through a workflow that combined machine-learning filters, geometric reasoning, and careful human review.</p>
-                            <div class="project-links" style="margin-top: 0.9rem;">
-                                <a class="project-link secondary" href="https://n3as.berkeley.edu/p/z-streak-analysis-discovery-neo/" target="_blank" rel="noopener noreferrer">Read The N3AS Article</a>
-                            </div>
+                        <div class="story-links">
+                            <a class="project-link primary" href="mailto:supash_bhat@berkeley.edu">Reach Out</a>
+                            <a class="project-link secondary" href="https://n3as.berkeley.edu/p/z-streak-analysis-discovery-neo/" target="_blank" rel="noopener noreferrer">Read The N3AS Article</a>
                         </div>
                     </div>
                 </div>
@@ -1087,10 +1287,10 @@
                         </div>
                         <span class="chip accent-amber">Simulation</span>
                     </div>
-                    <p>A computational physics project exploring numerical integration, collision handling, multi-body behavior, and the translation from theory to interactive visualization. It moves from a pure engine into browser and Python demos people can actually play with.</p>
+                    <p>A computational physics project exploring numerical integration, collision handling, multi-body behavior, and the translation from theory to interactive visualization. It now spans a C++ core, a polished Python sandbox, and browser demos people can actually play with.</p>
                     <ul class="list">
                         <li>Euler and RK4-based motion integration with collision handling</li>
-                        <li>Interactive visualization paths in Python and on the web</li>
+                        <li>Preset-driven sandbox with live controls, energy feedback, and pause/step inspection</li>
                         <li>Roadmapped toward larger-scale and GPU-accelerated ideas</li>
                     </ul>
                     <div class="project-links">
@@ -1192,18 +1392,7 @@
                     </div>
                 </article>
 
-                <article class="meta-panel research-card reveal" style="--delay: 90ms;">
-                    <div class="kicker">Asteroid Discovery</div>
-                    <h3>Beating the default screen with sharper cues</h3>
-                    <p>The 2025 FD result came from combining automated filtering with visual heuristics that the standard system was not yet accounting for, pushing the pipeline past its own blind spots.</p>
-                    <ul class="list">
-                        <li>Deep-learning and ML filters to reduce a huge nightly streak set</li>
-                        <li>Geometric reasoning and visual review to identify promising candidates</li>
-                        <li>First Place at the ULAB Physics Research Fair</li>
-                    </ul>
-                </article>
-
-                <article class="meta-panel research-card reveal" style="--delay: 150ms;">
+                <article class="meta-panel research-spotlight reveal" style="--delay: 150ms;">
                     <div class="kicker">Teaching And Music</div>
                     <h3>Explaining hard things and staying musical</h3>
                     <p>Teaching, course leadership, performance, and mentorship shape how I build. I care about technical work that remains legible to other people instead of disappearing behind complexity.</p>
@@ -1276,6 +1465,32 @@
 
         document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
 
+        const enablePage = () => {
+            document.body.classList.add("page-ready");
+            document.body.classList.remove("is-loading");
+        };
+
+        const introSeenKey = "supash-home-intro-seen";
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || sessionStorage.getItem(introSeenKey) === "1") {
+            enablePage();
+        } else {
+            window.addEventListener("load", async () => {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (error) {
+                        console.warn("Font readiness check failed", error);
+                    }
+                }
+
+                window.setTimeout(() => {
+                    sessionStorage.setItem(introSeenKey, "1");
+                    enablePage();
+                }, 2250);
+            }, { once: true });
+        }
+
         const scrollFill = document.getElementById("scroll-meter-fill");
         const updateScrollMeter = () => {
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
@@ -1286,6 +1501,201 @@
         updateScrollMeter();
         window.addEventListener("scroll", updateScrollMeter, { passive: true });
         window.addEventListener("resize", updateScrollMeter);
+
+        const ICOSA_VERTICES = (() => {
+            const phi = (1 + Math.sqrt(5)) / 2;
+            const raw = [
+                [-1, phi, 0], [1, phi, 0], [-1, -phi, 0], [1, -phi, 0],
+                [0, -1, phi], [0, 1, phi], [0, -1, -phi], [0, 1, -phi],
+                [phi, 0, -1], [phi, 0, 1], [-phi, 0, -1], [-phi, 0, 1],
+            ];
+            return raw.map(([x, y, z]) => {
+                const mag = Math.hypot(x, y, z);
+                return { x: x / mag, y: y / mag, z: z / mag };
+            });
+        })();
+
+        const ICOSA_EDGES = (() => {
+            const edges = [];
+            for (let i = 0; i < ICOSA_VERTICES.length; i += 1) {
+                for (let j = i + 1; j < ICOSA_VERTICES.length; j += 1) {
+                    const a = ICOSA_VERTICES[i];
+                    const b = ICOSA_VERTICES[j];
+                    const dist = Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
+                    if (dist < 1.12) {
+                        edges.push([i, j]);
+                    }
+                }
+            }
+            return edges;
+        })();
+
+        const rotateVertex = (vertex, rx, ry, rz) => {
+            let { x, y, z } = vertex;
+
+            const cosX = Math.cos(rx);
+            const sinX = Math.sin(rx);
+            const y1 = y * cosX - z * sinX;
+            const z1 = y * sinX + z * cosX;
+            y = y1;
+            z = z1;
+
+            const cosY = Math.cos(ry);
+            const sinY = Math.sin(ry);
+            const x2 = x * cosY + z * sinY;
+            const z2 = -x * sinY + z * cosY;
+            x = x2;
+            z = z2;
+
+            const cosZ = Math.cos(rz);
+            const sinZ = Math.sin(rz);
+            const x3 = x * cosZ - y * sinZ;
+            const y3 = x * sinZ + y * cosZ;
+
+            return { x: x3, y: y3, z };
+        };
+
+        const setupIcosaShell = (canvas) => {
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+
+            let width = 0;
+            let height = 0;
+            let rotationX = 0.8;
+            let rotationY = 0.55;
+            let rotationZ = 0.12;
+            let velocityX = 0.022;
+            let velocityY = 0.048;
+            let velocityZ = 0.014;
+            let dragging = false;
+            let lastPointerX = 0;
+            let lastPointerY = 0;
+            let lastPointerTime = 0;
+
+            const resize = () => {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                width = rect.width;
+                height = rect.height;
+                canvas.width = Math.max(1, Math.round(rect.width * dpr));
+                canvas.height = Math.max(1, Math.round(rect.height * dpr));
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+
+            const draw = () => {
+                ctx.clearRect(0, 0, width, height);
+                const size = Math.min(width, height);
+                const radius = size * 0.26;
+                const distance = 2.8;
+                const projected = ICOSA_VERTICES.map((vertex) => {
+                    const rotated = rotateVertex(vertex, rotationX, rotationY, rotationZ);
+                    const scale = radius / (rotated.z + distance);
+                    return {
+                        x: width * 0.5 + rotated.x * scale,
+                        y: height * 0.5 + rotated.y * scale,
+                        z: rotated.z,
+                        scale,
+                    };
+                });
+
+                ICOSA_EDGES.forEach(([aIndex, bIndex]) => {
+                    const a = projected[aIndex];
+                    const b = projected[bIndex];
+                    const depth = (a.z + b.z) * 0.5;
+                    const alpha = 0.2 + (depth + 1) * 0.25;
+                    ctx.strokeStyle = `rgba(255, 214, 198, ${Math.max(0.12, Math.min(0.6, alpha))})`;
+                    ctx.lineWidth = depth > 0 ? 1.6 : 1.05;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                });
+
+                projected
+                    .slice()
+                    .sort((a, b) => a.z - b.z)
+                    .forEach((point) => {
+                        const r = point.z > 0 ? 2.4 : 1.8;
+                        ctx.fillStyle = point.z > 0
+                            ? "rgba(255, 234, 226, 0.95)"
+                            : "rgba(255, 170, 160, 0.58)";
+                        ctx.beginPath();
+                        ctx.arc(point.x, point.y, r, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+            };
+
+            const animate = () => {
+                if (!dragging) {
+                    velocityX *= 0.992;
+                    velocityY *= 0.992;
+                    velocityZ *= 0.992;
+                }
+
+                rotationX += velocityX;
+                rotationY += velocityY;
+                rotationZ += velocityZ;
+                draw();
+                window.requestAnimationFrame(animate);
+            };
+
+            const onPointerDown = (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                dragging = true;
+                canvas.classList.add("dragging");
+                lastPointerX = event.clientX;
+                lastPointerY = event.clientY;
+                lastPointerTime = performance.now();
+                canvas.setPointerCapture(event.pointerId);
+            };
+
+            const onPointerMove = (event) => {
+                if (!dragging) return;
+                event.preventDefault();
+                event.stopPropagation();
+                const now = performance.now();
+                const dx = event.clientX - lastPointerX;
+                const dy = event.clientY - lastPointerY;
+                const dt = Math.max(16, now - lastPointerTime);
+                rotationY += dx * 0.012;
+                rotationX += dy * 0.012;
+                velocityY = (dx / dt) * 0.34;
+                velocityX = (dy / dt) * 0.34;
+                velocityZ = ((dx - dy) / dt) * 0.07;
+                lastPointerX = event.clientX;
+                lastPointerY = event.clientY;
+                lastPointerTime = now;
+            };
+
+            const stopDrag = (event) => {
+                if (!dragging) return;
+                event.preventDefault();
+                event.stopPropagation();
+                dragging = false;
+                canvas.classList.remove("dragging");
+                if (event && canvas.hasPointerCapture(event.pointerId)) {
+                    canvas.releasePointerCapture(event.pointerId);
+                }
+            };
+
+            resize();
+            draw();
+            animate();
+
+            canvas.addEventListener("pointerdown", onPointerDown);
+            canvas.addEventListener("pointermove", onPointerMove);
+            canvas.addEventListener("pointerup", stopDrag);
+            canvas.addEventListener("pointerleave", stopDrag);
+            canvas.addEventListener("pointercancel", stopDrag);
+            canvas.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+            window.addEventListener("resize", resize);
+        };
+
+        document.querySelectorAll(".icosa-shell").forEach(setupIcosaShell);
     </script>
 </body>
 </html>
