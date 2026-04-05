@@ -5,89 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vayu | Supash Bhat</title>
     <link rel="icon" type="image/png" href="assets/Vayu-Icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #041217;
-            --bg-mid: #0a2430;
-            --bg-soft: #123746;
-            --mint: #78ffd8;
-            --cyan: #77ccff;
-            --foam: #e9fffb;
-            --glass: rgba(10, 28, 34, 0.7);
-            --glass-strong: rgba(7, 21, 26, 0.82);
-            --line: rgba(136, 255, 226, 0.16);
-            --text: #eafffb;
-            --text-soft: #b4d8d3;
+            --bg-0: #041115;
+            --bg-1: #071b23;
+            --bg-2: #0d2933;
+            --bg-3: #123746;
+            --mint: #84ffd8;
+            --mint-strong: #68f7d0;
+            --aqua: #82d8ff;
+            --foam: #edfffb;
+            --text: #d9f2ee;
+            --text-soft: #9fc6c0;
+            --text-faint: #75a29d;
+            --line: rgba(132, 255, 216, 0.12);
+            --line-strong: rgba(132, 255, 216, 0.2);
+            --glass: rgba(7, 21, 27, 0.72);
+            --glass-strong: rgba(5, 16, 22, 0.86);
+            --panel: rgba(10, 28, 34, 0.72);
             --shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+            --radius-xl: 2rem;
+            --radius-lg: 1.35rem;
+            --radius-md: 1rem;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
+            font-family: "Manrope", system-ui, sans-serif;
             color: var(--text);
-            line-height: 1.6;
             background:
-                radial-gradient(circle at 10% 8%, rgba(120, 255, 216, 0.18), transparent 24%),
-                radial-gradient(circle at 85% 12%, rgba(119, 204, 255, 0.18), transparent 26%),
-                radial-gradient(circle at 55% 70%, rgba(120, 255, 216, 0.10), transparent 28%),
-                linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-mid) 48%, #0a1d28 100%);
+                radial-gradient(circle at 12% 10%, rgba(132, 255, 216, 0.18), transparent 22%),
+                radial-gradient(circle at 88% 14%, rgba(130, 216, 255, 0.16), transparent 24%),
+                radial-gradient(circle at 52% 72%, rgba(132, 255, 216, 0.08), transparent 30%),
+                linear-gradient(135deg, var(--bg-0) 0%, var(--bg-1) 42%, var(--bg-2) 100%);
             overflow-x: hidden;
-            --scroll-shift: 0px;
         }
 
         body::before,
         body::after {
             content: "";
             position: fixed;
-            inset: auto;
-            border-radius: 999px;
+            inset: 0;
             pointer-events: none;
-            filter: blur(18px);
-            opacity: 0.55;
             z-index: 0;
         }
 
         body::before {
-            width: 24rem;
-            height: 24rem;
-            top: 4rem;
-            right: -7rem;
-            background: radial-gradient(circle, rgba(120, 255, 216, 0.16), transparent 70%);
-            animation: driftA 15s ease-in-out infinite;
+            background:
+                linear-gradient(115deg,
+                    transparent 0%,
+                    rgba(132, 255, 216, 0.03) 18%,
+                    transparent 33%,
+                    rgba(130, 216, 255, 0.04) 52%,
+                    transparent 65%,
+                    rgba(132, 255, 216, 0.03) 82%,
+                    transparent 100%);
+            background-size: 220% 220%;
+            animation: auroraFlow 18s linear infinite;
         }
 
         body::after {
-            width: 20rem;
-            height: 20rem;
-            left: -5rem;
-            bottom: 10rem;
-            background: radial-gradient(circle, rgba(119, 204, 255, 0.14), transparent 72%);
-            animation: driftB 18s ease-in-out infinite;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 32px, 32px 100%;
+            mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.32), transparent 82%);
+            opacity: 0.25;
         }
 
-        @keyframes driftA {
-            0%, 100% { transform: translate3d(0, 0, 0); }
-            50% { transform: translate3d(-18px, 20px, 0); }
+        @keyframes auroraFlow {
+            0% { transform: translate3d(-6%, 0, 0); background-position: 0% 50%; }
+            50% { transform: translate3d(6%, -1%, 0); background-position: 100% 50%; }
+            100% { transform: translate3d(-6%, 0, 0); background-position: 0% 50%; }
         }
 
-        @keyframes driftB {
-            0%, 100% { transform: translate3d(0, 0, 0); }
-            50% { transform: translate3d(14px, -22px, 0); }
+        @keyframes glowDrift {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(10px, -12px, 0) scale(1.06); }
         }
 
-        @keyframes floatIcon {
-            0%, 100% { transform: translateY(0px) rotate(-5deg); }
-            50% { transform: translateY(-10px) rotate(-2deg); }
+        @keyframes floatPreview {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
         }
 
-        .container {
+        @keyframes pulseHalo {
+            0%, 100% { opacity: 0.5; transform: scale(0.96); }
+            50% { opacity: 0.85; transform: scale(1.05); }
+        }
+
+        .page-shell {
             position: relative;
             z-index: 1;
-            width: min(1180px, calc(100% - 2rem));
+            width: min(1200px, calc(100% - 1.5rem));
             margin: 0 auto;
             padding: 1.25rem 0 3rem;
         }
@@ -97,336 +114,485 @@
             justify-content: space-between;
             align-items: center;
             gap: 1rem;
-            padding: 0.8rem 1rem;
+            padding: 0.85rem 1rem;
             margin-bottom: 1rem;
-            border: 1px solid rgba(122, 255, 220, 0.10);
             border-radius: 999px;
-            background: rgba(6, 19, 25, 0.58);
-            backdrop-filter: blur(14px);
+            background: rgba(5, 17, 23, 0.62);
+            border: 1px solid rgba(132, 255, 216, 0.1);
+            backdrop-filter: blur(18px);
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
+            gap: 0.85rem;
             color: var(--foam);
+            text-decoration: none;
         }
 
         .brand img {
-            width: 2.4rem;
-            height: 2.4rem;
-            border-radius: 0.8rem;
-            box-shadow: 0 0 24px rgba(120, 255, 216, 0.18);
+            width: 2.7rem;
+            height: 2.7rem;
+            border-radius: 0.9rem;
+            box-shadow: 0 0 26px rgba(132, 255, 216, 0.2);
+        }
+
+        .brand strong {
+            font-family: "Space Grotesk", "Manrope", sans-serif;
+            font-size: 1rem;
+            letter-spacing: -0.02em;
         }
 
         .brand span {
-            font-size: 0.92rem;
+            display: block;
+            font-size: 0.87rem;
             color: var(--text-soft);
         }
 
         .nav-links {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 0.45rem;
         }
 
         .nav-links a,
-        .btn {
+        .btn,
+        .pill-link {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.45rem;
-            padding: 0.85rem 1.25rem;
-            border-radius: 999px;
+            gap: 0.55rem;
             text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+            font-weight: 700;
+            transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease;
         }
 
         .nav-links a {
+            padding: 0.8rem 1rem;
+            border-radius: 999px;
             color: var(--text-soft);
-            border: 1px solid transparent;
         }
 
         .nav-links a:hover,
-        .btn:hover {
+        .btn:hover,
+        .pill-link:hover {
             transform: translateY(-2px);
         }
 
         .hero {
+            position: relative;
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 320px;
-            grid-template-areas:
-                "copy visual"
-                "meta meta";
-            gap: 1.4rem;
-            align-items: start;
+            grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+            gap: 1.2rem;
             padding: 1.3rem;
-            border-radius: 2rem;
-            background: linear-gradient(180deg, rgba(7, 23, 29, 0.84), rgba(5, 18, 24, 0.72));
-            border: 1px solid rgba(120, 255, 216, 0.14);
+            border-radius: var(--radius-xl);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%),
+                linear-gradient(150deg, rgba(8, 24, 30, 0.92) 0%, rgba(6, 18, 24, 0.82) 100%);
+            border: 1px solid rgba(132, 255, 216, 0.12);
             box-shadow: var(--shadow);
             overflow: hidden;
         }
 
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(18px);
+            z-index: 0;
+        }
+
+        .hero::before {
+            width: 28rem;
+            height: 28rem;
+            top: -9rem;
+            right: -7rem;
+            background: radial-gradient(circle, rgba(132, 255, 216, 0.14), transparent 70%);
+            animation: glowDrift 12s ease-in-out infinite;
+        }
+
+        .hero::after {
+            width: 24rem;
+            height: 24rem;
+            left: -8rem;
+            bottom: -10rem;
+            background: radial-gradient(circle, rgba(130, 216, 255, 0.14), transparent 72%);
+            animation: glowDrift 14s ease-in-out infinite reverse;
+        }
+
         .hero-copy,
-        .hero-visual {
+        .hero-preview,
+        .glass-card,
+        .download-card,
+        .install-card,
+        .feature-card {
             position: relative;
-            border-radius: 1.5rem;
-            min-width: 0;
+            z-index: 1;
         }
 
         .hero-copy {
-            grid-area: copy;
-            padding: 2rem;
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%),
-                rgba(5, 18, 24, 0.55);
-            border: 1px solid rgba(120, 255, 216, 0.10);
+            padding: 1.9rem;
+            border-radius: 1.6rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%), rgba(7, 21, 27, 0.54);
+            border: 1px solid rgba(132, 255, 216, 0.1);
         }
 
-        .eyebrow {
+        .eyebrow,
+        .section-kicker {
             display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             padding: 0.45rem 0.75rem;
+            margin-bottom: 1rem;
             border-radius: 999px;
-            background: rgba(120, 255, 216, 0.08);
-            border: 1px solid rgba(120, 255, 216, 0.16);
+            background: rgba(132, 255, 216, 0.08);
+            border: 1px solid rgba(132, 255, 216, 0.14);
             text-transform: uppercase;
-            letter-spacing: 0.22em;
+            letter-spacing: 0.18em;
             font-size: 0.72rem;
             color: var(--mint);
-            margin-bottom: 1rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: "Space Grotesk", "Manrope", sans-serif;
+            letter-spacing: -0.035em;
         }
 
         h1 {
-            font-size: clamp(3rem, 7vw, 6rem);
+            max-width: 10ch;
+            font-size: clamp(3.35rem, 8vw, 6.7rem);
             line-height: 0.92;
-            letter-spacing: -0.04em;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #f3fffc 0%, #9effea 45%, #8fcbff 100%);
+            color: transparent;
+            background: linear-gradient(135deg, #effffc 0%, #9effea 50%, #8acfff 100%);
             -webkit-background-clip: text;
             background-clip: text;
-            color: transparent;
         }
 
         .subhead {
             max-width: 44rem;
             font-size: 1.05rem;
-            color: #cdece8;
-            margin-bottom: 1.3rem;
+            color: #caebe7;
+            margin-bottom: 1.35rem;
         }
 
-        .cta-row {
+        .hero-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.85rem;
+            margin-top: 1.35rem;
+        }
+
+        .glass-card,
+        .feature-card,
+        .download-card,
+        .install-card {
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%),
+                rgba(10, 28, 34, 0.62);
+            border: 1px solid rgba(132, 255, 216, 0.09);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            overflow: hidden;
+        }
+
+        .glass-card::before,
+        .feature-card::before,
+        .download-card::before,
+        .install-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(132, 255, 216, 0.05), transparent 40%, rgba(130, 216, 255, 0.05));
+            pointer-events: none;
+        }
+
+        .glass-card p,
+        .feature-card p,
+        .download-card p,
+        .install-card p,
+        .note,
+        .hero-copy p,
+        .preview-copy p {
+            color: var(--text-soft);
+        }
+
+        .hero-preview {
+            display: grid;
+            gap: 1rem;
+            align-content: start;
+        }
+
+        .preview-icon {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 1.45rem;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 100%), rgba(6, 20, 27, 0.72);
+            border: 1px solid rgba(132, 255, 216, 0.1);
+        }
+
+        .preview-icon-frame {
+            position: relative;
+            width: 5.4rem;
+            height: 5.4rem;
+            border-radius: 1.5rem;
+            display: grid;
+            place-items: center;
+            background: rgba(0, 0, 0, 0.18);
+        }
+
+        .preview-icon-frame::before {
+            content: "";
+            position: absolute;
+            inset: -0.35rem;
+            border-radius: 1.75rem;
+            background: radial-gradient(circle, rgba(132, 255, 216, 0.22), transparent 65%);
+            animation: pulseHalo 4.5s ease-in-out infinite;
+        }
+
+        .preview-icon-frame img {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1.4rem;
+            box-shadow: 0 18px 40px rgba(95, 219, 199, 0.2);
+        }
+
+        .preview-shot {
+            padding: 0.85rem;
+            border-radius: 1.6rem;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(132, 255, 216, 0.08), transparent 45%),
+                rgba(6, 18, 24, 0.76);
+            border: 1px solid rgba(132, 255, 216, 0.1);
+            animation: floatPreview 7s ease-in-out infinite;
+        }
+
+        .preview-shot img {
+            display: block;
+            width: 100%;
+            border-radius: 1rem;
+            border: 1px solid rgba(132, 255, 216, 0.14);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+        }
+
+        .cta-row,
+        .link-row,
+        .download-actions,
+        .download-secondary {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.85rem;
-            margin-bottom: 1.4rem;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.92rem 1.25rem;
+            border-radius: 999px;
         }
 
         .btn-primary {
             color: #032026;
-            background: linear-gradient(135deg, #7cffdf 0%, #70caff 100%);
-            box-shadow: 0 12px 28px rgba(111, 233, 255, 0.18);
+            background: linear-gradient(135deg, var(--mint) 0%, var(--aqua) 100%);
+            box-shadow: 0 14px 30px rgba(110, 232, 243, 0.18);
         }
 
         .btn-secondary {
             color: var(--foam);
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(120, 255, 216, 0.16);
-        }
-
-        .hero-meta,
-        .feature-grid,
-        .stats-grid,
-        .download-grid,
-        .install-grid,
-        .reference-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-        }
-
-        .hero-meta {
-            grid-area: meta;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            align-items: stretch;
-            margin-top: -0.15rem;
-        }
-
-        .card {
-            position: relative;
-            padding: 1.1rem;
-            border-radius: 1.2rem;
-            background: rgba(255, 255, 255, 0.035);
-            border: 1px solid rgba(120, 255, 216, 0.09);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(120, 255, 216, 0.04), transparent 45%, rgba(119, 204, 255, 0.05));
-            pointer-events: none;
-        }
-
-        .card h3 {
-            position: relative;
-            margin-bottom: 0.55rem;
-            color: var(--foam);
-        }
-
-        .card p,
-        .section p,
-        .section li {
-            position: relative;
-            color: var(--text-soft);
-        }
-
-        .kicker {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 0.45rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-size: 0.72rem;
-            color: var(--cyan);
-        }
-
-        .hero-visual {
-            grid-area: visual;
-            display: grid;
-            grid-template-rows: auto;
-            gap: 1rem;
-            padding: 1rem;
-            background:
-                radial-gradient(circle at 50% 12%, rgba(120, 255, 216, 0.13), transparent 26%),
-                rgba(8, 24, 30, 0.66);
-            border: 1px solid rgba(120, 255, 216, 0.10);
-            align-self: start;
-        }
-
-        .icon-panel {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            border-radius: 1.25rem;
-            background: rgba(255, 255, 255, 0.035);
-            border: 1px solid rgba(120, 255, 216, 0.10);
-            min-height: 0;
-        }
-
-        .icon-panel img {
-            width: 5rem;
-            height: 5rem;
-            border-radius: 1.4rem;
-            animation: floatIcon 5s ease-in-out infinite;
-            box-shadow: 0 18px 34px rgba(113, 236, 214, 0.18);
+            border: 1px solid rgba(132, 255, 216, 0.14);
         }
 
         .section {
-            margin-top: 1.25rem;
-            padding: 1.5rem;
-            border-radius: 1.65rem;
+            margin-top: 1.15rem;
+            padding: 1.45rem;
+            border-radius: var(--radius-xl);
             background: var(--glass);
             border: 1px solid var(--line);
             backdrop-filter: blur(16px);
             box-shadow: var(--shadow);
         }
 
-        .section h2 {
-            margin-bottom: 1rem;
-            font-size: 1.55rem;
-            color: var(--mint);
-        }
-
-        .reference-grid {
-            grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
-            align-items: stretch;
-        }
-
-        .reference-shot {
-            border-radius: 1.35rem;
-            overflow: hidden;
-            border: 1px solid rgba(119, 204, 255, 0.18);
-            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
-        }
-
-        .reference-shot img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: cover;
-        }
-
-        .stat {
+        .section-header {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 8rem;
+            align-items: end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
 
-        .stat strong {
-            font-size: 2rem;
-            line-height: 1;
-            margin-bottom: 0.45rem;
+        .section-header p {
+            max-width: 38rem;
+            color: var(--text-soft);
+        }
+
+        .download-grid,
+        .feature-grid,
+        .install-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .download-card {
+            padding: 1.15rem;
+        }
+
+        .download-card.primary {
+            border-color: rgba(132, 255, 216, 0.22);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.03),
+                0 18px 36px rgba(68, 163, 158, 0.14);
+        }
+
+        .os-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .os-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .os-icon {
+            width: 2.8rem;
+            height: 2.8rem;
+            border-radius: 0.9rem;
+            display: grid;
+            place-items: center;
+            color: var(--mint);
+            background: linear-gradient(180deg, rgba(132, 255, 216, 0.12), rgba(130, 216, 255, 0.08));
+            border: 1px solid rgba(132, 255, 216, 0.16);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .os-icon svg {
+            width: 1.2rem;
+            height: 1.2rem;
+            fill: currentColor;
+        }
+
+        .os-chip {
+            padding: 0.35rem 0.65rem;
+            border-radius: 999px;
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--mint);
+            background: rgba(132, 255, 216, 0.08);
+            border: 1px solid rgba(132, 255, 216, 0.12);
+        }
+
+        .download-card h3,
+        .feature-card h3,
+        .install-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
             color: var(--foam);
         }
 
-        .download-card .buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
+        .download-main {
             margin-top: 1rem;
         }
 
-        .mini-btn {
-            display: inline-flex;
-            padding: 0.75rem 0.95rem;
-            border-radius: 0.9rem;
+        .pill-link {
+            padding: 0.95rem 1rem;
+            border-radius: 1rem;
+            font-weight: 800;
+        }
+
+        .pill-link.primary {
+            color: #021f25;
+            background: linear-gradient(135deg, var(--mint) 0%, var(--aqua) 100%);
+            box-shadow: 0 14px 28px rgba(103, 228, 228, 0.17);
+        }
+
+        .pill-link.secondary {
+            color: var(--foam);
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(132, 255, 216, 0.12);
+        }
+
+        .asset-list {
+            display: grid;
+            gap: 0.6rem;
+            margin-top: 0.95rem;
+            padding-top: 0.9rem;
+            border-top: 1px solid rgba(132, 255, 216, 0.08);
+        }
+
+        .asset-list a {
+            color: var(--text-soft);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
+        }
+
+        .asset-list a:hover {
+            color: var(--foam);
+        }
+
+        .feature-grid .feature-card,
+        .install-grid .install-card {
+            min-height: 100%;
+        }
+
+        .feature-card ul,
+        .install-card ul {
+            list-style: none;
+            display: grid;
+            gap: 0.45rem;
+            margin-top: 0.85rem;
+            color: var(--text-soft);
+        }
+
+        .feature-card li::before,
+        .install-card li::before {
+            content: "•";
             color: var(--mint);
-            background: rgba(120, 255, 216, 0.09);
-            border: 1px solid rgba(120, 255, 216, 0.16);
-            transition: transform 0.25s ease, background 0.25s ease;
+            margin-right: 0.55rem;
         }
 
-        .mini-btn:hover {
-            transform: translateY(-2px);
-            background: rgba(120, 255, 216, 0.14);
+        .info-split {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+            gap: 1rem;
+            align-items: stretch;
         }
 
-        .mini-btn.disabled {
-            opacity: 0.48;
-            pointer-events: none;
-        }
-
-        code {
-            background: rgba(0, 0, 0, 0.24);
-            padding: 0.12rem 0.36rem;
-            border-radius: 0.35rem;
+        .reference-card img {
+            display: block;
+            width: 100%;
+            border-radius: 1rem;
+            border: 1px solid rgba(132, 255, 216, 0.15);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.24);
         }
 
         .note {
             margin-top: 1rem;
-            font-size: 0.94rem;
-            color: #98c7c1;
+            font-size: 0.95rem;
         }
 
         .footer {
-            padding: 1.4rem 0 0.8rem;
+            padding: 1.5rem 0 0.8rem;
             text-align: center;
-            color: #81a8a3;
+            color: var(--text-faint);
         }
 
         .reveal {
             opacity: 0;
-            transform: translateY(26px) scale(0.985);
-            transition: opacity 0.7s ease, transform 0.7s ease;
+            transform: translateY(28px) scale(0.985);
+            transition: opacity 0.75s ease, transform 0.75s ease;
             transition-delay: var(--delay, 0ms);
         }
 
@@ -435,224 +601,314 @@
             transform: translateY(0) scale(1);
         }
 
-        @media (max-width: 900px) {
-            .hero {
+        @media (max-width: 1080px) {
+            .hero,
+            .info-split {
                 grid-template-columns: 1fr;
-                grid-template-areas:
-                    "copy"
-                    "visual"
-                    "meta";
             }
 
-            .reference-grid {
+            .download-grid,
+            .feature-grid,
+            .install-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        @media (max-width: 700px) {
-            .container {
-                width: min(100% - 1rem, 1180px);
+        @media (max-width: 760px) {
+            .page-shell {
+                width: min(100% - 1rem, 1200px);
             }
 
             .top-nav {
-                border-radius: 1.25rem;
-                padding: 0.9rem;
-                align-items: flex-start;
                 flex-direction: column;
+                align-items: flex-start;
+                border-radius: 1.3rem;
             }
 
-            .hero-copy,
-            .hero-visual,
+            .hero,
             .section {
-                padding: 1.15rem;
+                padding: 1rem;
             }
 
-            h1 {
-                font-size: clamp(2.5rem, 13vw, 4.2rem);
+            .hero-copy {
+                padding: 1.25rem;
             }
 
-            .hero-meta {
+            .hero-highlights {
                 grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="top-nav reveal">
+    <div class="page-shell">
+        <header class="top-nav reveal">
             <a class="brand" href="index.html">
                 <img src="assets/Vayu-Icon.png" alt="Vayu icon">
                 <div>
-                    <strong>Vayu</strong><br>
-                    <span>Aerodynamic EQ rack for motion, colour, and atmosphere</span>
+                    <strong>Vayu</strong>
+                    <span>Aerodynamic effect rack for motion, colour, and atmosphere</span>
                 </div>
             </a>
-            <div class="nav-links">
-                <a href="#features">Features</a>
+            <nav class="nav-links">
                 <a href="#downloads">Downloads</a>
-                <a href="#learn-more">Learn More</a>
-            </div>
-        </div>
+                <a href="#features">Features</a>
+                <a href="#install">Install</a>
+                <a href="#learn-more">GitHub</a>
+            </nav>
+        </header>
 
         <section class="hero reveal">
             <div class="hero-copy">
-                <div class="eyebrow">Modular Multi-Effect Rack</div>
+                <div class="eyebrow">Modular Multi-Effect Plugin</div>
                 <h1>Shape Motion Into Sound</h1>
                 <p class="subhead">
-                    Vayu is a sleek effect rack for sound design and mixing. It blends five-band EQ, modulation, delay, reverb,
-                    stereo shaping, distortion, and compression into one visual workflow with drag-to-reorder processing and
-                    standalone playback.
+                    Vayu is a plugin-first rack for sound design and mixing. It combines a five-band EQ with drag-to-reorder
+                    distortion, chorus, flanger, phaser, delay, stereo, reverb, and compressor modules in one polished DAW workflow.
                 </p>
                 <div class="cta-row">
-                    <a href="#downloads" class="btn btn-primary">Download Vayu</a>
-                    <a href="#learn-more" class="btn btn-secondary">Learn More</a>
+                    <a href="#downloads" class="btn btn-primary">Download Nightly Builds</a>
+                    <a href="#install" class="btn btn-secondary">See Install Paths</a>
                     <a href="index.html" class="btn btn-secondary">Back To Portfolio</a>
                 </div>
+                <div class="hero-highlights">
+                    <div class="glass-card reveal" style="--delay: 40ms;">
+                        <div class="section-kicker">Signal Flow</div>
+                        <h3>Drag The Rack</h3>
+                        <p>Reorder modules live, reshape the chain instantly, and store full rack states as presets.</p>
+                    </div>
+                    <div class="glass-card reveal" style="--delay: 90ms;">
+                        <div class="section-kicker">Visual Control</div>
+                        <h3>Fast, Clear Feedback</h3>
+                        <p>Read the EQ curve, analyzer, meters, and active effect parameters at a glance while mixing.</p>
+                    </div>
+                    <div class="glass-card reveal" style="--delay: 140ms;">
+                        <div class="section-kicker">Release Model</div>
+                        <h3>Download And Install</h3>
+                        <p>Official releases are packaged for direct DAW use. No JUCE, CMake, or source setup is required.</p>
+                    </div>
+                    <div class="glass-card reveal" style="--delay: 190ms;">
+                        <div class="section-kicker">Formats</div>
+                        <h3>AU, VST3, Installers</h3>
+                        <p>macOS gets AU and VST3, Windows gets a VST3 installer, and Linux keeps a clean VST3 archive path.</p>
+                    </div>
+                </div>
             </div>
-            <div class="hero-visual">
-                <div class="icon-panel reveal" style="--delay: 120ms;">
-                    <img src="assets/Vayu-Icon.png" alt="Vayu icon artwork">
-                    <div>
-                        <div class="kicker">Identity</div>
+
+            <div class="hero-preview">
+                <div class="preview-icon reveal" style="--delay: 120ms;">
+                    <div class="preview-icon-frame">
+                        <img src="assets/Vayu-Icon.png" alt="Vayu icon artwork">
+                    </div>
+                    <div class="preview-copy">
+                        <div class="section-kicker">Identity</div>
                         <h3>Air, Depth, Movement</h3>
                         <p>Vayu leans into cool glass, flowing modulation, and atmospheric space instead of a flat utilitarian rack.</p>
                     </div>
                 </div>
-            </div>
-            <div class="hero-meta">
-                <div class="card reveal" style="--delay: 60ms;">
-                    <div class="kicker">Signal Flow</div>
-                    <h3>Drag The Rack</h3>
-                    <p>Move modules around to reshape the chain instantly and save entire processing states as rack presets.</p>
-                </div>
-                <div class="card reveal" style="--delay: 120ms;">
-                    <div class="kicker">Visual Control</div>
-                    <h3>Fast To Read</h3>
-                    <p>Live EQ curves, analyzer feedback, meters, and focused panels keep the interface clear and musical.</p>
-                </div>
-                <div class="card reveal" style="--delay: 180ms;">
-                    <div class="kicker">Release Model</div>
-                    <h3>Install And Use</h3>
-                    <p>Official builds are meant to be downloaded and installed directly without JUCE, CMake, or source setup.</p>
-                </div>
-                <div class="card reveal" style="--delay: 240ms;">
-                    <div class="kicker">Formats</div>
-                    <h3>AU, VST3</h3>
-                    <p>Vayu is being packaged for direct DAW use without a developer setup process.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section reveal" id="features">
-            <h2>What Vayu Includes</h2>
-            <div class="feature-grid">
-                <div class="card reveal" style="--delay: 0ms;">
-                    <h3>Five-Band EQ</h3>
-                    <p>Shape lows, mids, and highs with a responsive visual curve and real-time analyzer feedback.</p>
-                </div>
-                <div class="card reveal" style="--delay: 40ms;">
-                    <h3>Modular Rack</h3>
-                    <p>Change effect order by dragging modules across the rack and save complete processing states.</p>
-                </div>
-                <div class="card reveal" style="--delay: 80ms;">
-                    <h3>Eight Effects</h3>
-                    <p>Distortion, chorus, flanger, phaser, delay, stereo, reverb, and compressor in one chain.</p>
-                </div>
-                <div class="card reveal" style="--delay: 120ms;">
-                    <h3>Preset Workflow</h3>
-                    <p>Use factory starting points, save your own rack presets, and store effect-specific patches for quick recall.</p>
-                </div>
-                <div class="card reveal" style="--delay: 160ms;">
-                    <h3>Plugin-First</h3>
-                    <p>Vayu is built as a DAW effect plugin, with AU on macOS and VST3 across supported platforms.</p>
-                </div>
-                <div class="card reveal" style="--delay: 200ms;">
-                    <h3>Built For Atmosphere</h3>
-                    <p>From subtle glue and width to motion-heavy textures, Vayu is designed for colour, movement, and space.</p>
+                <div class="preview-shot reveal" style="--delay: 180ms;">
+                    <img src="assets/Vayu-Demo-photo.png" alt="Vayu plugin interface screenshot">
                 </div>
             </div>
         </section>
 
         <section class="section reveal" id="downloads">
-            <h2>Downloads</h2>
-            <div class="download-grid">
-                <div class="card download-card reveal" style="--delay: 40ms;">
-                    <h3>macOS</h3>
-                    <p>Download Vayu for macOS as AU or VST3 and install it directly into your DAW plugin folders.</p>
-                    <div class="buttons">
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank">Release Page</a>
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-AU.zip">AU</a>
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-VST3.zip">VST3</a>
-                    </div>
+            <div class="section-header">
+                <div>
+                    <div class="section-kicker">Direct Downloads</div>
+                    <h2>Pick Your Platform</h2>
                 </div>
-                <div class="card download-card reveal" style="--delay: 90ms;">
-                    <h3>Windows</h3>
-                    <p>Download the Windows VST3 build and place it in your standard VST3 plugin directory for your host to scan.</p>
-                    <div class="buttons">
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank">Release Page</a>
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Windows-VST3.zip">VST3</a>
-                    </div>
-                </div>
-                <div class="card download-card reveal" style="--delay: 140ms;">
-                    <h3>Linux</h3>
-                    <p>Download the Linux VST3 bundle and place it in your preferred VST3 path for your Linux host to discover.</p>
-                    <div class="buttons">
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank">Release Page</a>
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Linux-VST3.tar.gz">VST3</a>
-                    </div>
-                </div>
+                <p>
+                    These links target the public <code>nightly</code> release assets built from the latest successful main-branch run.
+                    macOS and Windows are installer-first. Linux stays as a VST3 archive.
+                </p>
             </div>
-            <p class="note">These links target the public nightly release assets generated from the latest successful build on the main branch.</p>
+
+            <div class="download-grid">
+                <article class="download-card primary reveal" style="--delay: 20ms;">
+                    <div class="os-head">
+                        <div class="os-label">
+                            <div class="os-icon" aria-hidden="true">
+                                <svg viewBox="0 0 16 16">
+                                    <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3>macOS</h3>
+                                <p>Best experience: installer plus raw AU and VST3 bundles.</p>
+                            </div>
+                        </div>
+                        <span class="os-chip">Installer Ready</span>
+                    </div>
+                    <div class="download-actions">
+                        <a class="pill-link primary" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-Installer.pkg">Download Installer</a>
+                        <a class="pill-link secondary" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank" rel="noopener noreferrer">Nightly Release</a>
+                    </div>
+                    <div class="asset-list">
+                        <a href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-AU.zip">Raw AU Bundle</a>
+                        <a href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-VST3.zip">Raw VST3 Bundle</a>
+                    </div>
+                </article>
+
+                <article class="download-card reveal" style="--delay: 90ms;">
+                    <div class="os-head">
+                        <div class="os-label">
+                            <div class="os-icon" aria-hidden="true">
+                                <svg viewBox="0 0 16 16">
+                                    <path d="M6.555 1.375 0 2.237v5.45h6.555zM0 13.795l6.555.933V8.313H0zm7.278-5.4.026 6.378L16 16V8.395zM16 0 7.33 1.244v6.414H16z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3>Windows</h3>
+                                <p>Installer-first VST3 release for the standard Steinberg VST3 location.</p>
+                            </div>
+                        </div>
+                        <span class="os-chip">VST3 Only</span>
+                    </div>
+                    <div class="download-actions">
+                        <a class="pill-link primary" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Windows-Installer.exe">Download Installer</a>
+                        <a class="pill-link secondary" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Windows-VST3.zip">Raw VST3</a>
+                    </div>
+                    <p class="note">The installer targets <code>C:\Program Files\Common Files\VST3</code>, so most hosts can discover Vayu immediately after a rescan.</p>
+                </article>
+
+                <article class="download-card reveal" style="--delay: 160ms;">
+                    <div class="os-head">
+                        <div class="os-label">
+                            <div class="os-icon" aria-hidden="true">
+                                <svg viewBox="0 0 16 16">
+                                    <path d="M2.273 9.53a2.273 2.273 0 1 0 0-4.546 2.273 2.273 0 0 0 0 4.547Zm9.467-4.984a2.273 2.273 0 1 0 0-4.546 2.273 2.273 0 0 0 0 4.546M7.4 13.108a5.54 5.54 0 0 1-3.775-2.88 3.27 3.27 0 0 1-1.944.24 7.4 7.4 0 0 0 5.328 4.465c.53.113 1.072.169 1.614.166a3.25 3.25 0 0 1-.666-1.9 6 6 0 0 1-.557-.091m3.828 2.285a2.273 2.273 0 1 0 0-4.546 2.273 2.273 0 0 0 0 4.546m3.163-3.108a7.44 7.44 0 0 0 .373-8.726 3.3 3.3 0 0 1-1.278 1.498 5.57 5.57 0 0 1-.183 5.535 3.26 3.26 0 0 1 1.088 1.693M2.098 3.998a3.3 3.3 0 0 1 1.897.486 5.54 5.54 0 0 1 4.464-2.388c.037-.67.277-1.313.69-1.843a7.47 7.47 0 0 0-7.051 3.745"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3>Linux</h3>
+                                <p>Clean VST3 archive for hosts that scan standard Linux VST3 paths.</p>
+                            </div>
+                        </div>
+                        <span class="os-chip">Archive</span>
+                    </div>
+                    <div class="download-actions">
+                        <a class="pill-link primary" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Linux-VST3.tar.gz">Download VST3</a>
+                        <a class="pill-link secondary" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank" rel="noopener noreferrer">Nightly Release</a>
+                    </div>
+                    <p class="note">Linux installers are usually less standard for plugins, so this stays as a direct VST3 archive.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section reveal" id="features">
+            <div class="section-header">
+                <div>
+                    <div class="section-kicker">Feature Set</div>
+                    <h2>Built For Colour, Width, And Motion</h2>
+                </div>
+                <p>Vayu keeps sound-shaping and routing in one place so the plugin feels fast in a mix, not like a puzzle of separate tools.</p>
+            </div>
+
+            <div class="feature-grid">
+                <article class="feature-card reveal" style="--delay: 0ms;">
+                    <h3>Five-Band EQ</h3>
+                    <ul>
+                        <li>Live response curve and analyzer feedback</li>
+                        <li>Fast shelf and bell adjustments</li>
+                        <li>Clean visual read of the current shape</li>
+                    </ul>
+                </article>
+                <article class="feature-card reveal" style="--delay: 60ms;">
+                    <h3>Eight Rack Modules</h3>
+                    <ul>
+                        <li>Distortion, chorus, flanger, phaser</li>
+                        <li>Delay, stereo, reverb, compressor</li>
+                        <li>Drag-to-reorder modular chain</li>
+                    </ul>
+                </article>
+                <article class="feature-card reveal" style="--delay: 120ms;">
+                    <h3>Preset Workflow</h3>
+                    <ul>
+                        <li>Factory EQ and rack presets</li>
+                        <li>User rack presets and effect patches</li>
+                        <li>Quick recall without leaving the plugin</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="section reveal" id="install">
+            <div class="section-header">
+                <div>
+                    <div class="section-kicker">Install Notes</div>
+                    <h2>Where Vayu Ends Up</h2>
+                </div>
+                <p>The installers aim for the standard host scan locations. If you use the raw bundles instead, these are the paths you want.</p>
+            </div>
+
+            <div class="install-grid">
+                <article class="install-card reveal" style="--delay: 0ms;">
+                    <h3>macOS AU</h3>
+                    <ul>
+                        <li><code>/Library/Audio/Plug-Ins/Components</code></li>
+                        <li>User-level alternative: <code>~/Library/Audio/Plug-Ins/Components</code></li>
+                    </ul>
+                </article>
+                <article class="install-card reveal" style="--delay: 60ms;">
+                    <h3>macOS VST3</h3>
+                    <ul>
+                        <li><code>/Library/Audio/Plug-Ins/VST3</code></li>
+                        <li>User-level alternative: <code>~/Library/Audio/Plug-Ins/VST3</code></li>
+                    </ul>
+                </article>
+                <article class="install-card reveal" style="--delay: 120ms;">
+                    <h3>Windows VST3</h3>
+                    <ul>
+                        <li><code>C:\Program Files\Common Files\VST3</code></li>
+                        <li>Rescan plugins in your DAW after install</li>
+                    </ul>
+                </article>
+            </div>
         </section>
 
         <section class="section reveal">
-            <h2>Interface</h2>
-            <div class="reference-grid">
-                <div class="reference-shot reveal" style="--delay: 60ms;">
+            <div class="info-split">
+                <div class="glass-card reference-card reveal" style="--delay: 40ms;">
+                    <div class="section-kicker">Reference</div>
+                    <h3>Designed To Stay Readable While You Move Fast</h3>
+                    <p style="margin-bottom: 1rem;">The interface keeps the curve, rack order, meters, and active module controls close together so sound design changes stay immediate and musical.</p>
                     <img src="assets/Vayu-Demo-photo.png" alt="Vayu interface screenshot">
                 </div>
-                <div class="card reveal" style="--delay: 120ms;">
-                    <div class="kicker">Reference</div>
-                    <h3>Designed For Fast Decisions</h3>
-                    <p>The Vayu interface keeps the EQ curve, rack order, meters, and active module controls close together so sound design changes stay immediate and readable.</p>
-                    <p style="margin-top: 0.85rem;">This view also gives new users a quick sense of what they are downloading before they jump into the release builds.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section reveal">
-            <h2>Installation</h2>
-            <div class="install-grid">
-                <div class="card reveal" style="--delay: 40ms;">
-                    <h3>AU</h3>
-                    <p>Copy <code>Vayu.component</code> into <code>~/Library/Audio/Plug-Ins/Components</code> and rescan plugins in your DAW.</p>
-                </div>
-                <div class="card reveal" style="--delay: 90ms;">
-                    <h3>VST3</h3>
-                    <p>Copy <code>Vayu.vst3</code> into <code>~/Library/Audio/Plug-Ins/VST3</code> and rescan plugins in your DAW.</p>
-                </div>
-                <div class="card reveal" style="--delay: 140ms;">
-                    <h3>Windows VST3</h3>
-                    <p>Install <code>Vayu.vst3</code> into <code>C:\Program Files\Common Files\VST3</code> and rescan plugins in your host.</p>
-                </div>
-                <div class="card reveal" style="--delay: 190ms;">
-                    <h3>Linux VST3</h3>
-                    <p>Install <code>Vayu.vst3</code> into a standard VST3 path such as <code>~/.vst3</code> or <code>/usr/lib/vst3</code>.</p>
+                <div class="glass-card reveal" style="--delay: 120ms;">
+                    <div class="section-kicker">Nightly Builds</div>
+                    <h3>Release Rhythm</h3>
+                    <p>Vayu’s public downloads are wired to the latest successful nightly build so the website can act like a direct landing page instead of a developer handoff.</p>
+                    <p class="note">If a nightly asset is missing, it usually means the latest build is still running or a packaging step needs another pass.</p>
+                    <div class="link-row" style="margin-top: 1rem;">
+                        <a href="https://github.com/supashbhat/Vayu/releases/tag/nightly" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open Nightly Release</a>
+                        <a href="https://github.com/supashbhat/Vayu/actions" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Build Status</a>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="section reveal" id="learn-more">
-            <h2>Learn More</h2>
-            <p>GitHub is the main place for release notes, version history, issue tracking, and future updates as Vayu grows.</p>
-            <div class="cta-row" style="margin-top: 1rem;">
-                <a href="https://github.com/supashbhat/Vayu" class="btn btn-primary" target="_blank">Open GitHub</a>
+            <div class="section-header">
+                <div>
+                    <div class="section-kicker">GitHub</div>
+                    <h2>Learn More</h2>
+                </div>
+                <p>Release notes, issue tracking, and future iterations of Vayu all live in the GitHub repository.</p>
+            </div>
+            <div class="cta-row">
+                <a href="https://github.com/supashbhat/Vayu" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Open GitHub</a>
             </div>
         </section>
 
-        <div class="footer">
+        <footer class="footer">
             Vayu by Supash Bhat
-        </div>
+        </footer>
     </div>
 
     <script>
@@ -662,16 +918,9 @@
                     entry.target.classList.add("visible");
                 }
             }
-        }, { threshold: 0.14 });
+        }, { threshold: 0.15 });
 
         document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
-
-        const updateScrollMotion = () => {
-            document.body.style.setProperty("--scroll-shift", `${window.scrollY}px`);
-        };
-
-        updateScrollMotion();
-        window.addEventListener("scroll", updateScrollMotion, { passive: true });
     </script>
 </body>
 </html>
