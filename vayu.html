@@ -537,8 +537,8 @@
                 </div>
                 <div class="card reveal" style="--delay: 240ms;">
                     <div class="kicker">Formats</div>
-                    <h3>Standalone, AU, VST3</h3>
-                    <p>Vayu is being packaged for direct use across desktop and DAW workflows without a developer setup process.</p>
+                    <h3>AU, VST3</h3>
+                    <p>Vayu is being packaged for direct DAW use without a developer setup process.</p>
                 </div>
             </div>
         </section>
@@ -563,8 +563,8 @@
                     <p>Use factory starting points, save your own rack presets, and store effect-specific patches for quick recall.</p>
                 </div>
                 <div class="card reveal" style="--delay: 160ms;">
-                    <h3>Standalone + Plugin</h3>
-                    <p>Use Vayu on the desktop or as a plugin in compatible hosts through AU and VST3 releases.</p>
+                    <h3>Plugin-First</h3>
+                    <p>Vayu is built as a DAW effect plugin, with AU on macOS and VST3 across supported platforms.</p>
                 </div>
                 <div class="card reveal" style="--delay: 200ms;">
                     <h3>Built For Atmosphere</h3>
@@ -578,29 +578,26 @@
             <div class="download-grid">
                 <div class="card download-card reveal" style="--delay: 40ms;">
                     <h3>macOS</h3>
-                    <p>Standalone app, AU, and VST3 are the first official release targets for Vayu on Mac.</p>
+                    <p>Download Vayu for macOS as AU or VST3 and install it directly into your DAW plugin folders.</p>
                     <div class="buttons">
                         <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank">Release Page</a>
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-Standalone.zip">Standalone</a>
                         <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-AU.zip">AU</a>
                         <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-macOS-VST3.zip">VST3</a>
                     </div>
                 </div>
                 <div class="card download-card reveal" style="--delay: 90ms;">
                     <h3>Windows</h3>
-                    <p>Windows VST3 and standalone downloads will slot in here as soon as the first packaged builds are produced.</p>
+                    <p>Download the Windows VST3 build and place it in your standard VST3 plugin directory for your host to scan.</p>
                     <div class="buttons">
                         <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank">Release Page</a>
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Windows-Standalone.zip">Standalone</a>
                         <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Windows-VST3.zip">VST3</a>
                     </div>
                 </div>
                 <div class="card download-card reveal" style="--delay: 140ms;">
                     <h3>Linux</h3>
-                    <p>Linux VST3 and standalone downloads will appear here once the first cross-platform release assets are uploaded.</p>
+                    <p>Download the Linux VST3 bundle and place it in your preferred VST3 path for your Linux host to discover.</p>
                     <div class="buttons">
                         <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/tag/nightly" target="_blank">Release Page</a>
-                        <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Linux-Standalone.tar.gz">Standalone</a>
                         <a class="mini-btn" href="https://github.com/supashbhat/Vayu/releases/download/nightly/Vayu-Linux-VST3.tar.gz">VST3</a>
                     </div>
                 </div>
@@ -627,20 +624,20 @@
             <h2>Installation</h2>
             <div class="install-grid">
                 <div class="card reveal" style="--delay: 40ms;">
-                    <h3>Standalone</h3>
-                    <p>Move <code>Vayu.app</code> into Applications and launch it like any normal macOS app.</p>
-                </div>
-                <div class="card reveal" style="--delay: 90ms;">
                     <h3>AU</h3>
                     <p>Copy <code>Vayu.component</code> into <code>~/Library/Audio/Plug-Ins/Components</code> and rescan plugins in your DAW.</p>
                 </div>
-                <div class="card reveal" style="--delay: 140ms;">
+                <div class="card reveal" style="--delay: 90ms;">
                     <h3>VST3</h3>
                     <p>Copy <code>Vayu.vst3</code> into <code>~/Library/Audio/Plug-Ins/VST3</code> and rescan plugins in your DAW.</p>
                 </div>
+                <div class="card reveal" style="--delay: 140ms;">
+                    <h3>Windows VST3</h3>
+                    <p>Install <code>Vayu.vst3</code> into <code>C:\Program Files\Common Files\VST3</code> and rescan plugins in your host.</p>
+                </div>
                 <div class="card reveal" style="--delay: 190ms;">
-                    <h3>Official Builds</h3>
-                    <p>Vayu is meant to be downloaded and installed directly. End users do not need JUCE, Xcode, or source tools.</p>
+                    <h3>Linux VST3</h3>
+                    <p>Install <code>Vayu.vst3</code> into a standard VST3 path such as <code>~/.vst3</code> or <code>/usr/lib/vst3</code>.</p>
                 </div>
             </div>
         </section>
