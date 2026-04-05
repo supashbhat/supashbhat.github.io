@@ -15,13 +15,13 @@
             --panel: rgba(10, 18, 29, 0.72);
             --panel-strong: rgba(8, 16, 26, 0.88);
             --panel-soft: rgba(13, 24, 38, 0.82);
-            --line: rgba(143, 206, 255, 0.12);
-            --line-strong: rgba(143, 206, 255, 0.22);
+            --line: rgba(255, 124, 120, 0.12);
+            --line-strong: rgba(255, 124, 120, 0.22);
             --text: #edf6ff;
-            --text-soft: #9fb1c4;
-            --text-faint: #708095;
-            --cyan: #8fd7ff;
-            --mint: #98f3df;
+            --text-soft: #c2b2b3;
+            --text-faint: #8e7779;
+            --cyan: #ff9b92;
+            --mint: #ffc2b6;
             --amber: #f2d198;
             --ruby: #ff6f7f;
             --ruby-soft: #ff9e8f;
@@ -44,10 +44,10 @@
             font-family: "Manrope", system-ui, sans-serif;
             color: var(--text);
             background:
-                radial-gradient(circle at 16% 12%, rgba(143, 206, 255, 0.16), transparent 24%),
-                radial-gradient(circle at 78% 24%, rgba(255, 111, 127, 0.1), transparent 18%),
-                radial-gradient(circle at 82% 10%, rgba(152, 243, 223, 0.1), transparent 20%),
-                radial-gradient(circle at 24% 72%, rgba(255, 158, 143, 0.06), transparent 22%),
+                radial-gradient(circle at 16% 12%, rgba(255, 111, 127, 0.14), transparent 24%),
+                radial-gradient(circle at 78% 24%, rgba(255, 124, 120, 0.1), transparent 18%),
+                radial-gradient(circle at 82% 10%, rgba(255, 194, 182, 0.08), transparent 20%),
+                radial-gradient(circle at 24% 72%, rgba(255, 158, 143, 0.08), transparent 22%),
                 radial-gradient(circle at 65% 62%, rgba(242, 209, 152, 0.06), transparent 20%),
                 linear-gradient(155deg, var(--bg-0) 0%, var(--bg-1) 46%, var(--bg-2) 100%);
         }
@@ -65,11 +65,11 @@
             background:
                 linear-gradient(120deg,
                     transparent 0%,
-                    rgba(143, 206, 255, 0.025) 18%,
+                    rgba(255, 111, 127, 0.03) 18%,
                     transparent 36%,
-                    rgba(152, 243, 223, 0.025) 58%,
+                    rgba(255, 158, 143, 0.025) 58%,
                     transparent 78%,
-                    rgba(143, 206, 255, 0.02) 100%);
+                    rgba(255, 194, 182, 0.02) 100%);
             background-size: 180% 180%;
             animation: skyDrift 18s linear infinite;
         }
@@ -123,8 +123,8 @@
         }
 
         @keyframes borderGlow {
-            0%, 100% { border-color: rgba(143, 206, 255, 0.08); }
-            50% { border-color: rgba(255, 111, 127, 0.14); }
+            0%, 100% { border-color: rgba(255, 124, 120, 0.08); }
+            50% { border-color: rgba(255, 194, 182, 0.16); }
         }
 
         .shell {
@@ -156,7 +156,7 @@
             height: 18rem;
             top: 7rem;
             left: -4rem;
-            background: radial-gradient(circle, rgba(143, 206, 255, 0.4), transparent 68%);
+            background: radial-gradient(circle, rgba(255, 124, 120, 0.34), transparent 68%);
         }
 
         .orb-b {
@@ -174,7 +174,7 @@
             height: 14rem;
             bottom: 6rem;
             left: 42%;
-            background: radial-gradient(circle, rgba(152, 243, 223, 0.24), transparent 72%);
+            background: radial-gradient(circle, rgba(255, 194, 182, 0.2), transparent 72%);
             animation-duration: 20s;
         }
 
@@ -193,7 +193,7 @@
             display: block;
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--ruby) 0%, var(--amber) 28%, var(--cyan) 64%, var(--mint) 100%);
+            background: linear-gradient(90deg, #ff8b88 0%, #ff746f 44%, #ffb19a 100%);
             box-shadow: 0 0 14px rgba(255, 111, 127, 0.28);
             transform-origin: left center;
         }
@@ -241,9 +241,9 @@
             flex: 0 0 2.7rem;
             border-radius: 0.95rem;
             overflow: hidden;
-            border: 1px solid rgba(143, 206, 255, 0.24);
-            background: linear-gradient(135deg, rgba(143, 206, 255, 0.18), rgba(152, 243, 223, 0.12));
-            box-shadow: 0 0 24px rgba(143, 206, 255, 0.18);
+            border: 1px solid rgba(255, 124, 120, 0.24);
+            background: linear-gradient(135deg, rgba(255, 111, 127, 0.18), rgba(255, 194, 182, 0.12));
+            box-shadow: 0 0 24px rgba(255, 111, 127, 0.18);
         }
 
         .brand-mark::before {
@@ -251,7 +251,7 @@
             position: absolute;
             inset: -0.32rem;
             border-radius: 1.2rem;
-            background: radial-gradient(circle, rgba(143, 206, 255, 0.22), transparent 70%);
+            background: radial-gradient(circle, rgba(255, 111, 127, 0.24), transparent 70%);
             filter: blur(8px);
             animation: haloPulse 5.2s ease-in-out infinite;
         }
@@ -313,12 +313,12 @@
 
         .nav-actions a {
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(143, 206, 255, 0.1);
+            border: 1px solid rgba(255, 124, 120, 0.1);
         }
 
         .hero {
             display: grid;
-            grid-template-columns: minmax(0, 1.22fr) minmax(360px, 0.98fr);
+            grid-template-columns: minmax(0, 1.08fr) minmax(390px, 0.92fr);
             gap: 1rem;
             padding: 1.1rem;
             border-radius: 2rem;
@@ -343,7 +343,7 @@
             padding: 1.7rem;
             border-radius: 1.5rem;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%), rgba(8, 17, 27, 0.54);
-            border: 1px solid rgba(143, 206, 255, 0.1);
+            border: 1px solid rgba(255, 124, 120, 0.1);
         }
 
         .hero-copy::before {
@@ -358,9 +358,9 @@
                 linear-gradient(90deg,
                     transparent 0%,
                     rgba(255, 111, 127, 0.04) 12%,
-                    rgba(143, 206, 255, 0.03) 24%,
-                    rgba(152, 243, 223, 0.14) 42%,
-                    rgba(143, 206, 255, 0.1) 60%,
+                    rgba(255, 158, 143, 0.04) 24%,
+                    rgba(255, 194, 182, 0.14) 42%,
+                    rgba(255, 111, 127, 0.08) 60%,
                     rgba(242, 209, 152, 0.06) 74%,
                     transparent 100%);
             filter: blur(18px);
@@ -389,9 +389,9 @@
             padding: 0.38rem 0.72rem;
             border-radius: 999px;
             margin-bottom: 1rem;
-            border: 1px solid rgba(143, 206, 255, 0.12);
-            background: rgba(143, 206, 255, 0.07);
-            color: var(--cyan);
+            border: 1px solid rgba(255, 124, 120, 0.12);
+            background: rgba(255, 111, 127, 0.07);
+            color: var(--ruby-soft);
             text-transform: uppercase;
             letter-spacing: 0.16em;
             font-size: 0.7rem;
@@ -408,12 +408,12 @@
         }
 
         h1 {
-            max-width: 13.5ch;
+            max-width: 11.7ch;
             margin-bottom: 1rem;
-            font-size: clamp(2.9rem, 6vw, 5.1rem);
+            font-size: clamp(2.7rem, 5.4vw, 4.75rem);
             line-height: 1.1;
             color: transparent;
-            background: linear-gradient(135deg, #f6fbff 0%, #ffd1c8 18%, #c0f5ff 48%, #9cf0de 100%);
+            background: linear-gradient(135deg, #fff4f1 0%, #ffcfbf 22%, #ff9f95 54%, #ffd8c8 100%);
             -webkit-background-clip: text;
             background-clip: text;
         }
@@ -445,14 +445,14 @@
 
         .btn-primary {
             color: #05161e;
-            background: linear-gradient(135deg, #ffb4a3 0%, var(--ruby) 12%, var(--amber) 34%, var(--cyan) 68%, var(--mint) 100%);
+            background: linear-gradient(135deg, #ffd0c4 0%, #ff9a92 26%, #ff746f 62%, #ffb8a7 100%);
             box-shadow: 0 14px 28px rgba(255, 111, 127, 0.16);
         }
 
         .btn-secondary {
             color: var(--text);
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(143, 206, 255, 0.12);
+            border: 1px solid rgba(255, 124, 120, 0.12);
         }
 
         .hero-meta {
@@ -470,7 +470,7 @@
         .section {
             border-radius: 1.35rem;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%), var(--panel);
-            border: 1px solid rgba(143, 206, 255, 0.09);
+            border: 1px solid rgba(255, 124, 120, 0.09);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
             animation: borderGlow 14s ease-in-out infinite;
         }
@@ -519,18 +519,17 @@
 
         .hero-side {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: 1fr;
             gap: 0.9rem;
             align-content: start;
         }
 
         .profile-panel,
-        .signal-panel,
-        .now-panel {
+        .research-panel {
             padding: 1rem;
             border-radius: 1.45rem;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%), rgba(8, 18, 28, 0.68);
-            border: 1px solid rgba(143, 206, 255, 0.1);
+            border: 1px solid rgba(255, 124, 120, 0.1);
         }
 
         .profile-panel {
@@ -539,7 +538,6 @@
             gap: 1rem;
             align-items: center;
             min-height: 11rem;
-            grid-column: 1 / -1;
         }
 
         .profile-wrap {
@@ -548,7 +546,7 @@
             height: 7.6rem;
             border-radius: 2rem;
             padding: 0.18rem;
-            background: linear-gradient(135deg, rgba(143, 206, 255, 0.24), rgba(152, 243, 223, 0.12));
+            background: linear-gradient(135deg, rgba(255, 111, 127, 0.24), rgba(255, 194, 182, 0.12));
             box-shadow: 0 22px 38px rgba(0, 0, 0, 0.22);
         }
 
@@ -557,7 +555,7 @@
             position: absolute;
             inset: -0.45rem;
             border-radius: 2.3rem;
-            background: radial-gradient(circle, rgba(143, 206, 255, 0.18), transparent 68%);
+            background: radial-gradient(circle, rgba(255, 111, 127, 0.18), transparent 68%);
             filter: blur(10px);
             animation: haloPulse 4.8s ease-in-out infinite;
         }
@@ -567,7 +565,7 @@
             position: absolute;
             inset: -0.28rem;
             border-radius: 2.2rem;
-            border: 1px solid rgba(143, 206, 255, 0.14);
+            border: 1px solid rgba(255, 124, 120, 0.14);
             animation: orbitDrift 24s linear infinite;
         }
 
@@ -583,8 +581,7 @@
         }
 
         .profile-copy p,
-        .signal-panel p,
-        .now-panel p,
+        .research-panel p,
         .project-card p,
         .focus-card p,
         .meta-panel p,
@@ -595,22 +592,51 @@
             line-height: 1.78;
         }
 
-        .signal-panel::before,
-        .now-panel::before {
+        .research-panel {
+            min-height: 18.75rem;
+        }
+
+        .research-panel::before {
             content: "";
             position: absolute;
-            left: -10%;
-            right: -10%;
-            top: 36%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(143, 206, 255, 0.22), rgba(152, 243, 223, 0.16), transparent);
-            animation: skyDrift 10s ease-in-out infinite;
+            inset: auto -10% 10% auto;
+            width: 18rem;
+            height: 18rem;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(255, 111, 127, 0.1), transparent 70%);
+            filter: blur(26px);
+            animation: orbFloat 16s ease-in-out infinite;
             pointer-events: none;
         }
 
-        .signal-panel,
-        .now-panel {
+        .research-split {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.85rem;
+            margin-top: 0.2rem;
+        }
+
+        .research-block {
+            position: relative;
             min-height: 100%;
+            padding: 0.95rem;
+            border-radius: 1.15rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 124, 120, 0.1);
+            backdrop-filter: blur(8px);
+        }
+
+        .research-block::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -28%;
+            width: 4.2rem;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: skewX(-18deg);
+            animation: cardSheen 15s linear infinite;
+            pointer-events: none;
         }
 
         .section {
@@ -674,7 +700,7 @@
         .project-card.physics {
             grid-column: span 5;
             background:
-                linear-gradient(180deg, rgba(143, 206, 255, 0.05), transparent 100%),
+                linear-gradient(180deg, rgba(255, 124, 120, 0.05), transparent 100%),
                 var(--panel-soft);
         }
 
@@ -711,12 +737,12 @@
             font-weight: 800;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: var(--cyan);
-            background: rgba(143, 206, 255, 0.08);
-            border: 1px solid rgba(143, 206, 255, 0.1);
+            color: var(--ruby-soft);
+            background: rgba(255, 111, 127, 0.08);
+            border: 1px solid rgba(255, 124, 120, 0.1);
         }
 
-        .accent-vayu { color: var(--mint); background: rgba(152, 243, 223, 0.08); border-color: rgba(152, 243, 223, 0.12); }
+        .accent-vayu { color: #ffd4ca; background: rgba(255, 194, 182, 0.08); border-color: rgba(255, 194, 182, 0.12); }
         .accent-amber { color: var(--amber); background: rgba(242, 209, 152, 0.08); border-color: rgba(242, 209, 152, 0.14); }
         .accent-ruby { color: var(--ruby-soft); background: rgba(255, 111, 127, 0.08); border-color: rgba(255, 111, 127, 0.14); }
 
@@ -757,7 +783,7 @@
         .support-link.secondary {
             color: var(--text);
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(143, 206, 255, 0.12);
+            border: 1px solid rgba(255, 124, 120, 0.12);
         }
 
         .list {
@@ -782,7 +808,34 @@
         }
 
         .research-grid {
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+        }
+
+        .research-spotlight {
+            grid-column: span 12;
+            padding: 1.05rem;
+            background:
+                linear-gradient(180deg, rgba(255, 111, 127, 0.05), transparent 100%),
+                var(--panel-soft);
+        }
+
+        .research-spotlight-grid {
+            display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.9rem;
+            margin-top: 0.4rem;
+        }
+
+        .research-branch {
+            position: relative;
+            padding: 1rem;
+            border-radius: 1.15rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 124, 120, 0.1);
+        }
+
+        .research-card {
+            grid-column: span 6;
         }
 
         .focus-card,
@@ -832,6 +885,11 @@
                 grid-column: auto;
             }
 
+            .research-card,
+            .research-spotlight {
+                grid-column: auto;
+            }
+
             .hero-meta {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -862,11 +920,12 @@
                 text-align: left;
             }
 
-            .hero-side {
+            .hero-meta {
                 grid-template-columns: 1fr;
             }
 
-            .hero-meta {
+            .research-split,
+            .research-spotlight-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -914,7 +973,7 @@
         <section class="hero reveal" id="top">
             <div class="hero-copy">
                 <div class="eyebrow">Physics, computation, and music</div>
-                <h1>Building tools where physics, simulation, and sound meet.</h1>
+                <h1>Building software where physics and sound meet.</h1>
                 <p class="lede">
                     I am Supash Bhat, a Physics, Astrophysics, and Music major at UC Berkeley focused on computational physics,
                     numerical methods, interactive simulation, and music technology. I like projects that turn hard ideas
@@ -959,18 +1018,22 @@
                     </div>
                 </div>
 
-                <div class="signal-panel reveal" style="--delay: 160ms;">
-                    <div class="kicker">Current Direction</div>
-                    <h3>More DSP tools and ML-linked research</h3>
-                    <p>Right now the strongest thread is building out audio software like Vayu while continuing research interests in machine learning, perception, and CNMAT-adjacent work.</p>
-                </div>
-
-                <div class="now-panel reveal" style="--delay: 200ms;">
-                    <div class="kicker">Research Highlight</div>
-                    <h3>Finding what the pipeline missed</h3>
-                    <p>In Berkeley ULAB work, I helped discover asteroid 2025 FD by refining machine-learning filtering with human review and visual cues that the existing screening process missed.</p>
-                    <div class="project-links" style="margin-top: 0.9rem;">
-                        <a class="project-link secondary" href="https://n3as.berkeley.edu/p/z-streak-analysis-discovery-neo/" target="_blank" rel="noopener noreferrer">Read The N3AS Article</a>
+                <div class="research-panel reveal" style="--delay: 170ms;">
+                    <div class="kicker">Research And Current Work</div>
+                    <div class="research-split">
+                        <div class="research-block">
+                            <div class="kicker">Current Focus</div>
+                            <h3>DSP tools, CNMAT, and ML-linked audio work</h3>
+                            <p>I am especially interested in building more audio software while continuing research directions around machine learning, timbre, perception, and CNMAT-adjacent work.</p>
+                        </div>
+                        <div class="research-block">
+                            <div class="kicker">Research Highlight</div>
+                            <h3>Finding what the pipeline missed</h3>
+                            <p>Berkeley ULAB work led to the discovery of asteroid 2025 FD through a workflow that combined machine-learning filters, geometric reasoning, and careful human review.</p>
+                            <div class="project-links" style="margin-top: 0.9rem;">
+                                <a class="project-link secondary" href="https://n3as.berkeley.edu/p/z-streak-analysis-discovery-neo/" target="_blank" rel="noopener noreferrer">Read The N3AS Article</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1061,19 +1124,6 @@
                     </div>
                 </article>
 
-                <article class="project-card research reveal" style="--delay: 190ms;">
-                    <div class="chip-row">
-                        <span class="chip accent-ruby">Research</span>
-                        <span class="chip">Astronomy</span>
-                        <span class="chip">ML</span>
-                        <span class="chip">ULAB</span>
-                    </div>
-                    <h3>Asteroid Detection Beyond The Default Pipeline</h3>
-                    <p>One of the research stories I am most proud of is helping identify asteroid 2025 FD through a workflow that combined machine-learning filters, geometric reasoning, and human review to catch what the standard system missed.</p>
-                    <div class="project-links">
-                        <a class="project-link primary" href="https://n3as.berkeley.edu/p/z-streak-analysis-discovery-neo/" target="_blank" rel="noopener noreferrer">Read Article</a>
-                    </div>
-                </article>
             </div>
         </section>
 
@@ -1117,46 +1167,46 @@
             </div>
 
             <div class="research-grid">
-                <article class="meta-panel reveal" style="--delay: 30ms;">
-                    <div class="kicker">Astronomy</div>
-                    <h3>Asteroid discovery through ML plus sharp human review</h3>
-                    <p>Berkeley ULAB work led to the discovery of asteroid 2025 FD after a process that narrowed huge nightly streak datasets into a small set of viable candidates, then pushed beyond what the default automated screening had caught.</p>
-                    <ul class="list">
-                        <li>Machine-learning and deep-learning filters to reduce the candidate pool</li>
-                        <li>Human-guided visual cues layered on top of automation</li>
-                        <li>First-place ULAB project recognition and a public N3AS write-up</li>
-                    </ul>
-                    <div class="project-links">
-                        <a class="project-link secondary" href="https://n3as.berkeley.edu/p/z-streak-analysis-discovery-neo/" target="_blank" rel="noopener noreferrer">N3AS Feature</a>
+                <article class="meta-panel research-spotlight reveal" style="--delay: 30ms;">
+                    <div class="chip-row">
+                        <span class="chip accent-ruby">Research</span>
+                        <span class="chip">Astronomy</span>
+                        <span class="chip">ML</span>
+                        <span class="chip">CNMAT</span>
+                    </div>
+                    <h3>Research that moves between machine learning, astronomy, and sound</h3>
+                    <div class="research-spotlight-grid">
+                        <div class="research-branch">
+                            <div class="kicker">Current Research Direction</div>
+                            <h3>Perception, audio, and CNMAT-adjacent work</h3>
+                            <p>I am especially interested in the overlap between machine learning, timbre, musical perception, and tool-building, where research can directly inform better creative interfaces and software instruments.</p>
+                        </div>
+                        <div class="research-branch">
+                            <div class="kicker">Astronomy And Instrumentation</div>
+                            <h3>Asteroids, scintillators, and measurement-heavy systems</h3>
+                            <p>My broader research interests also include detector-minded and instrumentation-heavy work, from asteroid discovery pipelines to scintillator and nuclear-security-adjacent measurement problems.</p>
+                            <div class="project-links" style="margin-top: 0.9rem;">
+                                <a class="project-link secondary" href="https://n3as.berkeley.edu/p/z-streak-analysis-discovery-neo/" target="_blank" rel="noopener noreferrer">Read The N3AS Article</a>
+                            </div>
+                        </div>
                     </div>
                 </article>
 
-                <article class="meta-panel reveal" style="--delay: 90ms;">
-                    <div class="kicker">Audio And ML</div>
-                    <h3>Perception-oriented research interests</h3>
-                    <p>I am especially interested in the overlap between machine learning, timbre, musical perception, and tool-building, including continued CNMAT-adjacent directions as that thread develops.</p>
+                <article class="meta-panel research-card reveal" style="--delay: 90ms;">
+                    <div class="kicker">Asteroid Discovery</div>
+                    <h3>Beating the default screen with sharper cues</h3>
+                    <p>The 2025 FD result came from combining automated filtering with visual heuristics that the standard system was not yet accounting for, pushing the pipeline past its own blind spots.</p>
                     <ul class="list">
-                        <li>Musical interfaces informed by real listening practice</li>
-                        <li>Curiosity about ML not just as automation, but as a research instrument</li>
-                        <li>A natural bridge between Vayu-style products and academic work</li>
+                        <li>Deep-learning and ML filters to reduce a huge nightly streak set</li>
+                        <li>Geometric reasoning and visual review to identify promising candidates</li>
+                        <li>First Place at the ULAB Physics Research Fair</li>
                     </ul>
                 </article>
 
-                <article class="meta-panel reveal" style="--delay: 150ms;">
-                    <div class="kicker">Instrumentation</div>
-                    <h3>Experimental systems and detector-minded work</h3>
-                    <p>I am also drawn to instrumentation-heavy problems, including scintillator and spectroscopy-adjacent contexts where careful measurement, calibration, and interpretation matter as much as software itself.</p>
-                    <ul class="list">
-                        <li>Interest in the physical reality behind the signal</li>
-                        <li>Measurement, analysis, and interpretation as one continuous workflow</li>
-                        <li>A systems view that carries into both research and engineering</li>
-                    </ul>
-                </article>
-
-                <article class="meta-panel reveal" style="--delay: 210ms;">
+                <article class="meta-panel research-card reveal" style="--delay: 150ms;">
                     <div class="kicker">Teaching And Music</div>
                     <h3>Explaining hard things and staying musical</h3>
-                    <p>Teaching, mentoring, and musicianship are not side notes. They shape how I build: clearly, performatively, and with attention to the actual person on the other side of the tool.</p>
+                    <p>Teaching, course leadership, performance, and mentorship shape how I build. I care about technical work that remains legible to other people instead of disappearing behind complexity.</p>
                     <ul class="list">
                         <li>NewSpace at Berkeley course leadership and mentoring</li>
                         <li>Trumpet, piano, and guitar instruction</li>
@@ -1196,9 +1246,14 @@
                 </article>
 
                 <article class="contact-card reveal" style="--delay: 130ms;">
-                    <div class="kicker">Current Direction</div>
-                    <strong>DSP, research, and thoughtful technical products</strong>
-                    <p>The next stretch of work is likely more audio software, more simulation, and more research that uses machine learning and interpretation together rather than treating them as separate worlds.</p>
+                    <div class="kicker">Leadership</div>
+                    <strong>Teaching, mentoring, and building community</strong>
+                    <p>Beyond project work, I care about helping other people enter technical spaces with confidence through teaching, mentorship, music instruction, and course leadership.</p>
+                    <ul class="list">
+                        <li>NewSpace at Berkeley course leadership and mentoring</li>
+                        <li>Trumpet, piano, and guitar instruction</li>
+                        <li>A builder’s mindset shaped by explaining hard things clearly</li>
+                    </ul>
                 </article>
             </div>
         </section>
