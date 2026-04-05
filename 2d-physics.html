@@ -3,227 +3,742 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2D Physics Demo | Supash Bhat</title>
+    <title>2D Physics Sandbox | Supash Bhat</title>
     <style>
-        body { margin: 0; overflow: hidden; font-family: monospace; background: #0a0a1a; }
-        canvas { display: block; width: 100%; height: 100vh; cursor: grab; }
-        #info {
-            position: absolute; top: 20px; left: 20px;
-            background: rgba(0,0,0,0.7); color: white;
-            padding: 10px 15px; border-radius: 8px;
-            font-size: 12px; pointer-events: none;
-            z-index: 10;
+        :root {
+            --bg-0: #050a14;
+            --bg-1: #0c1420;
+            --panel: rgba(10, 16, 26, 0.78);
+            --panel-soft: rgba(14, 22, 34, 0.68);
+            --line: rgba(255, 132, 120, 0.16);
+            --line-strong: rgba(255, 178, 165, 0.28);
+            --text: #eef4fb;
+            --text-soft: #bfbdc6;
+            --text-faint: #8f8792;
+            --accent: #ff8077;
+            --accent-soft: #ffc6b5;
+            --accent-warm: #ffd9c7;
         }
-        #controls {
-            position: absolute; bottom: 20px; left: 20px;
-            background: rgba(0,0,0,0.7); color: white;
-            padding: 10px 15px; border-radius: 8px;
-            font-size: 12px; z-index: 10;
+
+        * {
+            box-sizing: border-box;
         }
-        #controls button {
-            background: #60a5fa; border: none; color: white;
-            padding: 4px 12px; margin: 4px; border-radius: 4px;
+
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 18% 12%, rgba(255, 128, 119, 0.12), transparent 22%),
+                radial-gradient(circle at 82% 18%, rgba(255, 210, 194, 0.08), transparent 22%),
+                linear-gradient(165deg, var(--bg-0) 0%, var(--bg-1) 52%, #162233 100%);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+
+        canvas.dragging {
+            cursor: grabbing;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .panel {
+            position: absolute;
+            border-radius: 1.35rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 100%), var(--panel);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
+        }
+
+        .hero {
+            top: 20px;
+            left: 20px;
+            width: min(460px, calc(100vw - 40px));
+            padding: 1rem 1.1rem 1.05rem;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            left: -10%;
+            right: -10%;
+            top: 46%;
+            height: 80px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, transparent, rgba(255, 140, 126, 0.08), rgba(255, 214, 199, 0.16), transparent);
+            filter: blur(18px);
+            opacity: 0.9;
+            animation: sweep 10s ease-in-out infinite;
+        }
+
+        .eyebrow,
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.34rem 0.68rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent-soft);
+            border: 1px solid rgba(255, 144, 128, 0.12);
+            background: rgba(255, 128, 119, 0.06);
+        }
+
+        .hero h1 {
+            margin: 0.75rem 0 0.3rem;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            line-height: 1.02;
+            letter-spacing: -0.055em;
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--text-soft);
+            line-height: 1.68;
+            max-width: 34rem;
+        }
+
+        .hero-meta {
+            margin-top: 0.95rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .stats {
+            top: 20px;
+            right: 20px;
+            width: min(320px, calc(100vw - 40px));
+            padding: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.8rem 1rem;
+            margin-top: 0.9rem;
+        }
+
+        .stat-label {
+            display: block;
+            margin-bottom: 0.28rem;
+            color: var(--text-faint);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.68rem;
+            font-weight: 800;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.06rem;
+            font-weight: 700;
+        }
+
+        .toolbar {
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            padding: 0.95rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            pointer-events: auto;
+        }
+
+        .toolbar-group,
+        .toolbar-actions,
+        .preset-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+            align-items: center;
+        }
+
+        .button {
+            appearance: none;
+            border: 1px solid rgba(255, 144, 128, 0.12);
+            background: rgba(255, 255, 255, 0.035);
+            color: var(--text);
+            padding: 0.78rem 1rem;
+            border-radius: 0.95rem;
+            font-weight: 700;
             cursor: pointer;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
         }
-        #gravity {
-            position: absolute; bottom: 20px; right: 20px;
-            background: rgba(0,0,0,0.7); color: #60a5fa;
-            padding: 10px 15px; border-radius: 8px;
-            font-family: monospace; font-weight: bold;
-            pointer-events: none; z-index: 10;
+
+        .button:hover {
+            transform: translateY(-1px);
+            border-color: rgba(255, 184, 170, 0.22);
+            background: rgba(255, 255, 255, 0.06);
         }
-        .note {
-            position: absolute; top: 20px; right: 20px;
-            background: rgba(0,0,0,0.5); color: #94a3b8;
-            padding: 8px 12px; border-radius: 8px;
-            font-size: 10px; pointer-events: none;
-            z-index: 10;
+
+        .button.active,
+        .button.primary {
+            color: #08131c;
+            border-color: transparent;
+            background: linear-gradient(135deg, var(--accent-warm) 0%, #ff968b 42%, #ff7b74 100%);
+        }
+
+        .hint {
+            position: absolute;
+            left: 20px;
+            bottom: 130px;
+            padding: 0.8rem 0.95rem;
+            max-width: 430px;
+            color: var(--text-soft);
+            line-height: 1.58;
+        }
+
+        .hint strong {
+            color: var(--text);
+        }
+
+        .hint code {
+            color: var(--accent-soft);
+            font-family: "SFMono-Regular", ui-monospace, monospace;
+        }
+
+        @keyframes sweep {
+            0% { transform: translateX(-5%) translateY(0); opacity: 0.46; }
+            50% { transform: translateX(4%) translateY(-4px); opacity: 0.82; }
+            100% { transform: translateX(-3%) translateY(2px); opacity: 0.38; }
+        }
+
+        @media (max-width: 920px) {
+            .stats {
+                top: auto;
+                right: 20px;
+                bottom: 132px;
+                width: calc(100vw - 40px);
+            }
+
+            .hint {
+                display: none;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="info">🎮 2D PHYSICS | Click & drag to throw balls | WASD = change gravity</div>
-    <div id="controls">
-        <button onclick="addBall()">➕ Add Ball</button>
-        <button onclick="resetBalls()">🔄 Reset</button>
-        <button onclick="clearBalls()">🗑️ Clear All</button>
-    </div>
-    <div id="gravity">🌍 GRAVITY: <span id="gravityDir">DOWN</span></div>
-    <div class="note">💡 For window shake & full features → clone repo & run python3 visualize_realtime.py</div>
     <canvas id="physicsCanvas"></canvas>
 
+    <div class="overlay">
+        <section class="panel hero">
+            <div class="eyebrow">2D Physics Sandbox</div>
+            <h1>Motion You Can Grab.</h1>
+            <p>
+                A more tactile browser layer over the physics-engine work: drag bodies, flip gravity, swap scenes,
+                and watch collisions, energy, and momentum respond in real time.
+            </p>
+            <div class="hero-meta">
+                <span class="chip">Drag To Throw</span>
+                <span class="chip">Scene Presets</span>
+                <span class="chip">Energy Readout</span>
+            </div>
+        </section>
+
+        <section class="panel stats">
+            <div class="eyebrow">Live Stats</div>
+            <div class="stats-grid">
+                <div><span class="stat-label">Scene</span><span class="stat-value" id="sceneValue">Random</span></div>
+                <div><span class="stat-label">Gravity</span><span class="stat-value" id="gravityValue">Down</span></div>
+                <div><span class="stat-label">Bodies</span><span class="stat-value" id="ballValue">0</span></div>
+                <div><span class="stat-label">Avg Speed</span><span class="stat-value" id="speedValue">0.0</span></div>
+                <div><span class="stat-label">Collisions</span><span class="stat-value" id="collisionValue">0</span></div>
+                <div><span class="stat-label">Energy</span><span class="stat-value" id="energyValue">0</span></div>
+            </div>
+        </section>
+
+        <section class="panel hint">
+            <strong>Controls</strong><br>
+            <code>W A S D</code> redirects gravity • <code>1 2 3</code> switches presets • <code>P</code> pauses • <code>T</code> toggles trails
+        </section>
+
+        <section class="panel toolbar">
+            <div class="toolbar-group">
+                <div class="preset-row">
+                    <button class="button active" data-preset="random">Random</button>
+                    <button class="button" data-preset="cascade">Cascade</button>
+                    <button class="button" data-preset="orbit">Orbit</button>
+                </div>
+            </div>
+
+            <div class="toolbar-actions">
+                <button class="button primary" id="addBallBtn">Add Ball</button>
+                <button class="button" id="burstBtn">Burst</button>
+                <button class="button" id="pauseBtn">Pause</button>
+                <button class="button" id="trailBtn">Trails On</button>
+                <button class="button" id="resetBtn">Reset</button>
+                <button class="button" id="clearBtn">Clear</button>
+            </div>
+        </section>
+    </div>
+
     <script>
-        const canvas = document.getElementById('physicsCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, groundY;
-        
-        function resizeCanvas() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            groundY = height - 50;
-            canvas.width = width;
-            canvas.height = height;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        
-        class Ball {
-            constructor(x, y, vx, vy, restitution, radius, color) {
-                this.x = x; this.y = y; this.vx = vx; this.vy = vy;
-                this.restitution = restitution; this.radius = radius; this.color = color;
-            }
-        }
-        
+        const canvas = document.getElementById("physicsCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const statsEls = {
+            scene: document.getElementById("sceneValue"),
+            gravity: document.getElementById("gravityValue"),
+            balls: document.getElementById("ballValue"),
+            speed: document.getElementById("speedValue"),
+            collisions: document.getElementById("collisionValue"),
+            energy: document.getElementById("energyValue"),
+        };
+
+        const COLORS = ["#ff8a7a", "#ffc2a8", "#ffb199", "#ffd8c4", "#ff7b74", "#ff9d86"];
+        const BG_TOP = "#08121d";
+        const BG_BOTTOM = "#152334";
+        const GROUND = "#2a2328";
+        const GROUND_LINE = "#ff8479";
+
+        let width = 0;
+        let height = 0;
+        let dpr = 1;
+        let groundY = 0;
+        let lastTime = performance.now();
+        let visualPhase = 0;
+        let paused = false;
+        let showTrails = true;
+        let currentPreset = "random";
+        let collisionCount = 0;
+
+        const gravityModes = {
+            DOWN: { x: 0, y: 520 },
+            UP: { x: 0, y: -520 },
+            LEFT: { x: -520, y: 0 },
+            RIGHT: { x: 520, y: 0 },
+        };
+
+        let gravity = { ...gravityModes.DOWN };
+        let gravityName = "DOWN";
         let balls = [];
-        let gravity = { x: 0, y: 500 };
-        let gravityDir = 'DOWN';
         let dragging = null;
         let dragOffset = { x: 0, y: 0 };
         let lastMouse = { x: 0, y: 0 };
         let throwVel = null;
-        
-        function createBalls() {
-            balls = [];
-            for (let i = 0; i < 10; i++) {
-                balls.push(new Ball(
-                    Math.random() * (width - 100) + 50,
-                    Math.random() * (groundY - 100) + 50,
-                    (Math.random() - 0.5) * 300,
-                    (Math.random() - 0.5) * 200,
-                    0.65 + Math.random() * 0.3,
-                    8 + Math.random() * 10,
-                    `hsl(${Math.random() * 360}, 70%, 60%)`
-                ));
+
+        class Ball {
+            constructor({ x, y, vx, vy, restitution, radius, color }) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.restitution = restitution;
+                this.radius = radius;
+                this.color = color;
+                this.trail = [];
             }
-            balls.push(new Ball(width/2, groundY - 80, 100, -200, 0.95, 18, '#ff6666'));
-            updateCount();
         }
-        
-        function updateCount() {
-            document.getElementById('gravityDir').innerText = gravityDir;
+
+        function resizeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            groundY = height - 64;
+            dpr = window.devicePixelRatio || 1;
+            canvas.width = Math.round(width * dpr);
+            canvas.height = Math.round(height * dpr);
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
-        
-        window.addBall = () => {
-            balls.push(new Ball(
-                Math.random() * (width - 100) + 50,
-                Math.random() * (groundY - 100) + 50,
-                (Math.random() - 0.5) * 300,
-                (Math.random() - 0.5) * 200,
-                0.6 + Math.random() * 0.35,
-                8 + Math.random() * 10,
-                `hsl(${Math.random() * 360}, 70%, 60%)`
-            ));
-        };
-        
-        window.resetBalls = () => createBalls();
-        window.clearBalls = () => { balls = []; };
-        
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'w') { gravity = { x: 0, y: -500 }; gravityDir = 'UP'; updateCount(); e.preventDefault(); }
-            if (e.key === 's') { gravity = { x: 0, y: 500 }; gravityDir = 'DOWN'; updateCount(); e.preventDefault(); }
-            if (e.key === 'a') { gravity = { x: -500, y: 0 }; gravityDir = 'LEFT'; updateCount(); e.preventDefault(); }
-            if (e.key === 'd') { gravity = { x: 500, y: 0 }; gravityDir = 'RIGHT'; updateCount(); e.preventDefault(); }
-        });
-        
-        function getMousePos(e) {
+
+        function makeBall(overrides = {}) {
+            return new Ball({
+                x: overrides.x ?? (90 + Math.random() * (width - 180)),
+                y: overrides.y ?? (110 + Math.random() * Math.max(120, groundY - 220)),
+                vx: overrides.vx ?? ((Math.random() - 0.5) * 280),
+                vy: overrides.vy ?? ((Math.random() - 0.5) * 220),
+                restitution: overrides.restitution ?? (0.72 + Math.random() * 0.22),
+                radius: overrides.radius ?? (10 + Math.random() * 9),
+                color: overrides.color ?? COLORS[Math.floor(Math.random() * COLORS.length)],
+            });
+        }
+
+        function createScene(name) {
+            currentPreset = name;
+            balls = [];
+            if (name === "cascade") {
+                for (let i = 0; i < 9; i += 1) {
+                    balls.push(makeBall({
+                        x: 140 + i * 96,
+                        y: 120 + i * 10,
+                        vx: -20 + Math.random() * 80,
+                        vy: -20 + Math.random() * 60,
+                        radius: 12 + (i % 3) * 2,
+                    }));
+                }
+            } else if (name === "orbit") {
+                const cx = width * 0.5;
+                const cy = height * 0.42;
+                for (let i = 0; i < 12; i += 1) {
+                    const angle = (Math.PI * 2 * i) / 12;
+                    balls.push(makeBall({
+                        x: cx + Math.cos(angle) * 210,
+                        y: cy + Math.sin(angle) * 128,
+                        vx: -Math.sin(angle) * 190,
+                        vy: Math.cos(angle) * 140,
+                        restitution: 0.88,
+                        radius: 11 + (i % 2) * 2,
+                    }));
+                }
+            } else {
+                for (let i = 0; i < 12; i += 1) {
+                    balls.push(makeBall());
+                }
+            }
+
+            balls.push(makeBall({
+                x: width * 0.5,
+                y: groundY - 140,
+                vx: 170,
+                vy: -260,
+                restitution: 0.96,
+                radius: 22,
+                color: "#ffd5c5",
+            }));
+
+            updatePresetButtons();
+            updateStats();
+        }
+
+        function updatePresetButtons() {
+            document.querySelectorAll("[data-preset]").forEach((button) => {
+                button.classList.toggle("active", button.dataset.preset === currentPreset);
+            });
+        }
+
+        function setGravity(mode) {
+            gravity = { ...gravityModes[mode] };
+            gravityName = mode;
+        }
+
+        function addBall() {
+            balls.push(makeBall());
+        }
+
+        function burstBalls() {
+            for (let i = 0; i < 5; i += 1) addBall();
+        }
+
+        function clearBalls() {
+            balls = [];
+            updateStats();
+        }
+
+        function getMousePos(event) {
             const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+            return {
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top,
+            };
         }
-        
-        canvas.addEventListener('mousedown', (e) => {
-            const mouse = getMousePos(e);
-            for (let i = balls.length-1; i >= 0; i--) {
-                const b = balls[i];
-                if (Math.hypot(mouse.x - b.x, mouse.y - b.y) < b.radius) {
-                    dragging = b;
-                    dragOffset = { x: b.x - mouse.x, y: b.y - mouse.y };
-                    lastMouse = { x: mouse.x, y: mouse.y };
+
+        function resolveCollision(a, b) {
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.hypot(dx, dy);
+            if (!dist) return false;
+            const minDist = a.radius + b.radius;
+            if (dist >= minDist) return false;
+
+            const nx = dx / dist;
+            const ny = dy / dist;
+            const overlap = minDist - dist;
+            a.x += nx * overlap * 0.5;
+            a.y += ny * overlap * 0.5;
+            b.x -= nx * overlap * 0.5;
+            b.y -= ny * overlap * 0.5;
+
+            const rvx = a.vx - b.vx;
+            const rvy = a.vy - b.vy;
+            const velAlong = rvx * nx + rvy * ny;
+            if (velAlong > 0) return false;
+
+            const restitution = (a.restitution + b.restitution) * 0.5;
+            const impulse = -(1 + restitution) * velAlong * 0.5;
+            a.vx += impulse * nx;
+            a.vy += impulse * ny;
+            b.vx -= impulse * nx;
+            b.vy -= impulse * ny;
+            return true;
+        }
+
+        function computeEnergy() {
+            const ke = balls.reduce((sum, b) => sum + 0.5 * (b.vx ** 2 + b.vy ** 2), 0);
+            const pe = balls.reduce((sum, b) => sum + Math.max(0, groundY - b.y) * Math.hypot(gravity.x, gravity.y) * 0.2, 0);
+            return Math.round(ke + pe);
+        }
+
+        function averageSpeed() {
+            if (!balls.length) return 0;
+            return balls.reduce((sum, b) => sum + Math.hypot(b.vx, b.vy), 0) / balls.length;
+        }
+
+        function updateStats() {
+            statsEls.scene.textContent = currentPreset[0].toUpperCase() + currentPreset.slice(1);
+            statsEls.gravity.textContent = gravityName;
+            statsEls.balls.textContent = String(balls.length);
+            statsEls.speed.textContent = averageSpeed().toFixed(1);
+            statsEls.collisions.textContent = String(collisionCount);
+            statsEls.energy.textContent = String(computeEnergy());
+        }
+
+        function drawBackground() {
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, BG_TOP);
+            gradient.addColorStop(1, BG_BOTTOM);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.save();
+            for (let i = 0; i < 5; i += 1) {
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(255, ${180 + i * 12}, ${160 + i * 10}, ${0.05 + i * 0.02})`;
+                ctx.lineWidth = i === 2 ? 3 : 2;
+                for (let x = -60; x <= width + 60; x += 24) {
+                    const y =
+                        110 +
+                        i * 72 +
+                        Math.sin((x / width) * Math.PI * 2 * (1 + i * 0.12) + visualPhase * (0.7 + i * 0.08)) * (18 + i * 6) +
+                        Math.cos((x / width) * Math.PI * 2 * 0.55 - visualPhase * 0.38 + i * 0.4) * 8;
+                    if (x === -60) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        function drawGround() {
+            ctx.fillStyle = GROUND;
+            ctx.fillRect(0, groundY, width, height - groundY);
+            ctx.strokeStyle = GROUND_LINE;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, groundY);
+            ctx.lineTo(width, groundY);
+            ctx.stroke();
+        }
+
+        function drawBalls() {
+            for (const ball of balls) {
+                if (showTrails && ball.trail.length) {
+                    ball.trail.forEach((point, index) => {
+                        const t = (index + 1) / ball.trail.length;
+                        ctx.beginPath();
+                        ctx.fillStyle = `${ball.color}${Math.round(40 + 120 * t).toString(16).padStart(2, "0")}`;
+                        ctx.arc(point.x, point.y, Math.max(2, ball.radius * t * 0.75), 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                }
+
+                ctx.save();
+                const glow = ctx.createRadialGradient(ball.x, ball.y, ball.radius * 0.2, ball.x, ball.y, ball.radius * 2.6);
+                glow.addColorStop(0, `${ball.color}aa`);
+                glow.addColorStop(1, `${ball.color}00`);
+                ctx.fillStyle = glow;
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius * 2.6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                ctx.beginPath();
+                ctx.fillStyle = ball.color;
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.strokeStyle = "rgba(255,255,255,0.95)";
+                ctx.lineWidth = 2;
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.fillStyle = "rgba(255,255,255,0.95)";
+                ctx.arc(ball.x - ball.radius * 0.25, ball.y - ball.radius * 0.28, Math.max(2, ball.radius * 0.22), 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function updatePhysics(dt) {
+            collisionCount = 0;
+            for (const ball of balls) {
+                if (ball === dragging) continue;
+                ball.vx += gravity.x * dt;
+                ball.vy += gravity.y * dt;
+                ball.x += ball.vx * dt;
+                ball.y += ball.vy * dt;
+                ball.vx *= 0.998;
+                ball.vy *= 0.998;
+
+                if (ball.y + ball.radius > groundY) {
+                    ball.y = groundY - ball.radius;
+                    ball.vy = -ball.vy * ball.restitution;
+                    if (Math.abs(ball.vy) < 20) ball.vy = 0;
+                }
+                if (ball.x - ball.radius < 0) {
+                    ball.x = ball.radius;
+                    ball.vx *= -ball.restitution;
+                }
+                if (ball.x + ball.radius > width) {
+                    ball.x = width - ball.radius;
+                    ball.vx *= -ball.restitution;
+                }
+                if (ball.y - ball.radius < 0) {
+                    ball.y = ball.radius;
+                    ball.vy *= -ball.restitution;
+                }
+
+                if (showTrails) {
+                    ball.trail.push({ x: ball.x, y: ball.y });
+                    if (ball.trail.length > 24) ball.trail.shift();
+                } else {
+                    ball.trail.length = 0;
+                }
+            }
+
+            for (let i = 0; i < balls.length; i += 1) {
+                for (let j = i + 1; j < balls.length; j += 1) {
+                    if (resolveCollision(balls[i], balls[j])) collisionCount += 1;
+                }
+            }
+        }
+
+        function drawDragVector(mouseX, mouseY) {
+            if (!dragging) return;
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(255, 214, 199, 0.92)";
+            ctx.lineWidth = 2;
+            ctx.moveTo(dragging.x, dragging.y);
+            ctx.lineTo(mouseX, mouseY);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.fillStyle = "rgba(255, 214, 199, 0.95)";
+            ctx.arc(mouseX, mouseY, 4.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function animate(now) {
+            requestAnimationFrame(animate);
+            const dt = Math.min(0.033, (now - lastTime) / 1000 || 0.016);
+            lastTime = now;
+            visualPhase += dt;
+
+            if (!paused) updatePhysics(dt);
+            drawBackground();
+            drawGround();
+            drawBalls();
+
+            if (dragging && lastMouse) {
+                drawDragVector(lastMouse.x, lastMouse.y);
+            }
+
+            updateStats();
+        }
+
+        canvas.addEventListener("mousedown", (event) => {
+            const mouse = getMousePos(event);
+            for (let i = balls.length - 1; i >= 0; i -= 1) {
+                const ball = balls[i];
+                if (Math.hypot(mouse.x - ball.x, mouse.y - ball.y) < ball.radius) {
+                    dragging = ball;
+                    dragOffset = { x: ball.x - mouse.x, y: ball.y - mouse.y };
+                    lastMouse = mouse;
+                    canvas.classList.add("dragging");
                     break;
                 }
             }
         });
-        
-        canvas.addEventListener('mousemove', (e) => {
-            const mouse = getMousePos(e);
-            if (dragging) {
-                const dx = mouse.x - lastMouse.x;
-                const dy = mouse.y - lastMouse.y;
-                throwVel = { x: dx / 0.016, y: dy / 0.016 };
-                dragging.x = mouse.x + dragOffset.x;
-                dragging.y = mouse.y + dragOffset.y;
-                dragging.vx = 0;
-                dragging.vy = 0;
-                lastMouse = { x: mouse.x, y: mouse.y };
-                dragging.x = Math.max(dragging.radius, Math.min(width - dragging.radius, dragging.x));
-                dragging.y = Math.max(dragging.radius, Math.min(groundY - dragging.radius, dragging.y));
+
+        window.addEventListener("mousemove", (event) => {
+            if (!dragging) return;
+            const mouse = getMousePos(event);
+            const dx = mouse.x - lastMouse.x;
+            const dy = mouse.y - lastMouse.y;
+            throwVel = { x: dx / 0.016, y: dy / 0.016 };
+            dragging.x = mouse.x + dragOffset.x;
+            dragging.y = mouse.y + dragOffset.y;
+            dragging.vx = 0;
+            dragging.vy = 0;
+            lastMouse = mouse;
+        });
+
+        window.addEventListener("mouseup", () => {
+            if (dragging && throwVel) {
+                dragging.vx = throwVel.x;
+                dragging.vy = throwVel.y;
+            }
+            dragging = null;
+            throwVel = null;
+            canvas.classList.remove("dragging");
+        });
+
+        window.addEventListener("keydown", (event) => {
+            const key = event.key.toLowerCase();
+            if (key === "w") setGravity("UP");
+            else if (key === "a") setGravity("LEFT");
+            else if (key === "s") setGravity("DOWN");
+            else if (key === "d") setGravity("RIGHT");
+            else if (key === "1") createScene("random");
+            else if (key === "2") createScene("cascade");
+            else if (key === "3") createScene("orbit");
+            else if (key === "p") {
+                paused = !paused;
+                document.getElementById("pauseBtn").textContent = paused ? "Resume" : "Pause";
+            } else if (key === "t") {
+                showTrails = !showTrails;
+                document.getElementById("trailBtn").textContent = showTrails ? "Trails On" : "Trails Off";
+            } else if (event.code === "Space") {
+                event.preventDefault();
+                addBall();
             }
         });
-        
-        canvas.addEventListener('mouseup', () => {
-            if (dragging && throwVel) { dragging.vx = throwVel.x; dragging.vy = throwVel.y; }
-            dragging = null; throwVel = null;
+
+        document.getElementById("addBallBtn").addEventListener("click", addBall);
+        document.getElementById("burstBtn").addEventListener("click", burstBalls);
+        document.getElementById("pauseBtn").addEventListener("click", () => {
+            paused = !paused;
+            document.getElementById("pauseBtn").textContent = paused ? "Resume" : "Pause";
         });
-        
-        function resolveCollision(a, b) {
-            const dx = a.x - b.x, dy = a.y - b.y;
-            const dist = Math.hypot(dx, dy);
-            if (dist === 0) return;
-            const minDist = a.radius + b.radius;
-            if (dist < minDist) {
-                const nx = dx / dist, ny = dy / dist;
-                const overlap = minDist - dist;
-                a.x += nx * overlap * 0.5; a.y += ny * overlap * 0.5;
-                b.x -= nx * overlap * 0.5; b.y -= ny * overlap * 0.5;
-                const rvx = a.vx - b.vx, rvy = a.vy - b.vy;
-                const velAlong = rvx * nx + rvy * ny;
-                if (velAlong > 0) return;
-                const e = (a.restitution + b.restitution) / 2;
-                const j = -(1 + e) * velAlong / 2;
-                a.vx += j * nx; a.vy += j * ny;
-                b.vx -= j * nx; b.vy -= j * ny;
-            }
-        }
-        
-        function updatePhysics(dt) {
-            for (let b of balls) {
-                if (b === dragging) continue;
-                b.vx += gravity.x * dt; b.vy += gravity.y * dt;
-                b.x += b.vx * dt; b.y += b.vy * dt;
-                if (b.y + b.radius > groundY) { b.y = groundY - b.radius; b.vy = -b.vy * b.restitution; if (Math.abs(b.vy) < 20) b.vy = 0; }
-                if (b.x - b.radius < 0) { b.x = b.radius; b.vx = -b.vx * b.restitution; }
-                if (b.x + b.radius > width) { b.x = width - b.radius; b.vx = -b.vx * b.restitution; }
-                if (b.y - b.radius < 0) { b.y = b.radius; b.vy = -b.vy * b.restitution; }
-            }
-            for (let i = 0; i < balls.length; i++)
-                for (let j = i+1; j < balls.length; j++)
-                    resolveCollision(balls[i], balls[j]);
-        }
-        
-        function draw() {
-            ctx.clearRect(0, 0, width, height);
-            ctx.fillStyle = '#1e2a3a'; ctx.fillRect(0, groundY, width, height - groundY);
-            for (let b of balls) {
-                ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI*2);
-                ctx.fillStyle = b.color; ctx.fill();
-                ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5; ctx.stroke();
-                if (b === dragging) { ctx.beginPath(); ctx.arc(b.x, b.y, b.radius+3, 0, Math.PI*2); ctx.strokeStyle = '#60a5fa'; ctx.lineWidth = 2; ctx.stroke(); }
-            }
-            ctx.fillStyle = '#94a3b8'; ctx.font = '12px monospace'; ctx.fillText('WASD = gravity | Click & drag to throw', 20, 30);
-        }
-        
-        let lastTime = performance.now();
-        function animate() {
-            const now = performance.now();
-            let dt = Math.min(0.033, (now - lastTime) / 1000);
-            if (dt > 0.001) { updatePhysics(dt); draw(); }
-            lastTime = now;
-            requestAnimationFrame(animate);
-        }
-        
-        createBalls();
-        animate();
+        document.getElementById("trailBtn").addEventListener("click", () => {
+            showTrails = !showTrails;
+            document.getElementById("trailBtn").textContent = showTrails ? "Trails On" : "Trails Off";
+        });
+        document.getElementById("resetBtn").addEventListener("click", () => createScene(currentPreset));
+        document.getElementById("clearBtn").addEventListener("click", clearBalls);
+        document.querySelectorAll("[data-preset]").forEach((button) => {
+            button.addEventListener("click", () => createScene(button.dataset.preset));
+        });
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+        createScene("random");
+        requestAnimationFrame(animate);
     </script>
 </body>
 </html>

@@ -3,256 +3,699 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Physics Demo | Supash Bhat</title>
+    <title>3D Physics Sandbox | Supash Bhat</title>
     <style>
-        body { margin: 0; overflow: hidden; font-family: monospace; }
-        #info {
-            position: absolute; top: 20px; left: 20px;
-            background: rgba(0,0,0,0.7); color: white;
-            padding: 10px 15px; border-radius: 8px;
-            font-size: 12px; pointer-events: none;
-            z-index: 10;
+        :root {
+            --bg-0: #050a14;
+            --bg-1: #101926;
+            --panel: rgba(10, 16, 28, 0.76);
+            --line: rgba(255, 138, 126, 0.16);
+            --text: #eff4fb;
+            --text-soft: #bfc0cb;
+            --text-faint: #8f8793;
+            --accent: #ff8278;
+            --accent-soft: #ffd4c8;
+            --accent-warm: #ffc3b4;
         }
-        #controls {
-            position: absolute; bottom: 20px; left: 20px;
-            background: rgba(0,0,0,0.7); color: white;
-            padding: 10px 15px; border-radius: 8px;
-            font-size: 12px; z-index: 10;
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 20% 12%, rgba(255, 130, 120, 0.12), transparent 20%),
+                radial-gradient(circle at 84% 20%, rgba(255, 215, 198, 0.1), transparent 24%),
+                linear-gradient(165deg, var(--bg-0) 0%, var(--bg-1) 58%, #162436 100%);
         }
-        #controls button {
-            background: #60a5fa; border: none; color: white;
-            padding: 4px 12px; margin: 4px; border-radius: 4px;
+
+        canvas {
+            display: block;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .panel {
+            position: absolute;
+            border-radius: 1.35rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 100%), var(--panel);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+        }
+
+        .hero {
+            top: 20px;
+            left: 20px;
+            width: min(460px, calc(100vw - 40px));
+            padding: 1rem 1.1rem 1.05rem;
+        }
+
+        .eyebrow,
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.34rem 0.68rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent-soft);
+            border: 1px solid rgba(255, 140, 126, 0.12);
+            background: rgba(255, 130, 120, 0.06);
+        }
+
+        .hero h1 {
+            margin: 0.78rem 0 0.32rem;
+            font-size: clamp(2rem, 4vw, 3.1rem);
+            line-height: 1.02;
+            letter-spacing: -0.055em;
+        }
+
+        .hero p,
+        .panel p {
+            margin: 0;
+            color: var(--text-soft);
+            line-height: 1.68;
+        }
+
+        .hero-meta {
+            margin-top: 0.95rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .stats {
+            top: 20px;
+            right: 20px;
+            width: min(330px, calc(100vw - 40px));
+            padding: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.8rem 1rem;
+            margin-top: 0.9rem;
+        }
+
+        .stat-label {
+            display: block;
+            margin-bottom: 0.28rem;
+            color: var(--text-faint);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.68rem;
+            font-weight: 800;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.06rem;
+            font-weight: 700;
+        }
+
+        .toolbar {
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            padding: 0.95rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: center;
+            pointer-events: auto;
+        }
+
+        .toolbar-group,
+        .toolbar-actions,
+        .preset-row,
+        .gravity-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+            align-items: center;
+        }
+
+        .toolbar-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .button {
+            appearance: none;
+            border: 1px solid rgba(255, 144, 128, 0.12);
+            background: rgba(255, 255, 255, 0.035);
+            color: var(--text);
+            padding: 0.76rem 0.95rem;
+            border-radius: 0.95rem;
+            font-weight: 700;
             cursor: pointer;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
         }
-        #gravity {
-            position: absolute; bottom: 20px; right: 20px;
-            background: rgba(0,0,0,0.7); color: #60a5fa;
-            padding: 10px 15px; border-radius: 8px;
-            font-family: monospace; font-weight: bold;
-            pointer-events: none; z-index: 10;
+
+        .button:hover {
+            transform: translateY(-1px);
+            border-color: rgba(255, 184, 170, 0.22);
+            background: rgba(255, 255, 255, 0.06);
         }
-        .note {
-            position: absolute; top: 20px; right: 20px;
-            background: rgba(0,0,0,0.5); color: #94a3b8;
-            padding: 8px 12px; border-radius: 8px;
-            font-size: 10px; pointer-events: none;
-            z-index: 10;
+
+        .button.active,
+        .button.primary {
+            color: #09151e;
+            border-color: transparent;
+            background: linear-gradient(135deg, var(--accent-warm) 0%, #ff9a90 42%, #ff7d76 100%);
+        }
+
+        .hint {
+            position: absolute;
+            left: 20px;
+            bottom: 156px;
+            max-width: 500px;
+            padding: 0.82rem 0.95rem;
+        }
+
+        .hint strong {
+            color: var(--text);
+        }
+
+        .hint code {
+            color: var(--accent-soft);
+            font-family: "SFMono-Regular", ui-monospace, monospace;
+        }
+
+        @media (max-width: 980px) {
+            .stats {
+                top: auto;
+                right: 20px;
+                bottom: 170px;
+                width: calc(100vw - 40px);
+            }
+
+            .hint {
+                display: none;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="info">🎮 3D PHYSICS | Mouse drag to rotate view | Number keys 1-6 change gravity</div>
-    <div id="controls">
-        <button onclick="addBall()">➕ Add Ball</button>
-        <button onclick="resetBalls()">🔄 Reset</button>
-        <button onclick="clearBalls()">🗑️ Clear All</button>
+    <div class="overlay">
+        <section class="panel hero">
+            <div class="eyebrow">3D Physics Sandbox</div>
+            <h1>Spatial Motion, Not Just Math.</h1>
+            <p>
+                A more cinematic surface for the same simulation instincts: orbit the scene, flip gravity through all
+                six directions, and watch clusters of bodies settle, ricochet, and reorganize in space.
+            </p>
+            <div class="hero-meta">
+                <span class="chip">Three.js</span>
+                <span class="chip">Preset Scenes</span>
+                <span class="chip">Six-Direction Gravity</span>
+            </div>
+        </section>
+
+        <section class="panel stats">
+            <div class="eyebrow">Scene State</div>
+            <div class="stats-grid">
+                <div><span class="stat-label">Scene</span><span class="stat-value" id="sceneValue">Cluster</span></div>
+                <div><span class="stat-label">Gravity</span><span class="stat-value" id="gravityValue">Down</span></div>
+                <div><span class="stat-label">Bodies</span><span class="stat-value" id="ballValue">0</span></div>
+                <div><span class="stat-label">Avg Speed</span><span class="stat-value" id="speedValue">0.0</span></div>
+                <div><span class="stat-label">Collisions</span><span class="stat-value" id="collisionValue">0</span></div>
+                <div><span class="stat-label">Camera</span><span class="stat-value" id="cameraValue">Orbit</span></div>
+            </div>
+        </section>
+
+        <section class="panel hint">
+            <strong>Controls</strong><br>
+            Drag to orbit • scroll to zoom • <code>1-6</code> switches gravity direction • use presets to reset the field
+        </section>
+
+        <section class="panel toolbar">
+            <div class="toolbar-stack">
+                <div class="preset-row">
+                    <button class="button active" data-preset="cluster">Cluster</button>
+                    <button class="button" data-preset="ring">Ring</button>
+                    <button class="button" data-preset="column">Column</button>
+                </div>
+                <div class="gravity-row">
+                    <button class="button active" data-gravity="DOWN">Down</button>
+                    <button class="button" data-gravity="UP">Up</button>
+                    <button class="button" data-gravity="LEFT">Left</button>
+                    <button class="button" data-gravity="RIGHT">Right</button>
+                    <button class="button" data-gravity="FORWARD">Forward</button>
+                    <button class="button" data-gravity="BACKWARD">Backward</button>
+                </div>
+            </div>
+
+            <div class="toolbar-actions">
+                <button class="button primary" id="addBallBtn">Add Ball</button>
+                <button class="button" id="burstBtn">Burst</button>
+                <button class="button" id="pauseBtn">Pause</button>
+                <button class="button" id="resetBtn">Reset</button>
+                <button class="button" id="clearBtn">Clear</button>
+            </div>
+        </section>
     </div>
-    <div id="gravity">🌍 GRAVITY: <span id="gravityDir">DOWN</span></div>
-    <div class="note">💡 For drag-to-throw & window shake → clone repo & run python3 visualize_realtime.py</div>
 
     <script type="importmap">
         {
             "imports": {
-                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
             }
         }
     </script>
 
     <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import * as THREE from "three";
+        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-        // Setup
+        const statsEls = {
+            scene: document.getElementById("sceneValue"),
+            gravity: document.getElementById("gravityValue"),
+            balls: document.getElementById("ballValue"),
+            speed: document.getElementById("speedValue"),
+            collisions: document.getElementById("collisionValue"),
+            camera: document.getElementById("cameraValue"),
+        };
+
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a0a1a);
-        scene.fog = new THREE.FogExp2(0x0a0a1a, 0.008);
+        scene.background = new THREE.Color(0x070d17);
+        scene.fog = new THREE.FogExp2(0x070d17, 0.017);
 
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(15, 12, 18);
-        camera.lookAt(0, 0, 0);
+        const camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(13, 10, 16);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.shadowMap.enabled = true;
         document.body.appendChild(renderer.domElement);
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.rotateSpeed = 1.0;
-        controls.zoomSpeed = 1.2;
-        controls.enableZoom = true;
-        controls.target.set(0, 0, 0);
+        controls.dampingFactor = 0.06;
+        controls.rotateSpeed = 0.9;
+        controls.zoomSpeed = 0.95;
+        controls.target.set(0, 0.5, 0);
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0x404060);
+        const ambientLight = new THREE.AmbientLight(0xf6ccd0, 0.58);
         scene.add(ambientLight);
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-        dirLight.position.set(5, 10, 7);
-        dirLight.castShadow = true;
-        scene.add(dirLight);
-        const fillLight = new THREE.PointLight(0x4466cc, 0.3);
-        fillLight.position.set(0, -5, 0);
+
+        const keyLight = new THREE.DirectionalLight(0xffe4d8, 1.15);
+        keyLight.position.set(8, 14, 7);
+        keyLight.castShadow = true;
+        keyLight.shadow.mapSize.width = 2048;
+        keyLight.shadow.mapSize.height = 2048;
+        scene.add(keyLight);
+
+        const accentLight = new THREE.PointLight(0xff7f73, 1.35, 46, 2.2);
+        accentLight.position.set(-4, 2, 5);
+        scene.add(accentLight);
+
+        const fillLight = new THREE.PointLight(0xffb6a6, 0.7, 40, 2.2);
+        fillLight.position.set(6, -2, -4);
         scene.add(fillLight);
 
-        // Environment
-        const gridHelper = new THREE.GridHelper(30, 20, 0x88aaff, 0x335588);
-        gridHelper.position.y = -3;
-        scene.add(gridHelper);
-        
-        const groundPlane = new THREE.Mesh(
-            new THREE.PlaneGeometry(18, 18),
-            new THREE.MeshStandardMaterial({ color: 0x1e2a3a, roughness: 0.7, metalness: 0.1, transparent: true, opacity: 0.4 })
+        const floor = new THREE.Mesh(
+            new THREE.CircleGeometry(10.5, 72),
+            new THREE.MeshStandardMaterial({
+                color: 0x231d24,
+                metalness: 0.16,
+                roughness: 0.62,
+                transparent: true,
+                opacity: 0.94,
+            }),
         );
-        groundPlane.rotation.x = -Math.PI / 2;
-        groundPlane.position.y = -3;
-        groundPlane.receiveShadow = true;
-        scene.add(groundPlane);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -3;
+        floor.receiveShadow = true;
+        scene.add(floor);
 
-        // Ball class
+        const floorRing = new THREE.Mesh(
+            new THREE.RingGeometry(10.7, 11.1, 84),
+            new THREE.MeshBasicMaterial({ color: 0xff867a, transparent: true, opacity: 0.42, side: THREE.DoubleSide }),
+        );
+        floorRing.rotation.x = -Math.PI / 2;
+        floorRing.position.y = -2.99;
+        scene.add(floorRing);
+
+        const bounds = 8.2;
+        const groundY = -2.65;
+        const ceilingY = 5.6;
+
+        const frameGeo = new THREE.BoxGeometry(bounds * 2, ceilingY - groundY, bounds * 2);
+        const frameEdges = new THREE.EdgesGeometry(frameGeo);
+        const frame = new THREE.LineSegments(
+            frameEdges,
+            new THREE.LineBasicMaterial({ color: 0xff8f83, transparent: true, opacity: 0.24 }),
+        );
+        frame.position.y = (groundY + ceilingY) * 0.5;
+        scene.add(frame);
+
+        const starPositions = new Float32Array(800 * 3);
+        for (let i = 0; i < 800; i += 1) {
+            starPositions[i * 3 + 0] = (Math.random() - 0.5) * 120;
+            starPositions[i * 3 + 1] = (Math.random() - 0.15) * 70;
+            starPositions[i * 3 + 2] = (Math.random() - 0.5) * 120;
+        }
+        const starGeometry = new THREE.BufferGeometry();
+        starGeometry.setAttribute("position", new THREE.BufferAttribute(starPositions, 3));
+        const stars = new THREE.Points(
+            starGeometry,
+            new THREE.PointsMaterial({ color: 0xffd3c6, size: 0.08, transparent: true, opacity: 0.6 }),
+        );
+        scene.add(stars);
+
         class Ball3D {
-            constructor(x, y, z, vx, vy, vz, restitution, radius, color) {
-                this.x = x; this.y = y; this.z = z;
-                this.vx = vx; this.vy = vy; this.vz = vz;
+            constructor({ x, y, z, vx, vy, vz, restitution, radius, color }) {
+                this.x = x;
+                this.y = y;
+                this.z = z;
+                this.vx = vx;
+                this.vy = vy;
+                this.vz = vz;
                 this.restitution = restitution;
                 this.radius = radius;
                 this.color = color;
                 this.mesh = null;
             }
         }
-        
+
+        const palette = [0xff8378, 0xffba9c, 0xffd0bf, 0xffa189, 0xffdfcf, 0xff6f67];
         let balls = [];
-        let gravity = { x: 0, y: -9.8, z: 0 };
-        let gravityName = 'DOWN';
-        
-        function createBallMesh(ball) {
-            const geometry = new THREE.SphereGeometry(ball.radius, 32, 32);
-            const material = new THREE.MeshStandardMaterial({ color: ball.color, roughness: 0.3, metalness: 0.1 });
-            const mesh = new THREE.Mesh(geometry, material);
+        let currentPreset = "cluster";
+        let paused = false;
+        let collisionCount = 0;
+        let gravityName = "DOWN";
+        let gravity = new THREE.Vector3(0, -9.8, 0);
+
+        const gravityModes = {
+            DOWN: new THREE.Vector3(0, -9.8, 0),
+            UP: new THREE.Vector3(0, 9.8, 0),
+            LEFT: new THREE.Vector3(-9.8, 0, 0),
+            RIGHT: new THREE.Vector3(9.8, 0, 0),
+            FORWARD: new THREE.Vector3(0, 0, -9.8),
+            BACKWARD: new THREE.Vector3(0, 0, 9.8),
+        };
+
+        function makeBall(overrides = {}) {
+            return new Ball3D({
+                x: overrides.x ?? ((Math.random() - 0.5) * 12),
+                y: overrides.y ?? (Math.random() * 4 + 0.5),
+                z: overrides.z ?? ((Math.random() - 0.5) * 12),
+                vx: overrides.vx ?? ((Math.random() - 0.5) * 4.5),
+                vy: overrides.vy ?? ((Math.random() - 0.5) * 4.5),
+                vz: overrides.vz ?? ((Math.random() - 0.5) * 4.5),
+                restitution: overrides.restitution ?? (0.72 + Math.random() * 0.22),
+                radius: overrides.radius ?? (0.38 + Math.random() * 0.22),
+                color: overrides.color ?? palette[Math.floor(Math.random() * palette.length)],
+            });
+        }
+
+        function createMesh(ball) {
+            const mesh = new THREE.Mesh(
+                new THREE.SphereGeometry(ball.radius, 28, 28),
+                new THREE.MeshStandardMaterial({
+                    color: ball.color,
+                    emissive: ball.color,
+                    emissiveIntensity: 0.1,
+                    roughness: 0.28,
+                    metalness: 0.12,
+                }),
+            );
             mesh.castShadow = true;
             mesh.receiveShadow = true;
             mesh.position.set(ball.x, ball.y, ball.z);
             scene.add(mesh);
             return mesh;
         }
-        
-        function updateBallMesh(ball) {
-            if (ball.mesh) ball.mesh.position.set(ball.x, ball.y, ball.z);
-        }
-        
-        function createBalls() {
-            balls.forEach(b => { if (b.mesh) scene.remove(b.mesh); });
+
+        function clearSceneBodies() {
+            for (const ball of balls) {
+                if (ball.mesh) {
+                    scene.remove(ball.mesh);
+                    ball.mesh.geometry.dispose();
+                    ball.mesh.material.dispose();
+                }
+            }
             balls = [];
-            const colors = [0xff6666, 0x66ff66, 0x6666ff, 0xffaa66, 0xff66ff, 0x66ffaa];
-            for (let i = 0; i < 12; i++) {
-                const ball = new Ball3D(
-                    (Math.random() - 0.5) * 12,
-                    Math.random() * 4 - 1,
-                    (Math.random() - 0.5) * 12,
-                    (Math.random() - 0.5) * 5,
-                    (Math.random() - 0.5) * 5,
-                    (Math.random() - 0.5) * 5,
-                    0.7 + Math.random() * 0.25,
-                    0.4 + Math.random() * 0.3,
-                    colors[Math.floor(Math.random() * colors.length)]
-                );
-                ball.mesh = createBallMesh(ball);
-                balls.push(ball);
-            }
-            const special = new Ball3D(0, 2, 0, 2, 3, 1.5, 0.95, 0.55, 0xff3333);
-            special.mesh = createBallMesh(special);
-            balls.push(special);
         }
-        
-        const bounds = 7.5;
-        const groundY = -2.8;
-        const ceilingY = 4.8;
-        const dt = 1/60;
-        
-        function resolveCollision3D(a, b) {
-            const dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z;
-            const dist = Math.hypot(dx, dy, dz);
-            if (dist === 0) return;
-            const minDist = a.radius + b.radius;
-            if (dist < minDist) {
-                const nx = dx / dist, ny = dy / dist, nz = dz / dist;
-                const overlap = minDist - dist;
-                a.x += nx * overlap * 0.5; a.y += ny * overlap * 0.5; a.z += nz * overlap * 0.5;
-                b.x -= nx * overlap * 0.5; b.y -= ny * overlap * 0.5; b.z -= nz * overlap * 0.5;
-                const rvx = a.vx - b.vx, rvy = a.vy - b.vy, rvz = a.vz - b.vz;
-                const velAlong = rvx * nx + rvy * ny + rvz * nz;
-                if (velAlong > 0) return;
-                const e = (a.restitution + b.restitution) / 2;
-                const j = -(1 + e) * velAlong / 2;
-                a.vx += j * nx; a.vy += j * ny; a.vz += j * nz;
-                b.vx -= j * nx; b.vy -= j * ny; b.vz -= j * nz;
+
+        function createScene(name) {
+            currentPreset = name;
+            clearSceneBodies();
+
+            if (name === "ring") {
+                for (let i = 0; i < 14; i += 1) {
+                    const angle = (Math.PI * 2 * i) / 14;
+                    const radius = 5.2;
+                    balls.push(makeBall({
+                        x: Math.cos(angle) * radius,
+                        y: 0.8 + (i % 2) * 0.35,
+                        z: Math.sin(angle) * radius,
+                        vx: -Math.sin(angle) * 3.2,
+                        vy: 0.4,
+                        vz: Math.cos(angle) * 3.2,
+                        radius: 0.42,
+                    }));
+                }
+            } else if (name === "column") {
+                for (let i = 0; i < 12; i += 1) {
+                    balls.push(makeBall({
+                        x: (i % 3 - 1) * 1.15,
+                        y: -1.4 + Math.floor(i / 3) * 1.1,
+                        z: (Math.floor(i / 3) % 2 - 0.5) * 1.2,
+                        vx: (Math.random() - 0.5) * 1.6,
+                        vy: (Math.random() - 0.5) * 1.4,
+                        vz: (Math.random() - 0.5) * 1.6,
+                        radius: 0.44,
+                    }));
+                }
+            } else {
+                for (let i = 0; i < 12; i += 1) {
+                    balls.push(makeBall());
+                }
             }
+
+            balls.push(makeBall({
+                x: 0,
+                y: 2.8,
+                z: 0,
+                vx: 2.4,
+                vy: 1.6,
+                vz: 1.2,
+                restitution: 0.95,
+                radius: 0.65,
+                color: 0xffefe5,
+            }));
+
+            for (const ball of balls) {
+                ball.mesh = createMesh(ball);
+            }
+
+            document.querySelectorAll("[data-preset]").forEach((button) => {
+                button.classList.toggle("active", button.dataset.preset === currentPreset);
+            });
+            updateStats();
         }
-        
-        function updatePhysics() {
-            for (let b of balls) {
-                b.vx += gravity.x * dt; b.vy += gravity.y * dt; b.vz += gravity.z * dt;
-                b.x += b.vx * dt; b.y += b.vy * dt; b.z += b.vz * dt;
-                if (b.y - b.radius < groundY) { b.y = groundY + b.radius; b.vy = -b.vy * b.restitution; if (Math.abs(b.vy) < 0.5) b.vy = 0; }
-                if (b.y + b.radius > ceilingY) { b.y = ceilingY - b.radius; b.vy = -b.vy * b.restitution; }
-                if (b.x - b.radius < -bounds) { b.x = -bounds + b.radius; b.vx = -b.vx * b.restitution; }
-                if (b.x + b.radius > bounds) { b.x = bounds - b.radius; b.vx = -b.vx * b.restitution; }
-                if (b.z - b.radius < -bounds) { b.z = -bounds + b.radius; b.vz = -b.vz * b.restitution; }
-                if (b.z + b.radius > bounds) { b.z = bounds - b.radius; b.vz = -b.vz * b.restitution; }
-                updateBallMesh(b);
-            }
-            for (let i = 0; i < balls.length; i++)
-                for (let j = i+1; j < balls.length; j++)
-                    resolveCollision3D(balls[i], balls[j]);
+
+        function setGravity(mode) {
+            gravityName = mode;
+            gravity.copy(gravityModes[mode]);
+            document.querySelectorAll("[data-gravity]").forEach((button) => {
+                button.classList.toggle("active", button.dataset.gravity === mode);
+            });
+            updateStats();
         }
-        
-        // Gravity controls (number keys)
-        window.addEventListener('keydown', (e) => {
-            switch(e.key) {
-                case '1': gravity = { x: 0, y: -9.8, z: 0 }; gravityName = 'DOWN'; break;
-                case '2': gravity = { x: 0, y: 9.8, z: 0 }; gravityName = 'UP'; break;
-                case '3': gravity = { x: -9.8, y: 0, z: 0 }; gravityName = 'LEFT'; break;
-                case '4': gravity = { x: 9.8, y: 0, z: 0 }; gravityName = 'RIGHT'; break;
-                case '5': gravity = { x: 0, y: 0, z: -9.8 }; gravityName = 'FORWARD'; break;
-                case '6': gravity = { x: 0, y: 0, z: 9.8 }; gravityName = 'BACKWARD'; break;
-                default: return;
-            }
-            document.getElementById('gravityDir').innerText = gravityName;
-            e.preventDefault();
-        });
-        
-        window.addBall = () => {
-            const ball = new Ball3D(
-                (Math.random() - 0.5) * 10, Math.random() * 3, (Math.random() - 0.5) * 10,
-                (Math.random() - 0.5) * 4, (Math.random() - 0.5) * 4, (Math.random() - 0.5) * 4,
-                0.7 + Math.random() * 0.25, 0.45, 0x88aaff
-            );
-            ball.mesh = createBallMesh(ball);
+
+        function addBall() {
+            const ball = makeBall();
+            ball.mesh = createMesh(ball);
             balls.push(ball);
-        };
-        
-        window.resetBalls = () => createBalls();
-        window.clearBalls = () => {
-            balls.forEach(b => { if (b.mesh) scene.remove(b.mesh); });
-            balls = [];
-        };
-        
+        }
+
+        function burstBalls() {
+            for (let i = 0; i < 4; i += 1) addBall();
+        }
+
+        function updateStats() {
+            const avgSpeed = balls.length
+                ? balls.reduce((sum, ball) => sum + Math.hypot(ball.vx, ball.vy, ball.vz), 0) / balls.length
+                : 0;
+            statsEls.scene.textContent = currentPreset[0].toUpperCase() + currentPreset.slice(1);
+            statsEls.gravity.textContent = gravityName;
+            statsEls.balls.textContent = String(balls.length);
+            statsEls.speed.textContent = avgSpeed.toFixed(1);
+            statsEls.collisions.textContent = String(collisionCount);
+            statsEls.camera.textContent = paused ? "Paused Orbit" : "Orbit";
+        }
+
+        function resolveCollision(a, b) {
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dz = a.z - b.z;
+            const dist = Math.hypot(dx, dy, dz);
+            if (!dist) return false;
+            const minDist = a.radius + b.radius;
+            if (dist >= minDist) return false;
+
+            const nx = dx / dist;
+            const ny = dy / dist;
+            const nz = dz / dist;
+            const overlap = minDist - dist;
+            a.x += nx * overlap * 0.5;
+            a.y += ny * overlap * 0.5;
+            a.z += nz * overlap * 0.5;
+            b.x -= nx * overlap * 0.5;
+            b.y -= ny * overlap * 0.5;
+            b.z -= nz * overlap * 0.5;
+
+            const rvx = a.vx - b.vx;
+            const rvy = a.vy - b.vy;
+            const rvz = a.vz - b.vz;
+            const velAlong = rvx * nx + rvy * ny + rvz * nz;
+            if (velAlong > 0) return false;
+
+            const restitution = (a.restitution + b.restitution) * 0.5;
+            const impulse = -(1 + restitution) * velAlong * 0.5;
+            a.vx += impulse * nx;
+            a.vy += impulse * ny;
+            a.vz += impulse * nz;
+            b.vx -= impulse * nx;
+            b.vy -= impulse * ny;
+            b.vz -= impulse * nz;
+            return true;
+        }
+
+        const dt = 1 / 60;
+        function updatePhysics() {
+            collisionCount = 0;
+            for (const ball of balls) {
+                ball.vx += gravity.x * dt;
+                ball.vy += gravity.y * dt;
+                ball.vz += gravity.z * dt;
+                ball.x += ball.vx * dt;
+                ball.y += ball.vy * dt;
+                ball.z += ball.vz * dt;
+                ball.vx *= 0.998;
+                ball.vy *= 0.998;
+                ball.vz *= 0.998;
+
+                if (ball.y - ball.radius < groundY) {
+                    ball.y = groundY + ball.radius;
+                    ball.vy = -ball.vy * ball.restitution;
+                    if (Math.abs(ball.vy) < 0.2) ball.vy = 0;
+                }
+                if (ball.y + ball.radius > ceilingY) {
+                    ball.y = ceilingY - ball.radius;
+                    ball.vy = -ball.vy * ball.restitution;
+                }
+                if (ball.x - ball.radius < -bounds) {
+                    ball.x = -bounds + ball.radius;
+                    ball.vx = -ball.vx * ball.restitution;
+                }
+                if (ball.x + ball.radius > bounds) {
+                    ball.x = bounds - ball.radius;
+                    ball.vx = -ball.vx * ball.restitution;
+                }
+                if (ball.z - ball.radius < -bounds) {
+                    ball.z = -bounds + ball.radius;
+                    ball.vz = -ball.vz * ball.restitution;
+                }
+                if (ball.z + ball.radius > bounds) {
+                    ball.z = bounds - ball.radius;
+                    ball.vz = -ball.vz * ball.restitution;
+                }
+            }
+
+            for (let i = 0; i < balls.length; i += 1) {
+                for (let j = i + 1; j < balls.length; j += 1) {
+                    if (resolveCollision(balls[i], balls[j])) collisionCount += 1;
+                }
+            }
+
+            for (const ball of balls) {
+                ball.mesh.position.set(ball.x, ball.y, ball.z);
+            }
+        }
+
+        document.querySelectorAll("[data-preset]").forEach((button) => {
+            button.addEventListener("click", () => createScene(button.dataset.preset));
+        });
+
+        document.querySelectorAll("[data-gravity]").forEach((button) => {
+            button.addEventListener("click", () => setGravity(button.dataset.gravity));
+        });
+
+        document.getElementById("addBallBtn").addEventListener("click", addBall);
+        document.getElementById("burstBtn").addEventListener("click", burstBalls);
+        document.getElementById("pauseBtn").addEventListener("click", () => {
+            paused = !paused;
+            document.getElementById("pauseBtn").textContent = paused ? "Resume" : "Pause";
+        });
+        document.getElementById("resetBtn").addEventListener("click", () => createScene(currentPreset));
+        document.getElementById("clearBtn").addEventListener("click", () => {
+            clearSceneBodies();
+            updateStats();
+        });
+
+        window.addEventListener("keydown", (event) => {
+            const mapping = {
+                "1": "DOWN",
+                "2": "UP",
+                "3": "LEFT",
+                "4": "RIGHT",
+                "5": "FORWARD",
+                "6": "BACKWARD",
+            };
+            if (mapping[event.key]) {
+                setGravity(mapping[event.key]);
+                event.preventDefault();
+            } else if (event.key.toLowerCase() === "p") {
+                paused = !paused;
+                document.getElementById("pauseBtn").textContent = paused ? "Resume" : "Pause";
+            }
+        });
+
         function animate() {
             requestAnimationFrame(animate);
-            updatePhysics();
+            stars.rotation.y += 0.0008;
+            stars.rotation.x += 0.00018;
+            floorRing.rotation.z += 0.0024;
+            if (!paused) updatePhysics();
             controls.update();
+            updateStats();
             renderer.render(scene, camera);
         }
-        
-        createBalls();
-        animate();
-        
-        window.addEventListener('resize', () => {
+
+        window.addEventListener("resize", () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         });
+
+        createScene("cluster");
+        setGravity("DOWN");
+        animate();
     </script>
 </body>
 </html>
