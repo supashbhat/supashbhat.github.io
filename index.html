@@ -1625,8 +1625,8 @@
                     .sort((a, b) => a.z - b.z)
                     .forEach((point) => {
                         const r = point.z > 0
-                            ? (isNavShell ? 2.6 : 3.8)
-                            : (isNavShell ? 1.7 : 2.6);
+                            ? (isNavShell ? 2.6 : 2.8)
+                            : (isNavShell ? 1.7 : 1.9);
                         ctx.fillStyle = point.z > 0
                             ? "rgba(255, 234, 226, 0.95)"
                             : "rgba(255, 182, 172, 0.72)";
