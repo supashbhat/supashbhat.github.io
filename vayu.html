@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vayu | Supash Bhat</title>
-    <link rel="icon" type="image/png" href="assets/Vayu-Icon.png">
+    <link rel="icon" type="image/png" href="assets/Vayu-Icon.png?v=20260404d">
+    <link rel="shortcut icon" href="assets/Vayu-Icon.png?v=20260404d">
+    <link rel="apple-touch-icon" href="assets/Vayu-Icon.png?v=20260404d">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -92,20 +94,20 @@
         @keyframes introWordReveal {
             0% {
                 opacity: 0;
-                transform: translateX(-18px);
-                letter-spacing: -0.08em;
+                transform: translateX(-28px);
+                letter-spacing: -0.02em;
             }
             100% {
                 opacity: 1;
                 transform: translateX(0);
-                letter-spacing: -0.06em;
+                letter-spacing: -0.045em;
             }
         }
 
         @keyframes introSweep {
-            0% { transform: translateX(-170%) skewX(-18deg); opacity: 0; }
-            15% { opacity: 1; }
-            100% { transform: translateX(440%) skewX(-18deg); opacity: 0; }
+            0% { transform: translateX(-190%) skewX(-18deg); opacity: 0; }
+            12% { opacity: 1; }
+            100% { transform: translateX(520%) skewX(-18deg); opacity: 0; }
         }
 
         @keyframes introCaptionFade {
@@ -212,7 +214,7 @@
             white-space: nowrap;
             opacity: 0;
             transform: translateX(-18px);
-            animation: introWordReveal 0.85s cubic-bezier(.2,.8,.2,1) forwards 0.28s;
+            animation: introWordReveal 1.1s cubic-bezier(.2,.8,.2,1) forwards 0.34s;
         }
 
         .intro-title::after {
@@ -221,11 +223,11 @@
             top: -18%;
             bottom: -18%;
             left: -26%;
-            width: 5.5rem;
-            background: linear-gradient(90deg, transparent, rgba(129, 248, 216, 0.55), rgba(255, 255, 255, 0.88), rgba(136, 214, 255, 0.5), transparent);
-            filter: blur(2px);
+            width: 8rem;
+            background: linear-gradient(90deg, transparent, rgba(129, 248, 216, 0.42), rgba(255, 255, 255, 0.95), rgba(136, 214, 255, 0.58), transparent);
+            filter: blur(3px);
             transform: skewX(-18deg);
-            animation: introSweep 1.15s ease forwards 0.38s;
+            animation: introSweep 1.55s ease forwards 0.46s;
         }
 
         .intro-caption {
@@ -388,14 +390,15 @@
         }
 
         h1, h2, h3 {
-            letter-spacing: -0.035em;
-            line-height: 1;
+            letter-spacing: -0.03em;
+            line-height: 1.08;
         }
 
         h1 {
-            max-width: 9ch;
+            max-width: 9.8ch;
             font-size: clamp(3.2rem, 7vw, 5.9rem);
             margin-bottom: 1rem;
+            line-height: 1.04;
             color: transparent;
             background: linear-gradient(135deg, #f2fffc 0%, #a5ffeb 48%, #8fd7ff 100%);
             -webkit-background-clip: text;
@@ -405,7 +408,7 @@
         .subhead {
             max-width: 42rem;
             font-size: 1rem;
-            line-height: 1.68;
+            line-height: 1.8;
             color: #c8e6e1;
         }
 
@@ -466,6 +469,7 @@
         .small-note,
         .sub-link {
             color: var(--text-soft);
+            line-height: 1.72;
         }
 
         .hero-preview {
@@ -569,16 +573,20 @@
         }
 
         .section-header {
-            display: flex;
-            align-items: end;
-            justify-content: space-between;
-            gap: 1rem;
+            display: grid;
+            gap: 0.5rem;
+            justify-items: start;
             margin-bottom: 1rem;
         }
 
         .section-header h2 {
-            font-size: clamp(1.65rem, 3vw, 2.15rem);
+            font-size: clamp(1.55rem, 2.8vw, 2rem);
             color: var(--foam);
+        }
+
+        .section-header p {
+            max-width: 46rem;
+            text-align: left;
         }
 
         .download-grid,
@@ -1083,11 +1091,16 @@
             document.body.classList.remove("is-loading");
         };
 
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const introSeenKey = "vayu-intro-seen";
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || sessionStorage.getItem(introSeenKey) === "1") {
             enablePage();
         } else {
             window.addEventListener("load", () => {
-                window.setTimeout(enablePage, 1550);
+                window.setTimeout(() => {
+                    sessionStorage.setItem(introSeenKey, "1");
+                    enablePage();
+                }, 2350);
             }, { once: true });
         }
     </script>
