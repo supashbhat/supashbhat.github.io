@@ -912,15 +912,28 @@
                 var(--panel-soft);
         }
 
+        .project-card.surfaces,
+        .project-card.aerial {
+            grid-column: span 6;
+        }
+
+        .project-card.surfaces {
+            background:
+                linear-gradient(180deg, rgba(255, 194, 182, 0.045), transparent 100%),
+                var(--panel-soft);
+        }
+
+        .project-card.aerial {
+            background:
+                linear-gradient(180deg, rgba(242, 209, 152, 0.05), transparent 100%),
+                var(--panel-soft);
+        }
+
         .project-card.research {
             grid-column: span 6;
             background:
                 linear-gradient(180deg, rgba(255, 111, 127, 0.05), transparent 100%),
                 var(--panel-soft);
-        }
-
-        .project-card.demo {
-            grid-column: span 6;
         }
 
         .project-head {
@@ -1088,7 +1101,8 @@
 
             .project-card.vayu,
             .project-card.physics,
-            .project-card.demo,
+            .project-card.surfaces,
+            .project-card.aerial,
             .project-card.research {
                 grid-column: auto;
             }
@@ -1256,7 +1270,7 @@
                     <div class="kicker">Selected Work</div>
                     <h2>Projects with real systems underneath them</h2>
                 </div>
-                <p>These are the pieces that best represent how I work: simulation, audio tooling, interactive web experiments, and projects that connect physics thinking to real user experience.</p>
+                <p>These are the pieces that best represent how I work: simulation, controls, audio tooling, and projects that turn physics thinking into software people can actually explore.</p>
             </div>
 
             <div class="work-grid">
@@ -1309,29 +1323,52 @@
                     </div>
                 </article>
 
-                <article class="project-card demo reveal" style="--delay: 120ms;">
-                    <div class="chip-row">
-                        <span class="chip">Three.js</span>
-                        <span class="chip">WebGL</span>
-                        <span class="chip">Demo</span>
+                <article class="project-card surfaces reveal" style="--delay: 120ms;">
+                    <div class="project-head">
+                        <div>
+                            <div class="chip-row">
+                                <span class="chip">Browser Demos</span>
+                                <span class="chip">2D</span>
+                                <span class="chip">3D</span>
+                                <span class="chip">Web</span>
+                            </div>
+                            <h3>Physics Demo Surfaces</h3>
+                        </div>
+                        <span class="chip accent-ruby">Interactive</span>
                     </div>
-                    <h3>3D Physics Browser Demo</h3>
-                    <p>A browser-based visualization with orbit controls and six-direction gravity changes. It gives the physics work a more immediate, explorable surface for people who just want to interact with it.</p>
+                    <p>The physics work also lives in lighter browser-native surfaces: a faster 2D sandbox for collisions and gravity changes, and a 3D viewer for spatial intuition, camera movement, and interaction feel.</p>
+                    <ul class="list">
+                        <li>2D canvas demo for quick collision and force intuition</li>
+                        <li>3D WebGL scene with orbit controls and spatial exploration</li>
+                        <li>Public-facing teaching and interaction layer over the simulation work</li>
+                    </ul>
                     <div class="project-links">
-                        <a class="project-link primary" href="3d-physics.html" target="_blank" rel="noopener noreferrer">Open 3D Demo</a>
+                        <a class="project-link primary" href="2d-physics.html" target="_blank" rel="noopener noreferrer">Open 2D Demo</a>
+                        <a class="project-link secondary" href="3d-physics.html" target="_blank" rel="noopener noreferrer">Open 3D Demo</a>
                     </div>
                 </article>
 
-                <article class="project-card demo reveal" style="--delay: 160ms;">
-                    <div class="chip-row">
-                        <span class="chip">Canvas</span>
-                        <span class="chip">2D</span>
-                        <span class="chip">Interactive</span>
+                <article class="project-card aerial reveal" style="--delay: 160ms;">
+                    <div class="project-head">
+                        <div>
+                            <div class="chip-row">
+                                <span class="chip accent-amber">New</span>
+                                <span class="chip">LQR</span>
+                                <span class="chip">Kalman</span>
+                                <span class="chip">6-DOF</span>
+                            </div>
+                            <h3>Aerial Control Lab</h3>
+                        </div>
+                        <span class="chip accent-amber">Controls</span>
                     </div>
-                    <h3>2D Physics Browser Demo</h3>
-                    <p>A lighter, faster way to test collision behavior and gravity changes directly in the browser. It is a clean, playful surface over the same computational instincts driving the larger engine work.</p>
+                    <p>A controls-focused quadcopter sandbox built around nonlinear 6-DOF dynamics, hover-state LQR, a tuned PID baseline, and Kalman state estimation. It turns control theory into something explorable instead of something that stays trapped in equations.</p>
+                    <ul class="list">
+                        <li>Guided demo flow with recovery benchmarks and controller comparison cards</li>
+                        <li>Wind rejection, route tracking, telemetry export, and live tuning controls</li>
+                        <li>A strong bridge toward the next large-scale simulation step, including Barnes-Hut work</li>
+                    </ul>
                     <div class="project-links">
-                        <a class="project-link primary" href="2d-physics.html" target="_blank" rel="noopener noreferrer">Open 2D Demo</a>
+                        <a class="project-link primary" href="https://github.com/supashbhat/quadcopter-lab" target="_blank" rel="noopener noreferrer">Open Repo</a>
                     </div>
                 </article>
 
