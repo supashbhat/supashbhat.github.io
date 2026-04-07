@@ -7,9 +7,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Supash Bhat | Physics, Astrophysics, Music, and Simulation</title>
-    <link rel="icon" type="image/svg+xml" href="assets/icosa-shell.svg?v=20260406d">
-    <link rel="shortcut icon" href="assets/icosa-shell.svg?v=20260406d">
-    <link rel="apple-touch-icon" href="assets/icosa-shell.svg?v=20260406d">
+    <link rel="icon" type="image/svg+xml" href="assets/icosa-shell.svg?v=20260406e">
+    <link rel="shortcut icon" href="assets/icosa-shell.svg?v=20260406e">
+    <link rel="apple-touch-icon" href="assets/icosa-shell.svg?v=20260406e">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -1654,8 +1654,11 @@
                     const b = projected[bIndex];
                     const depth = (a.z + b.z) * 0.5;
                     const alpha = 0.26 + (depth + 1) * 0.28;
-                    ctx.strokeStyle = `rgba(255, 232, 223, ${Math.max(0.16, Math.min(0.82, alpha))})`;
-                    ctx.lineWidth = depth > 0 ? (isNavShell ? 2.1 : 2.4) : (isNavShell ? 1.2 : 1.45);
+                    const edgeAlpha = Math.max(0.18, Math.min(0.84, alpha));
+                    ctx.strokeStyle = depth > 0
+                        ? `rgba(244, 202, 116, ${edgeAlpha})`
+                        : `rgba(197, 134, 88, ${Math.max(0.12, edgeAlpha * 0.58)})`;
+                    ctx.lineWidth = depth > 0 ? (isNavShell ? 2.1 : 2.4) : (isNavShell ? 1.15 : 1.4);
                     ctx.beginPath();
                     ctx.moveTo(a.x, a.y);
                     ctx.lineTo(b.x, b.y);
@@ -1667,19 +1670,36 @@
                     .sort((a, b) => a.z - b.z)
                     .forEach((point) => {
                         const r = point.z > 0
-                            ? (isNavShell ? 2.6 : 2.8)
-                            : (isNavShell ? 1.7 : 1.9);
-                        ctx.fillStyle = point.z > 0
-                            ? "rgba(255, 234, 226, 0.95)"
-                            : "rgba(255, 182, 172, 0.72)";
+                            ? (isNavShell ? 2.65 : 2.95)
+                            : (isNavShell ? 1.8 : 2.0);
+                        const orb = ctx.createRadialGradient(point.x - r * 0.35, point.y - r * 0.4, r * 0.15, point.x, point.y, r * 1.45);
+                        if (point.z > 0) {
+                            orb.addColorStop(0, "rgba(255, 249, 233, 0.98)");
+                            orb.addColorStop(0.46, "rgba(244, 204, 109, 0.96)");
+                            orb.addColorStop(1, "rgba(214, 141, 83, 0.88)");
+                        } else {
+                            orb.addColorStop(0, "rgba(248, 220, 161, 0.76)");
+                            orb.addColorStop(1, "rgba(185, 112, 72, 0.56)");
+                        }
+                        ctx.fillStyle = orb;
                         ctx.beginPath();
                         ctx.arc(point.x, point.y, r, 0, Math.PI * 2);
                         ctx.fill();
+
+                        if (point.z > 0) {
+                            ctx.shadowColor = "rgba(244, 202, 116, 0.48)";
+                            ctx.shadowBlur = isNavShell ? 8 : 10;
+                            ctx.beginPath();
+                            ctx.arc(point.x, point.y, r * 0.55, 0, Math.PI * 2);
+                            ctx.fillStyle = "rgba(255, 247, 228, 0.78)";
+                            ctx.fill();
+                            ctx.shadowBlur = 0;
+                        }
                     });
 
                 const glow = ctx.createRadialGradient(width * 0.5, height * 0.5, size * 0.06, width * 0.5, height * 0.5, size * (isNavShell ? 0.6 : 0.56));
-                glow.addColorStop(0, "rgba(255, 214, 198, 0.2)");
-                glow.addColorStop(1, "rgba(255, 214, 198, 0)");
+                glow.addColorStop(0, "rgba(244, 202, 116, 0.2)");
+                glow.addColorStop(1, "rgba(244, 202, 116, 0)");
                 ctx.globalCompositeOperation = "lighter";
                 ctx.fillStyle = glow;
                 ctx.beginPath();
