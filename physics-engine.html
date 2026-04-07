@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#070b14">
+    <title>Physics Engine | Supash Bhat</title>
+    <link rel="icon" type="image/svg+xml" href="assets/icosa-shell.svg?v=20260406a">
+    <link rel="shortcut icon" href="assets/icosa-shell.svg?v=20260406a">
+    <link rel="apple-touch-icon" href="assets/icosa-shell.svg?v=20260406a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-0: #050914;
+            --bg-1: #0b1220;
+            --bg-2: #121b2c;
+            --panel: rgba(10, 18, 31, 0.78);
+            --panel-strong: rgba(8, 14, 24, 0.9);
+            --line: rgba(255, 128, 122, 0.12);
+            --line-strong: rgba(255, 210, 160, 0.16);
+            --text: #eef4ff;
+            --text-soft: #c7b8bb;
+            --text-faint: #8f7a7d;
+            --ruby: #ff7f7a;
+            --rose: #ffb3aa;
+            --amber: #f2d198;
+            --shadow: 0 28px 70px rgba(0, 0, 0, 0.34);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; background: var(--bg-0); }
+        body {
+            min-height: 100vh;
+            font-family: "Manrope", system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 14% 12%, rgba(255, 127, 122, 0.14), transparent 23%),
+                radial-gradient(circle at 84% 18%, rgba(242, 209, 152, 0.1), transparent 18%),
+                radial-gradient(circle at 64% 72%, rgba(255, 179, 170, 0.08), transparent 22%),
+                linear-gradient(150deg, var(--bg-0) 0%, var(--bg-1) 48%, var(--bg-2) 100%);
+            overflow-x: hidden;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(115deg,
+                    transparent 0%,
+                    rgba(255, 127, 122, 0.03) 22%,
+                    transparent 38%,
+                    rgba(242, 209, 152, 0.025) 58%,
+                    transparent 76%,
+                    rgba(255, 179, 170, 0.02) 100%);
+            background-size: 180% 180%;
+            animation: drift 18s linear infinite;
+            z-index: 0;
+        }
+        @keyframes drift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.96); opacity: 0.55; }
+            50% { transform: scale(1.06); opacity: 0.92; }
+        }
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes lift {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        @keyframes scanline {
+            0% { transform: translateX(-18%) translateY(0); opacity: 0.1; }
+            50% { transform: translateX(8%) translateY(-2px); opacity: 0.2; }
+            100% { transform: translateX(-8%) translateY(3px); opacity: 0.12; }
+        }
+
+        .shell {
+            position: relative;
+            z-index: 1;
+            width: min(1120px, calc(100% - 1.5rem));
+            margin: 0 auto;
+            padding: calc(1rem + env(safe-area-inset-top, 0px)) 0 calc(2.8rem + env(safe-area-inset-bottom, 0px));
+        }
+        .glass {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 1.7rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(16px);
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.15rem;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.95rem;
+        }
+        .brand-mark {
+            position: relative;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 1.2rem;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255, 127, 122, 0.16);
+            background: linear-gradient(135deg, rgba(255, 127, 122, 0.14), rgba(242, 209, 152, 0.08));
+            overflow: hidden;
+        }
+        .brand-mark::before {
+            content: "";
+            position: absolute;
+            inset: -0.35rem;
+            border-radius: 1.4rem;
+            background: radial-gradient(circle, rgba(255, 127, 122, 0.24), transparent 70%);
+            filter: blur(12px);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            inset: 0.4rem;
+            border-radius: 999px;
+            border: 1px solid rgba(242, 209, 152, 0.3);
+            animation: orbit 12s linear infinite;
+        }
+        .brand-mark img {
+            position: relative;
+            z-index: 1;
+            width: 2.15rem;
+            height: 2.15rem;
+            opacity: 0.95;
+            animation: lift 4.4s ease-in-out infinite;
+        }
+        .brand-title { font-weight: 800; font-size: 1.08rem; }
+        .brand-subtitle { color: var(--text-soft); font-size: 0.92rem; }
+        .pill-row { display: flex; gap: 0.65rem; flex-wrap: wrap; }
+        .pill,
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.52rem 0.82rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 127, 122, 0.14);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--amber);
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(340px, 0.9fr);
+            gap: 1rem;
+            align-items: stretch;
+        }
+        .hero-copy,
+        .hero-side,
+        .section,
+        .benchmark-panel,
+        .support-card {
+            padding: 1.25rem;
+        }
+        .hero-copy {
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-copy::after {
+            content: "";
+            position: absolute;
+            inset: auto -8% 22% -8%;
+            height: 7rem;
+            border-radius: 999px;
+            background: linear-gradient(90deg, transparent, rgba(255, 127, 122, 0.12), rgba(242, 209, 152, 0.12), transparent);
+            filter: blur(24px);
+            animation: scanline 12s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .hero h1 {
+            margin-top: 1rem;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            line-height: 0.92;
+            letter-spacing: -0.05em;
+            max-width: 10ch;
+        }
+        .hero p {
+            margin-top: 1.1rem;
+            color: var(--text-soft);
+            font-size: 1.03rem;
+            line-height: 1.8;
+            max-width: 42rem;
+        }
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 1.2rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.95rem 1.15rem;
+            border-radius: 1rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary {
+            color: #09111d;
+            background: linear-gradient(135deg, var(--rose), var(--amber));
+        }
+        .btn-secondary {
+            color: var(--text);
+            border: 1px solid rgba(255, 127, 122, 0.14);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 0.9rem;
+        }
+        .mini-card {
+            padding: 1rem;
+            border-radius: 1.25rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,127,122,0.12);
+        }
+        .mini-card h3 {
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .mini-card p {
+            margin-top: 0.55rem;
+            color: var(--text-soft);
+            line-height: 1.7;
+        }
+
+        .stats-grid,
+        .feature-grid,
+        .links-grid {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.9rem;
+        }
+        .feature-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .links-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .stat-card,
+        .feature-card,
+        .link-card,
+        .benchmark-panel,
+        .support-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card,
+        .feature-card,
+        .link-card {
+            padding: 1rem;
+        }
+        .stat-card::after,
+        .feature-card::after,
+        .link-card::after,
+        .benchmark-panel::after,
+        .support-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.04), transparent);
+            transform: translateX(-140%) skewX(-18deg);
+            animation: shimmer 15s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-140%) skewX(-18deg); opacity: 0; }
+            20% { opacity: 0.12; }
+            100% { transform: translateX(220%) skewX(-18deg); opacity: 0; }
+        }
+        .stat-card h3,
+        .feature-card h3,
+        .link-card h3,
+        .benchmark-panel h3,
+        .support-card h3 {
+            margin-top: 0.45rem;
+            font-size: 1.16rem;
+        }
+        .stat-card p,
+        .feature-card p,
+        .link-card p,
+        .benchmark-panel p,
+        .support-card p {
+            margin-top: 0.5rem;
+            color: var(--text-soft);
+            line-height: 1.7;
+        }
+
+        .section {
+            margin-top: 1rem;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: end;
+        }
+        .section-header h2 {
+            margin-top: 0.7rem;
+            font-size: clamp(1.7rem, 3vw, 2.4rem);
+            line-height: 1.04;
+            letter-spacing: -0.04em;
+        }
+        .section-header p {
+            max-width: 34rem;
+            color: var(--text-soft);
+            line-height: 1.75;
+        }
+        .benchmark-grid {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: 1.25fr 0.95fr;
+            gap: 0.9rem;
+        }
+        .benchmark-table {
+            margin-top: 1rem;
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 127, 122, 0.12);
+        }
+        .benchmark-table th,
+        .benchmark-table td {
+            padding: 0.82rem 0.9rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 127, 122, 0.08);
+            font-size: 0.95rem;
+        }
+        .benchmark-table th {
+            color: var(--amber);
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .benchmark-table tr:last-child td { border-bottom: none; }
+
+        .support-grid {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: 1.05fr 1fr;
+            gap: 0.9rem;
+        }
+
+        @media (max-width: 980px) {
+            .hero,
+            .benchmark-grid,
+            .support-grid,
+            .feature-grid,
+            .stats-grid,
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header class="topbar glass">
+            <div class="brand">
+                <div class="brand-mark">
+                    <img src="assets/icosa-shell.svg" alt="Icosahedron mark">
+                </div>
+                <div>
+                    <div class="brand-title">Physics Engine</div>
+                    <div class="brand-subtitle">Simulation systems, interactive surfaces, and the Barnes-Hut scaling track</div>
+                </div>
+            </div>
+            <div class="pill-row">
+                <span class="pill">RK4</span>
+                <span class="pill">Barnes-Hut</span>
+                <span class="pill">Simulation</span>
+            </div>
+        </header>
+
+        <section class="hero">
+            <article class="hero-copy glass">
+                <div class="kicker">Computational Physics Toolkit</div>
+                <h1>From local rigid bodies to many-body gravity.</h1>
+                <p>
+                    This project started as a rigid-body simulation sandbox for numerical integration, collisions, and interaction feel.
+                    It is now growing into a broader simulation lab, with Barnes-Hut as the next serious algorithmic step: scaling from
+                    pairwise `O(N²)` gravity toward tree-based `O(N log N)` approximation and benchmark-driven analysis.
+                </p>
+                <div class="button-row">
+                    <a class="btn btn-primary" href="https://github.com/supashbhat/physics-engine" target="_blank" rel="noopener noreferrer">Open GitHub</a>
+                    <a class="btn btn-secondary" href="2d-physics.html" target="_blank" rel="noopener noreferrer">2D Demo</a>
+                    <a class="btn btn-secondary" href="3d-physics.html" target="_blank" rel="noopener noreferrer">3D Demo</a>
+                    <a class="btn btn-secondary" href="aerial-control-lab/">Aerial Control Lab</a>
+                </div>
+            </article>
+
+            <aside class="hero-side">
+                <article class="mini-card glass">
+                    <div class="kicker">Current Track</div>
+                    <h3>Barnes-Hut N-Body Workstream</h3>
+                    <p>
+                        The new Barnes-Hut path adds a quadtree, center-of-mass approximation, and force/runtime benchmarking so the
+                        engine can start speaking about scale, complexity, and approximation quality instead of only local rigid-body motion.
+                    </p>
+                </article>
+                <article class="mini-card glass">
+                    <div class="kicker">Why It Matters</div>
+                    <h3>More than a sandbox</h3>
+                    <p>
+                        The point is not just to have moving particles on screen. It is to connect simulation, algorithm design, benchmark
+                        reasoning, and interface clarity in one place.
+                    </p>
+                </article>
+            </aside>
+        </section>
+
+        <section class="stats-grid">
+            <article class="stat-card glass">
+                <div class="kicker">Engine Core</div>
+                <h3>Rigid-Body + Integrators</h3>
+                <p>Euler and RK4 integration, ground and circle collisions, and benchmarkable motion primitives in C++.</p>
+            </article>
+            <article class="stat-card glass">
+                <div class="kicker">Interactive</div>
+                <h3>Python Sandbox</h3>
+                <p>Preset-driven local simulation with pause/step controls, energy feedback, and immediate interaction.</p>
+            </article>
+            <article class="stat-card glass">
+                <div class="kicker">Public Surface</div>
+                <h3>2D + 3D Demos</h3>
+                <p>Browser-facing demos that make the simulation work explorable without requiring a local setup.</p>
+            </article>
+            <article class="stat-card glass">
+                <div class="kicker">Scaling</div>
+                <h3>Barnes-Hut</h3>
+                <p>A new workstream for many-body gravity, quadtree approximation, and measured complexity gains.</p>
+            </article>
+        </section>
+
+        <section class="section glass">
+            <div class="section-header">
+                <div>
+                    <div class="kicker">Barnes-Hut</div>
+                    <h2>Early benchmark story</h2>
+                </div>
+                <p>These are first-pass results from the current Barnes-Hut benchmark script using `theta = 0.60`.</p>
+            </div>
+            <div class="benchmark-grid">
+                <article class="benchmark-panel glass">
+                    <h3>Direct force pass vs quadtree approximation</h3>
+                    <p>
+                        At lower particle counts, Barnes-Hut still pays some overhead. Once the system grows, the tree begins to win
+                        meaningfully, which is exactly the behavior the workstream is meant to expose and improve.
+                    </p>
+                    <table class="benchmark-table">
+                        <thead>
+                            <tr>
+                                <th>N</th>
+                                <th>Exact Force</th>
+                                <th>Barnes-Hut</th>
+                                <th>Loop Speedup</th>
+                                <th>RMS Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>120</td>
+                                <td>2.31 ms</td>
+                                <td>3.78 ms</td>
+                                <td>0.84x</td>
+                                <td>0.0374</td>
+                            </tr>
+                            <tr>
+                                <td>240</td>
+                                <td>9.71 ms</td>
+                                <td>7.38 ms</td>
+                                <td>1.66x</td>
+                                <td>0.0241</td>
+                            </tr>
+                            <tr>
+                                <td>480</td>
+                                <td>37.85 ms</td>
+                                <td>19.92 ms</td>
+                                <td>2.45x</td>
+                                <td>0.0529</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article class="benchmark-panel glass">
+                    <div class="kicker">Read It</div>
+                    <h3>What the numbers mean</h3>
+                    <p>
+                        Barnes-Hut is not “faster no matter what.” It introduces tree-building and traversal overhead, which means the
+                        exact method can still win at smaller `N`. The point is to locate the crossover where approximation begins paying
+                        off, then improve the implementation and visualization from there.
+                    </p>
+                    <p>
+                        Smaller `theta` values favor accuracy. Larger `theta` values favor speed. The useful engineering question is not
+                        which one is “right,” but what tradeoff remains legible and acceptable for a given simulation goal.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section glass">
+            <div class="section-header">
+                <div>
+                    <div class="kicker">Current Surfaces</div>
+                    <h2>How the project is experienced today</h2>
+                </div>
+                <p>The engine now lives across multiple surfaces depending on whether the goal is benchmarking, sandbox interaction, or quick public exploration.</p>
+            </div>
+            <div class="feature-grid">
+                <article class="feature-card glass">
+                    <div class="kicker">C++</div>
+                    <h3>Numerical core</h3>
+                    <p>Fast iteration on motion, collisions, and integrator behavior with benchmark-oriented scripts and terminal-native runs.</p>
+                </article>
+                <article class="feature-card glass">
+                    <div class="kicker">Python</div>
+                    <h3>Realtime sandbox</h3>
+                    <p>Pause/step inspection, energy history, scene presets, and local interaction for serious reading of the simulation state.</p>
+                </article>
+                <article class="feature-card glass">
+                    <div class="kicker">Web</div>
+                    <h3>Public demo surfaces</h3>
+                    <p>2D and 3D browser demos that make the simulation work easy to explore from the portfolio without cloning anything.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section glass">
+            <div class="section-header">
+                <div>
+                    <div class="kicker">Where It Goes</div>
+                    <h2>Next steps for the engine</h2>
+                </div>
+                <p>The near-term goal is to make Barnes-Hut more visual and benchmark-rich while keeping the rigid-body side useful and polished.</p>
+            </div>
+            <div class="links-grid">
+                <article class="link-card glass">
+                    <div class="kicker">Barnes-Hut</div>
+                    <h3>Visual N-body sandbox</h3>
+                    <p>Move from raw benchmark output toward a proper particle-field demo with live `theta` control and performance feedback.</p>
+                </article>
+                <article class="link-card glass">
+                    <div class="kicker">Benchmarks</div>
+                    <h3>Cleaner comparison artifacts</h3>
+                    <p>Produce stronger tables and plots for exact-vs-approximate runtime, force error, and integration tradeoffs.</p>
+                </article>
+                <article class="link-card glass">
+                    <div class="kicker">Architecture</div>
+                    <h3>Shared simulation language</h3>
+                    <p>Keep the C++, Python, and web surfaces aligned so they feel like one simulation ecosystem rather than unrelated demos.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="support-grid">
+            <article class="support-card glass">
+                <div class="kicker">Open The Work</div>
+                <h3>Repository and demos</h3>
+                <p>The main repo holds the rigid-body engine, benchmark scripts, and the new Barnes-Hut workstream. The browser demos remain the quickest public entry point.</p>
+                <div class="button-row">
+                    <a class="btn btn-primary" href="https://github.com/supashbhat/physics-engine" target="_blank" rel="noopener noreferrer">Open GitHub Repo</a>
+                    <a class="btn btn-secondary" href="2d-physics.html" target="_blank" rel="noopener noreferrer">2D Demo</a>
+                    <a class="btn btn-secondary" href="3d-physics.html" target="_blank" rel="noopener noreferrer">3D Demo</a>
+                </div>
+            </article>
+            <article class="support-card glass">
+                <div class="kicker">Reach Out</div>
+                <h3>Simulation, controls, or research</h3>
+                <p>If this overlaps with physics research, simulation tooling, teaching, or algorithm-heavy work, email is the best place to start.</p>
+                <div class="button-row">
+                    <a class="btn btn-primary" href="mailto:supash_bhat@berkeley.edu">Email Supash</a>
+                    <a class="btn btn-secondary" href="index.html">Back To Portfolio</a>
+                </div>
+            </article>
+        </section>
+    </div>
+</body>
+</html>
