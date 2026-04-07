@@ -161,6 +161,15 @@
             letter-spacing: 0.14em;
             text-transform: uppercase;
         }
+        code {
+            font-family: "Space Grotesk", monospace;
+            font-size: 0.9em;
+            padding: 0.14rem 0.38rem;
+            border-radius: 0.45rem;
+            border: 1px solid rgba(255, 127, 122, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--amber);
+        }
 
         .hero {
             margin-top: 1rem;
@@ -261,7 +270,7 @@
             grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 0.9rem;
         }
-        .feature-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .feature-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .links-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .stat-card,
         .feature-card,
@@ -335,7 +344,7 @@
         .benchmark-grid {
             margin-top: 1rem;
             display: grid;
-            grid-template-columns: 1.25fr 0.95fr;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 0.9rem;
         }
         .benchmark-table {
@@ -360,6 +369,42 @@
             text-transform: uppercase;
         }
         .benchmark-table tr:last-child td { border-bottom: none; }
+        .benchmark-figure {
+            margin-top: 1rem;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 127, 122, 0.12);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .benchmark-figure img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .benchmark-caption {
+            padding: 0.82rem 0.95rem 0.95rem;
+            color: var(--text-soft);
+            line-height: 1.65;
+            font-size: 0.95rem;
+        }
+        .benchmark-list {
+            margin-top: 1rem;
+            list-style: none;
+            display: grid;
+            gap: 0.85rem;
+        }
+        .benchmark-list li {
+            padding: 0.9rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 127, 122, 0.12);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .benchmark-list strong {
+            display: block;
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 0.22rem;
+        }
 
         .support-grid {
             margin-top: 1rem;
@@ -409,8 +454,8 @@
                 <h1>From local rigid bodies to many-body gravity.</h1>
                 <p>
                     This project started as a rigid-body simulation sandbox for numerical integration, collisions, and interaction feel.
-                    It is now growing into a broader simulation lab, with Barnes-Hut as the next serious algorithmic step: scaling from
-                    pairwise `O(N²)` gravity toward tree-based `O(N log N)` approximation and benchmark-driven analysis.
+                    It now includes a deeper Barnes-Hut track: scaling from pairwise <code>O(N²)</code> gravity toward tree-based <code>O(N log N)</code> approximation,
+                    a split-view exact-vs-tree compare lab, generated scaling figures, and new theta sweeps that make the speed-versus-error tradeoff concrete.
                 </p>
                 <div class="button-row">
                     <a class="btn btn-primary" href="https://github.com/supashbhat/physics-engine" target="_blank" rel="noopener noreferrer">Open GitHub</a>
@@ -423,10 +468,10 @@
             <aside class="hero-side">
                 <article class="mini-card glass">
                     <div class="kicker">Current Track</div>
-                    <h3>Barnes-Hut N-Body Workstream</h3>
+                    <h3>Barnes-Hut compare lab</h3>
                     <p>
-                        The new Barnes-Hut path adds a quadtree, center-of-mass approximation, and force/runtime benchmarking so the
-                        engine can start speaking about scale, complexity, and approximation quality instead of only local rigid-body motion.
+                        The Barnes-Hut track now includes a side-by-side exact-vs-Barnes-Hut local lab, generated scaling plots, theta sweeps,
+                        and quadtree statistics so the engine can speak about scale, complexity, and approximation quality instead of only local motion.
                     </p>
                 </article>
                 <article class="mini-card glass">
@@ -448,8 +493,8 @@
             </article>
             <article class="stat-card glass">
                 <div class="kicker">Interactive</div>
-                <h3>Python Sandbox</h3>
-                <p>Preset-driven local simulation with pause/step controls, energy feedback, and immediate interaction.</p>
+                <h3>Python Sandboxes</h3>
+                <p>Preset-driven local simulation for rigid-body work plus a dedicated Barnes-Hut compare lab for exact-vs-approximate gravity.</p>
             </article>
             <article class="stat-card glass">
                 <div class="kicker">Public Surface</div>
@@ -459,7 +504,7 @@
             <article class="stat-card glass">
                 <div class="kicker">Scaling</div>
                 <h3>Barnes-Hut</h3>
-                <p>A new workstream for many-body gravity, quadtree approximation, and measured complexity gains.</p>
+                <p>A live workstream for many-body gravity, quadtree approximation, measured complexity gains, and theta-tradeoff benchmarking.</p>
             </article>
         </section>
 
@@ -467,64 +512,59 @@
             <div class="section-header">
                 <div>
                     <div class="kicker">Barnes-Hut</div>
-                    <h2>Early benchmark story</h2>
+                    <h2>Scaling and approximation, both visible</h2>
                 </div>
-                <p>These are first-pass results from the current Barnes-Hut benchmark script using `theta = 0.60`.</p>
+                <p>The current Barnes-Hut pass now has two benchmark stories: how the tree scales as particle count rises, and how <code>theta</code> changes the speed-versus-error tradeoff at a fixed field.</p>
             </div>
             <div class="benchmark-grid">
                 <article class="benchmark-panel glass">
-                    <h3>Direct force pass vs quadtree approximation</h3>
+                    <h3>Particle-count scaling</h3>
                     <p>
-                        At lower particle counts, Barnes-Hut still pays some overhead. Once the system grows, the tree begins to win
-                        meaningfully, which is exactly the behavior the workstream is meant to expose and improve.
+                        The benchmark pipeline now writes structured JSON, text snapshots, and generated figures so the scaling curve can be shown instead of only described.
                     </p>
-                    <table class="benchmark-table">
-                        <thead>
-                            <tr>
-                                <th>N</th>
-                                <th>Exact Force</th>
-                                <th>Barnes-Hut</th>
-                                <th>Loop Speedup</th>
-                                <th>RMS Error</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>120</td>
-                                <td>2.31 ms</td>
-                                <td>3.78 ms</td>
-                                <td>0.84x</td>
-                                <td>0.0374</td>
-                            </tr>
-                            <tr>
-                                <td>240</td>
-                                <td>9.71 ms</td>
-                                <td>7.38 ms</td>
-                                <td>1.66x</td>
-                                <td>0.0241</td>
-                            </tr>
-                            <tr>
-                                <td>480</td>
-                                <td>37.85 ms</td>
-                                <td>19.92 ms</td>
-                                <td>2.45x</td>
-                                <td>0.0529</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="benchmark-figure">
+                        <img src="assets/barnes-hut-benchmark.png" alt="Barnes-Hut benchmark plot">
+                        <div class="benchmark-caption">
+                            Loop speedup now reaches <strong>6.24x</strong> at <strong>N = 1600</strong>, while force error and tree size remain visible in the same benchmark pass.
+                        </div>
+                    </div>
+                </article>
+                <article class="benchmark-panel glass">
+                    <h3>Theta sweep</h3>
+                    <p>
+                        The new theta sweep makes the approximation itself tunable: smaller <code>theta</code> values stay closer to exact gravity, while larger ones win more aggressively on runtime.
+                    </p>
+                    <div class="benchmark-figure">
+                        <img src="assets/barnes-hut-theta-sweep.png" alt="Barnes-Hut theta sweep plot">
+                        <div class="benchmark-caption">
+                            At <strong>N = 960</strong>, loop speedup climbs from <strong>2.01x</strong> at <strong>theta = 0.35</strong> to <strong>7.60x</strong> at <strong>theta = 1.00</strong>, with RMS error widening along the way.
+                        </div>
+                    </div>
                 </article>
                 <article class="benchmark-panel glass">
                     <div class="kicker">Read It</div>
-                    <h3>What the numbers mean</h3>
+                    <h3>What the current numbers say</h3>
                     <p>
-                        Barnes-Hut is not “faster no matter what.” It introduces tree-building and traversal overhead, which means the
-                        exact method can still win at smaller `N`. The point is to locate the crossover where approximation begins paying
-                        off, then improve the implementation and visualization from there.
+                        Barnes-Hut is now doing two useful jobs in the repo: it shows a real crossover story as <code>N</code> grows, and it gives a visible approximation knob instead of hiding the tuning decision.
                     </p>
-                    <p>
-                        Smaller `theta` values favor accuracy. Larger `theta` values favor speed. The useful engineering question is not
-                        which one is “right,” but what tradeoff remains legible and acceptable for a given simulation goal.
-                    </p>
+                    <ul class="benchmark-list">
+                        <li>
+                            <strong>Scaling win</strong>
+                            At <code>theta = 0.60</code>, the current benchmark reaches <strong>6.24x</strong> loop speedup by <code>N = 1600</code>, which is enough to make the tree visibly worthwhile.
+                        </li>
+                        <li>
+                            <strong>Accuracy floor</strong>
+                            At <code>N = 960</code>, <code>theta = 0.35</code> keeps RMS acceleration error down at <strong>0.0225</strong>, but only reaches <strong>2.01x</strong> loop speedup.
+                        </li>
+                        <li>
+                            <strong>Fast-but-loose edge</strong>
+                            <code>theta = 1.00</code> reaches <strong>7.60x</strong> loop speedup at the same <code>N</code>, but pushes RMS acceleration error up to <strong>0.5027</strong>.
+                        </li>
+                        <li>
+                            <strong>Practical reading</strong>
+                            The local compare lab keeps that tradeoff legible: exact motion on one side, Barnes-Hut on the other, with divergence, drift, and tree stats underneath.
+                        </li>
+                    </ul>
                 </article>
             </div>
         </section>
@@ -545,8 +585,13 @@
                 </article>
                 <article class="feature-card glass">
                     <div class="kicker">Python</div>
-                    <h3>Realtime sandbox</h3>
+                    <h3>Realtime rigid-body sandbox</h3>
                     <p>Pause/step inspection, energy history, scene presets, and local interaction for serious reading of the simulation state.</p>
+                </article>
+                <article class="feature-card glass">
+                    <div class="kicker">Python</div>
+                    <h3>Barnes-Hut compare lab</h3>
+                    <p>Side-by-side exact and Barnes-Hut evolution with quadtree overlay, divergence tracking, live <code>theta</code> tuning, and benchmark-minded HUD metrics.</p>
                 </article>
                 <article class="feature-card glass">
                     <div class="kicker">Web</div>
@@ -562,18 +607,18 @@
                     <div class="kicker">Where It Goes</div>
                     <h2>Next steps for the engine</h2>
                 </div>
-                <p>The near-term goal is to make Barnes-Hut more visual and benchmark-rich while keeping the rigid-body side useful and polished.</p>
+                <p>The near-term goal is to take the compare lab and dual-benchmark pipeline one step further into browser-facing many-body visualization and broader particle-distribution testing.</p>
             </div>
             <div class="links-grid">
                 <article class="link-card glass">
                     <div class="kicker">Barnes-Hut</div>
-                    <h3>Visual N-body sandbox</h3>
-                    <p>Move from raw benchmark output toward a proper particle-field demo with live `theta` control and performance feedback.</p>
+                    <h3>Browser N-body surface</h3>
+                    <p>Move from the local compare lab into a public particle-field demo with live <code>theta</code> control and performance feedback.</p>
                 </article>
                 <article class="link-card glass">
                     <div class="kicker">Benchmarks</div>
-                    <h3>Cleaner comparison artifacts</h3>
-                    <p>Produce stronger tables and plots for exact-vs-approximate runtime, force error, and integration tradeoffs.</p>
+                    <h3>Larger counts + more distributions</h3>
+                    <p>Expand from the current disc-swirl benchmark into broader sweeps across particle count, opening angle, and particle-field structure.</p>
                 </article>
                 <article class="link-card glass">
                     <div class="kicker">Architecture</div>
@@ -587,7 +632,7 @@
             <article class="support-card glass">
                 <div class="kicker">Open The Work</div>
                 <h3>Repository and demos</h3>
-                <p>The main repo holds the rigid-body engine, benchmark scripts, and the new Barnes-Hut workstream. The browser demos remain the quickest public entry point.</p>
+                <p>The main repo now holds the rigid-body engine, the Barnes-Hut compare lab, structured benchmark outputs, generated scaling and theta figures, and the browser-facing demo entry points.</p>
                 <div class="button-row">
                     <a class="btn btn-primary" href="https://github.com/supashbhat/physics-engine" target="_blank" rel="noopener noreferrer">Open GitHub Repo</a>
                     <a class="btn btn-secondary" href="2d-physics.html" target="_blank" rel="noopener noreferrer">2D Demo</a>
