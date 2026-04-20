@@ -30,25 +30,49 @@
 
   <main class="page-shell">
     <section class="page-hero">
-      <div class="container prose reveal">
-        <p class="section-label">About</p>
-        <h1>Project and researcher</h1>
-        <p>This site presents an ongoing student research project built as a digital archive for classroom scholarship and future expansion.</p>
+      <div class="container page-hero-grid">
+        <div class="prose reveal">
+          <p class="section-label">About</p>
+          <h1>Project and researcher</h1>
+          <p>This site presents an ongoing student research project built as a digital archive for classroom scholarship and future expansion.</p>
+        </div>
+        <aside class="page-index reveal">
+          <p class="section-label">On This Page</p>
+          <a href="#researcher">Researcher</a>
+          <a href="#project">Project statement</a>
+          <a href="#future">Future expansion</a>
+        </aside>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container two-column">
-        <article class="prose reveal">
+    <section id="researcher" class="section">
+      <div class="container profile-layout">
+        <figure class="portrait-card reveal">
+          <img src="../assets/images/photos/supash-bhat.jpg" alt="Portrait of Supash Bhat.">
+          <figcaption><span class="figure-note">Portrait courtesy of Supash Bhat.</span></figcaption>
+        </figure>
+        <article class="portrait-copy reveal">
           <h2>About the researcher</h2>
-          <p><strong>Researcher:</strong> Supash Bhat</p>
-          <p><strong>Course:</strong> Music 170</p>
-          <p><strong>Instructor:</strong> Professor Davies</p>
+          <div class="portrait-meta">
+            <span class="compact-chip">Supash Bhat</span>
+            <span class="compact-chip">Music 170</span>
+            <span class="compact-chip">Professor Davies</span>
+          </div>
           <p>This archive extends an academic project on Venda Malombo, possession, trance, and modern South African performance. It is designed to grow into a fuller media-rich research environment.</p>
+          <p>The site frames research as public scholarship: not just a paper translated into HTML, but a modular archive where listening, theory, and historical context can remain visibly connected.</p>
         </article>
+      </div>
+    </section>
+
+    <section id="project" class="section section-tinted">
+      <div class="container two-column">
         <article class="prose reveal">
           <h2>Ongoing research statement</h2>
           <p>Future development can add licensed photographs, more embedded recordings, expanded annotations, and a fuller comparison between ritual practice and urban festival circulation. The archive structure is intentionally modular so new findings can be added page by page.</p>
+        </article>
+        <article id="future" class="source-panel reveal">
+          <p class="section-label">Expansion Plan</p>
+          <p>The next natural additions would be more primary-source media, closer timestamped listening notes, and expanded work on Tabane’s refusal of the jazz label as both aesthetic and political position.</p>
         </article>
       </div>
     </section>
