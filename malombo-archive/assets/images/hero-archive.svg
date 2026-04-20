@@ -1,0 +1,17 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#EFE5D1"/>
+  <circle cx="250" cy="220" r="180" fill="#D4B36F" fill-opacity="0.32"/>
+  <circle cx="930" cy="700" r="210" fill="#355846" fill-opacity="0.24"/>
+  <rect x="140" y="110" width="920" height="680" rx="36" fill="#FCF8F0" stroke="#355846" stroke-opacity="0.18"/>
+  <path d="M250 660C330 510 430 440 565 430C710 420 826 486 936 624" stroke="#355846" stroke-width="7" stroke-linecap="round"/>
+  <path d="M270 600C336 488 422 431 531 420" stroke="#B68E3D" stroke-width="5" stroke-linecap="round"/>
+  <path d="M300 680C360 574 438 521 530 506" stroke="#355846" stroke-opacity="0.45" stroke-width="3.5" stroke-linecap="round"/>
+  <rect x="200" y="258" width="160" height="282" rx="80" fill="#355846"/>
+  <rect x="840" y="254" width="70" height="208" rx="35" fill="#D4B36F"/>
+  <rect x="930" y="228" width="70" height="276" rx="35" fill="#355846"/>
+  <path d="M760 616L1008 616" stroke="#355846" stroke-width="8" stroke-linecap="round"/>
+  <path d="M735 648L1036 648" stroke="#355846" stroke-opacity="0.45" stroke-width="4" stroke-linecap="round"/>
+  <text x="188" y="180" fill="#1F2D24" font-family="Georgia, serif" font-size="52">Ritual</text>
+  <text x="758" y="180" fill="#1F2D24" font-family="Georgia, serif" font-size="52">Stage</text>
+  <text x="422" y="760" fill="#1F2D24" font-family="Georgia, serif" font-size="40">Sound as bridge</text>
+</svg>

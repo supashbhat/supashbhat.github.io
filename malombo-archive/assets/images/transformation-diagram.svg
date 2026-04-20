@@ -1,0 +1,26 @@
+<svg width="1100" height="360" viewBox="0 0 1100 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1100" height="360" rx="28" fill="#FCF8F0"/>
+  <g>
+    <rect x="36" y="94" width="228" height="172" rx="26" fill="#355846"/>
+    <text x="72" y="158" fill="#F8F2E5" font-family="Georgia, serif" font-size="34">Ritual</text>
+    <text x="72" y="202" fill="#F8F2E5" font-family="Georgia, serif" font-size="34">Invocation</text>
+  </g>
+  <g>
+    <rect x="304" y="94" width="228" height="172" rx="26" fill="#D4B36F"/>
+    <text x="340" y="158" fill="#1F2D24" font-family="Georgia, serif" font-size="34">Sonic</text>
+    <text x="340" y="202" fill="#1F2D24" font-family="Georgia, serif" font-size="34">Structure</text>
+  </g>
+  <g>
+    <rect x="572" y="94" width="228" height="172" rx="26" fill="#7B8D74"/>
+    <text x="608" y="158" fill="#F8F2E5" font-family="Georgia, serif" font-size="34">Modern</text>
+    <text x="608" y="202" fill="#F8F2E5" font-family="Georgia, serif" font-size="34">Performance</text>
+  </g>
+  <g>
+    <rect x="840" y="94" width="228" height="172" rx="26" fill="#F1E4C3" stroke="#355846" stroke-opacity="0.2"/>
+    <text x="875" y="158" fill="#1F2D24" font-family="Georgia, serif" font-size="34">Festival</text>
+    <text x="875" y="202" fill="#1F2D24" font-family="Georgia, serif" font-size="34">Context</text>
+  </g>
+  <path d="M264 180H304" stroke="#355846" stroke-width="7" stroke-linecap="round"/>
+  <path d="M532 180H572" stroke="#355846" stroke-width="7" stroke-linecap="round"/>
+  <path d="M800 180H840" stroke="#355846" stroke-width="7" stroke-linecap="round"/>
+</svg>

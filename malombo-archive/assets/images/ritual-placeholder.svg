@@ -1,0 +1,11 @@
+<svg width="900" height="760" viewBox="0 0 900 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="760" fill="#EDE3CF"/>
+  <circle cx="205" cy="194" r="120" fill="#D4B36F" fill-opacity="0.35"/>
+  <circle cx="700" cy="570" r="160" fill="#355846" fill-opacity="0.2"/>
+  <path d="M128 614C224 452 357 348 486 342C629 335 732 409 793 530" stroke="#355846" stroke-width="7" stroke-linecap="round"/>
+  <rect x="348" y="246" width="210" height="336" rx="104" fill="#355846"/>
+  <ellipse cx="452.5" cy="302" rx="96.5" ry="42" fill="#D4B36F"/>
+  <path d="M274 598C315 521 358 481 408 460" stroke="#B68E3D" stroke-width="5" stroke-linecap="round"/>
+  <path d="M621 587C586 523 551 487 504 463" stroke="#B68E3D" stroke-width="5" stroke-linecap="round"/>
+  <text x="72" y="686" fill="#1F2D24" font-family="Georgia, serif" font-size="36">Placeholder for ritual archive imagery</text>
+</svg>
