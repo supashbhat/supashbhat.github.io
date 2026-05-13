@@ -54,6 +54,21 @@ body {
   transition: background-color 200ms ease, color 200ms ease;
 }
 
+body.is-loading .site-header,
+body.is-loading main,
+body.is-loading .site-footer {
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity 0.8s ease, filter 0.8s ease;
+}
+
+body.page-ready .site-header,
+body.page-ready main,
+body.page-ready .site-footer {
+  opacity: 1;
+  filter: blur(0);
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -66,6 +81,165 @@ a {
 .container {
   width: min(1120px, calc(100% - 2rem));
   margin: 0 auto;
+}
+
+.intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(53, 88, 70, 0.22), transparent 24%),
+    linear-gradient(155deg, rgba(14, 24, 19, 0.97) 0%, rgba(25, 39, 31, 0.98) 52%, rgba(37, 54, 43, 0.98) 100%);
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+body.page-ready .intro-splash {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.45rem;
+}
+
+.intro-mark {
+  position: relative;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 1.5rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(159, 196, 165, 0.28);
+  background: linear-gradient(135deg, rgba(159, 196, 165, 0.18), rgba(215, 186, 116, 0.12));
+  box-shadow: 0 0 34px rgba(159, 196, 165, 0.18);
+}
+
+.intro-mark::before {
+  content: "";
+  position: absolute;
+  inset: -0.38rem;
+  border-radius: 1.7rem;
+  background: radial-gradient(circle, rgba(159, 196, 165, 0.2), transparent 70%);
+  filter: blur(14px);
+  animation: malomboPulse 3.8s ease-in-out infinite;
+}
+
+.intro-title {
+  position: relative;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.9rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: transparent;
+  background: linear-gradient(135deg, #eef5ef 0%, #bfd9c1 38%, #d9c380 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0;
+  animation: malomboWordReveal 1s cubic-bezier(.2,.8,.2,1) forwards 0.28s;
+}
+
+.intro-title::after {
+  content: "";
+  position: absolute;
+  top: -16%;
+  bottom: -16%;
+  left: -26%;
+  width: 6rem;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.36), rgba(215, 186, 116, 0.5), transparent);
+  filter: blur(3px);
+  transform: skewX(-18deg);
+  animation: malomboSweep 1.4s ease forwards 0.42s;
+}
+
+.intro-caption {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 4.1rem);
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(238, 245, 239, 0.72);
+}
+
+.corner-orb {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  width: 5.3rem;
+  height: 5.3rem;
+  padding: 0.24rem;
+  border-radius: 1.45rem;
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(135deg, rgba(159, 196, 165, 0.2), rgba(215, 186, 116, 0.14));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.corner-orb::before {
+  content: "spin";
+  position: absolute;
+  left: 50%;
+  bottom: -1.15rem;
+  transform: translateX(-50%);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted-soft);
+}
+
+.icosa-shell {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+
+.icosa-shell.dragging {
+  cursor: grabbing;
+}
+
+@keyframes malomboPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 0.92;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes malomboWordReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px);
+    letter-spacing: -0.015em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    letter-spacing: -0.03em;
+  }
+}
+
+@keyframes malomboSweep {
+  0% { transform: translateX(-180%) skewX(-18deg); opacity: 0; }
+  14% { opacity: 1; }
+  100% { transform: translateX(420%) skewX(-18deg); opacity: 0; }
 }
 
 .site-header {
@@ -865,6 +1039,13 @@ a {
 
   .theme-toggle {
     margin-left: 0;
+  }
+
+  .corner-orb {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    width: 4.75rem;
+    height: 4.75rem;
   }
 }
 
