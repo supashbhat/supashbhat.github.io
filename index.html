@@ -884,6 +884,21 @@
             padding: 1.05rem;
         }
 
+        .project-preview {
+            overflow: hidden;
+            margin: 0.85rem 0 1rem;
+            border: 1px solid rgba(255, 194, 182, 0.12);
+            border-radius: 1rem;
+            background: #050a10;
+        }
+
+        .project-preview img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
         .project-card.feature {
             min-height: 100%;
         }
@@ -913,7 +928,8 @@
         }
 
         .project-card.surfaces,
-        .project-card.aerial {
+        .project-card.aerial,
+        .project-card.learner-lab {
             grid-column: span 6;
         }
 
@@ -926,6 +942,12 @@
         .project-card.aerial {
             background:
                 linear-gradient(180deg, rgba(242, 209, 152, 0.05), transparent 100%),
+                var(--panel-soft);
+        }
+
+        .project-card.learner-lab {
+            background:
+                linear-gradient(180deg, rgba(87, 226, 193, 0.055), transparent 100%),
                 var(--panel-soft);
         }
 
@@ -1103,6 +1125,7 @@
             .project-card.physics,
             .project-card.surfaces,
             .project-card.aerial,
+            .project-card.learner-lab,
             .project-card.research {
                 grid-column: auto;
             }
@@ -1371,6 +1394,34 @@
                     <div class="project-links">
                         <a class="project-link primary" href="aerial-control-lab/">Open Lab</a>
                         <a class="project-link secondary" href="https://github.com/supashbhat/quadcopter-lab" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+                    </div>
+                </article>
+
+                <article class="project-card learner-lab reveal" style="--delay: 200ms;">
+                    <div class="project-head">
+                        <div>
+                            <div class="chip-row">
+                                <span class="chip accent-vayu">New</span>
+                                <span class="chip">MuJoCo</span>
+                                <span class="chip">ROS 2</span>
+                                <span class="chip">Python</span>
+                            </div>
+                            <h3>Physical AI Learner Lab</h3>
+                        </div>
+                        <span class="chip accent-vayu">Robotics</span>
+                    </div>
+                    <a class="project-preview" href="projects/physical-ai-learner-lab/" aria-label="Open the Physical AI Learner Lab case study">
+                        <img src="https://supashbhat.github.io/physical-ai-learner-lab/assets/demo.gif" alt="MuJoCo differential-drive robot demo with camera, range scan, and odometry" loading="lazy" width="960" height="540">
+                    </a>
+                    <p>A macOS-first robotics lab that connects MuJoCo physics, differential-drive control, wheel odometry, camera sensing, and a containerized ROS 2 adapter in a tested tutorial.</p>
+                    <ul class="list">
+                        <li>20 local tests and a clean virtual-environment setup</li>
+                        <li>Three reproducible demo videos and paired RGB/depth simulation data</li>
+                        <li>Cross-architecture macOS and ROS 2 container checks configured in CI</li>
+                    </ul>
+                    <div class="project-links">
+                        <a class="project-link primary" href="projects/physical-ai-learner-lab/">Read Case Study</a>
+                        <a class="project-link secondary" href="https://supashbhat.github.io/physical-ai-learner-lab/" target="_blank" rel="noopener noreferrer">Open Tutorial</a>
                     </div>
                 </article>
 

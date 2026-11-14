@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d15">
+  <meta name="description" content="A reproducible MuJoCo and ROS 2 robotics lab: model, control, sensing, odometry, synthetic camera data, and a hands-on tutorial.">
+  <meta property="og:title" content="Physical AI Learner Lab | Supash Bhat">
+  <meta property="og:description" content="Build a differential-drive robot you can explain and reproduce.">
+  <meta property="og:image" content="https://supashbhat.github.io/physical-ai-learner-lab/assets/synthetic_frames.png">
+  <title>Physical AI Learner Lab | Supash Bhat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080d15;
+      --panel: #101822;
+      --line: rgba(255, 194, 182, .15);
+      --text: #f3f6f8;
+      --muted: #b4c0ca;
+      --quiet: #91a0ad;
+      --coral: #ff9b92;
+      --mint: #a0ead7;
+      --amber: #f3d39a;
+      --max: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0; color: var(--text); font: 16px/1.7 Manrope, system-ui, sans-serif;
+      background: radial-gradient(ellipse at 84% 5%, rgba(255, 111, 127, .12), transparent 31rem),
+                  radial-gradient(ellipse at 5% 38%, rgba(87, 226, 193, .07), transparent 32rem), var(--bg);
+    }
+    a { color: var(--mint); text-underline-offset: .22em; }
+    a:hover { color: #d2fff3; }
+    .wrap { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1.1rem 0; border-bottom:1px solid var(--line); }
+    .brand { color:var(--text); text-decoration:none; font-weight:800; letter-spacing:-.02em; }
+    .toplinks { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:.55rem 1.2rem; font-size:.9rem; }
+    .hero { display:grid; grid-template-columns:1.02fr .98fr; gap:2rem; align-items:center; padding:clamp(2.8rem, 7vw, 5.8rem) 0 3.5rem; }
+    .eyebrow { color:var(--coral); font:700 .75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.14em; text-transform:uppercase; }
+    h1,h2,h3 { font-family:"Space Grotesk", Manrope, sans-serif; line-height:1.12; letter-spacing:-.045em; text-wrap:balance; }
+    h1 { max-width:12ch; margin:.7rem 0 1.1rem; font-size:clamp(2.8rem, 6.2vw, 5.2rem); }
+    h2 { margin:0 0 .7rem; font-size:clamp(1.7rem, 3.4vw, 2.6rem); }
+    h3 { margin:0 0 .5rem; font-size:1.17rem; }
+    p { margin:.5rem 0 1rem; color:var(--muted); }
+    .lede { max-width:39rem; font-size:1.1rem; line-height:1.8; }
+    .buttons { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.5rem; }
+    .button { display:inline-flex; justify-content:center; align-items:center; min-height:46px; padding:.7rem 1rem; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.035); color:var(--text); font-weight:800; text-decoration:none; }
+    .button.primary { border-color:transparent; color:#0a1418; background:linear-gradient(120deg, #baf5e5, #ffab9d); }
+    .hero-media { min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:20px; background:#04070b; box-shadow:0 24px 70px rgba(0,0,0,.32); }
+    .hero-media img { display:block; width:100%; height:auto; }
+    .hero-media figcaption { padding:.75rem 1rem; color:var(--quiet); font-size:.82rem; }
+    main { padding-bottom:3rem; }
+    .section { padding:3.2rem 0; border-top:1px solid var(--line); }
+    .section-intro { max-width:48rem; margin-bottom:1.5rem; }
+    .video-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin-top:1.5rem; }
+    .video-card,.note-card,.panel { min-width:0; padding:1rem; border:1px solid var(--line); border-radius:16px; background:linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.012)); }
+    .video-card video { display:block; width:100%; margin:.7rem 0; border:1px solid rgba(255,255,255,.1); border-radius:10px; background:#030507; }
+    figcaption,.caption { color:var(--quiet); font-size:.84rem; line-height:1.55; }
+    .data-grid { display:grid; grid-template-columns:1fr .8fr; gap:1.3rem; align-items:center; }
+    .data-grid img { display:block; width:100%; border:1px solid var(--line); border-radius:14px; }
+    .facts { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.7rem; margin-top:1.5rem; }
+    .fact { padding:.9rem; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.025); }
+    .fact strong { display:block; color:var(--amber); font:700 1.25rem ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .fact span { color:var(--quiet); font-size:.84rem; }
+    .try-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-items:stretch; }
+    pre { overflow:auto; padding:1rem; border:1px solid var(--line); border-radius:12px; background:#060a10; color:#e6f0f5; font-size:.9rem; }
+    .quote-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.85rem; margin-top:1.2rem; }
+    blockquote { margin:.3rem 0 .8rem; color:#fff0ed; font:600 1.08rem/1.5 "Space Grotesk", sans-serif; }
+    .note-card p { margin-bottom:0; font-size:.92rem; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    .resume-line { padding:1rem 1.2rem; border-left:3px solid var(--coral); border-radius:0 12px 12px 0; background:rgba(255,255,255,.035); color:#f1e7e5; }
+    ul { padding-left:1.2rem; color:var(--muted); }
+    li { padding:.15rem 0; }
+    .footer { padding:1.6rem 0 2.5rem; color:var(--quiet); font-size:.86rem; }
+    @media(max-width:800px) { .hero,.data-grid,.try-grid,.two-col { grid-template-columns:1fr; } .hero { padding-top:3rem; } .video-grid,.quote-grid { grid-template-columns:1fr; } .facts { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:500px) { .topbar { align-items:flex-start; flex-direction:column; } .toplinks { justify-content:flex-start; } .wrap { width:min(var(--max),calc(100% - 1.2rem)); } .section { padding:2.4rem 0; } }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } * { animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <a class="brand" href="../../">SUPASH BHAT <span aria-hidden="true">/</span> PROJECTS</a>
+      <nav class="toplinks" aria-label="Project links">
+        <a href="../../">Portfolio</a>
+        <a href="https://supashbhat.github.io/physical-ai-learner-lab/">Tutorial</a>
+        <a href="https://github.com/supashbhat/physical-ai-learner-lab">Source</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="project-title">
+        <div>
+          <span class="eyebrow">Robotics · Simulation · Technical learning</span>
+          <h1 id="project-title">Physical AI Learner Lab</h1>
+          <p class="lede">A macOS-first lab for building, driving, and inspecting a differential-drive robot with MuJoCo and ROS 2. It pairs a working simulator with a step-by-step tutorial, recorded demonstrations, exercises, and reproducible synthetic camera data.</p>
+          <div class="buttons">
+            <a class="button primary" href="https://supashbhat.github.io/physical-ai-learner-lab/">Explore the tutorial</a>
+            <a class="button" href="https://github.com/supashbhat/physical-ai-learner-lab">Browse the code</a>
+          </div>
+        </div>
+        <figure class="hero-media">
+          <picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="https://supashbhat.github.io/physical-ai-learner-lab/assets/synthetic_frames.png">
+            <img src="https://supashbhat.github.io/physical-ai-learner-lab/assets/demo.gif" alt="A simulated differential-drive robot moving through an obstacle course, with camera, range scan, and odometry views" width="960" height="540">
+          </picture>
+          <figcaption>One deterministic MuJoCo run, shown through camera, scan, and wheel-odometry views.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" aria-labelledby="watch-title">
+        <span class="eyebrow">Watch</span>
+        <h2 id="watch-title">Three views of the same simulation</h2>
+        <p class="section-intro">Each clip comes from the same model and scripted eight-second route. The scan is ray-cast from the simulated scene; odometry is integrated from wheel-joint motion and compared separately with simulator pose.</p>
+        <div class="video-grid">
+          <figure class="video-card">
+            <h3>Drive and camera</h3>
+            <video controls playsinline preload="metadata" poster="https://supashbhat.github.io/physical-ai-learner-lab/assets/synthetic_frames.png" aria-label="Robot drive with the simulation dashboard">
+              <source src="https://supashbhat.github.io/physical-ai-learner-lab/assets/demo_drive.mp4" type="video/mp4">
+              <a href="https://supashbhat.github.io/physical-ai-learner-lab/assets/demo_drive.mp4">Download the drive video</a>
+            </video>
+            <figcaption>Camera output, live scan, command, and path estimate during a forward-turn maneuver.</figcaption>
+          </figure>
+          <figure class="video-card">
+            <h3>Planar range scan</h3>
+            <video controls playsinline preload="metadata" poster="https://supashbhat.github.io/physical-ai-learner-lab/assets/synthetic_frames.png" aria-label="181-ray planar range scan as the robot turns">
+              <source src="https://supashbhat.github.io/physical-ai-learner-lab/assets/demo_lidar.mp4" type="video/mp4">
+              <a href="https://supashbhat.github.io/physical-ai-learner-lab/assets/demo_lidar.mp4">Download the range-scan video</a>
+            </video>
+            <figcaption>181 planar rays across a 180° field of view, with nearby simulated obstacles.</figcaption>
+          </figure>
+          <figure class="video-card">
+            <h3>Wheel odometry</h3>
+            <video controls playsinline preload="metadata" poster="https://supashbhat.github.io/physical-ai-learner-lab/assets/synthetic_frames.png" aria-label="Wheel-integrated odometry compared with simulator ground truth">
+              <source src="https://supashbhat.github.io/physical-ai-learner-lab/assets/demo_odom.mp4" type="video/mp4">
+              <a href="https://supashbhat.github.io/physical-ai-learner-lab/assets/demo_odom.mp4">Download the odometry video</a>
+            </video>
+            <figcaption>Wheel-angle integration stays distinct from the simulator's ground-truth pose.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="data-title">
+        <span class="eyebrow">Synthetic data</span>
+        <h2 id="data-title">Rendered observations with a reproducible source</h2>
+        <div class="data-grid">
+          <figure>
+            <img src="https://supashbhat.github.io/physical-ai-learner-lab/assets/synthetic_frames.png" alt="Contact sheet of 20 RGB camera observations from the deterministic robot run" loading="lazy" width="1500" height="800">
+            <figcaption class="caption">Twenty evenly spaced RGB observations from the robot-mounted camera. Matching floating-point depth arrays are in the archive.</figcaption>
+          </figure>
+          <div>
+            <p>The dataset contains timestamps, 320 × 180 RGB frames, and depth values in metres. It is unlabelled simulator output; it is not real sensor data and no model is trained on it.</p>
+            <p>The depth contact sheet clips its color scale at 3.0 m to show nearby geometry and the room layout. The current macOS graphics backend reports limited depth precision without <code>ARB_clip_control</code>, so the values are presented as an illustration of the rendering pipeline, not sensor-grade measurements.</p>
+            <div class="buttons">
+              <a class="button primary" href="https://supashbhat.github.io/physical-ai-learner-lab/assets/synthetic_data.npz">Download 2.1 MB archive</a>
+              <a class="button" href="https://supashbhat.github.io/physical-ai-learner-lab/synthetic-data/">Data guide</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="try-title">
+        <span class="eyebrow">Try it</span>
+        <h2 id="try-title">Start with the simulator on your Mac</h2>
+        <p class="section-intro">MuJoCo runs natively on macOS; Docker Desktop is needed only for the optional ROS 2 Humble module. The setup script installs the hash-locked Python dependencies.</p>
+        <div class="try-grid">
+          <div class="panel">
+            <h3>Run locally</h3>
+            <pre><code>git clone https://github.com/supashbhat/physical-ai-learner-lab.git
+cd physical-ai-learner-lab
+./scripts/setup_macos.sh
+./scripts/run_lab.sh</code></pre>
+            <p class="caption">Tested locally on Apple Silicon macOS with Python 3.13. The workflow also targets Intel macOS.</p>
+          </div>
+          <div class="panel">
+            <h3>Follow the learning path</h3>
+            <ul>
+              <li>Inspect the robot's bodies, wheel joints, actuators, contacts, and camera.</li>
+              <li>Connect differential-drive kinematics to bounded wheel-torque control.</li>
+              <li>Compare wheel-integrated odometry with simulator truth.</li>
+              <li>Connect ROS 2 <code>/cmd_vel</code> to MuJoCo and publish <code>/odom</code> and <code>/scan</code>.</li>
+            </ul>
+            <a href="https://supashbhat.github.io/physical-ai-learner-lab/quickstart/">Open the step-by-step quickstart →</a>
+          </div>
+        </div>
+        <div class="facts" aria-label="Project facts">
+          <div class="fact"><strong>20</strong><span>local tests passing</span></div>
+          <div class="fact"><strong>181</strong><span>simulated scan rays</span></div>
+          <div class="fact"><strong>20</strong><span>paired camera observations</span></div>
+          <div class="fact"><strong>3.3.7</strong><span>MuJoCo version lock</span></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="testing-title">
+        <span class="eyebrow">What testing changed</span>
+        <h2 id="testing-title">Small failures made the lab more honest</h2>
+        <p class="section-intro">These are symptoms recorded while building the project, with the corresponding fix or limitation documented in the repository's <a href="https://supashbhat.github.io/physical-ai-learner-lab/troubleshooting/">troubleshooting notes</a>.</p>
+        <div class="quote-grid">
+          <article class="note-card">
+            <blockquote>“The first model command drove backward.”</blockquote>
+            <p>The wheel-joint sign disagreed with the model's axis convention. A short startup check hid it; a five-second run and one-metre acceptance band exposed it.</p>
+          </article>
+          <article class="note-card">
+            <blockquote>“sim.time &gt;= 5.0” failed at “4.999999999999671.”</blockquote>
+            <p>Repeated 2 ms steps accumulated ordinary floating-point error. The test now uses a small time tolerance while still checking the run duration.</p>
+          </article>
+          <article class="note-card">
+            <blockquote>“Camera views swing down during acceleration.”</blockquote>
+            <p>A height-only smoke check missed chassis pitch. A lightly lifted front skid now limits rotation, and a five-second tilt check guards the change.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="approach-title">
+        <span class="eyebrow">Engineering approach</span>
+        <h2 id="approach-title">Physics, interfaces, and verification</h2>
+        <div class="two-col">
+          <div>
+            <ul>
+              <li>MuJoCo XML model with actuated wheels, contact surfaces, obstacles, and a front camera.</li>
+              <li>Modular Python controller, simulation runner, odometry, sensing, and bridge components.</li>
+              <li>Token-authenticated TCP adapter with bounded commands, message limits, and a command timeout.</li>
+              <li>Hash-locked dependencies, fresh-environment setup, unit and integration tests, and a strict tutorial build.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>AI-assisted authoring</h3>
+            <p>AI assistance was used for scaffolding and drafting. I checked model behavior, commands, media, and numerical claims against runs and tests; when the first wheel-sign assumption failed, the model and acceptance test changed. The authoring log separates locally verified behavior from work that still needs an Intel Mac, Docker host, or learner feedback.</p>
+            <a href="https://supashbhat.github.io/physical-ai-learner-lab/ai-authoring/">Read the verification record →</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="resume-title">
+        <span class="eyebrow">Resume version</span>
+        <h2 id="resume-title">A concise project line</h2>
+        <p class="resume-line">Built a macOS-first robotics learning lab in MuJoCo, with differential-drive control, wheel odometry, simulated camera and LiDAR, a ROS 2 Humble adapter, generated RGB/depth data, and a 20-test local verification suite.</p>
+      </section>
+
+      <section class="section" aria-labelledby="next-title">
+        <span class="eyebrow">Next</span>
+        <h2 id="next-title">Extensions beyond the current lab</h2>
+        <ul>
+          <li>Visualize ROS topics in RViz.</li>
+          <li>Add controlled sensor noise and measure odometry drift.</li>
+          <li>Build a browser playback view for recorded trajectories.</li>
+          <li>Explore a USD export as an interoperability exercise.</li>
+        </ul>
+        <p>These are future directions; they are not part of the current implementation.</p>
+        <div class="buttons">
+          <a class="button primary" href="https://supashbhat.github.io/physical-ai-learner-lab/">Visit the tutorial site</a>
+          <a class="button" href="https://github.com/supashbhat/physical-ai-learner-lab">View repository and CI</a>
+          <a class="button" href="../../">Back to portfolio</a>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">Supash Bhat · Physical AI Learner Lab · <a href="../../">Portfolio home</a></footer>
+  </div>
+</body>
+</html>
