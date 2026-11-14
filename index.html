@@ -885,18 +885,24 @@
         }
 
         .project-preview {
+            display: block;
             overflow: hidden;
             margin: 0.85rem 0 1rem;
             border: 1px solid rgba(255, 194, 182, 0.12);
             border-radius: 1rem;
             background: #050a10;
+            aspect-ratio: 16 / 9;
         }
 
         .project-preview img {
             display: block;
             width: 100%;
-            aspect-ratio: 16 / 9;
+            height: 100%;
             object-fit: cover;
+        }
+
+        .project-preview img.preview-focus-top {
+            object-position: 50% 0%;
         }
 
         .project-card.feature {
@@ -1291,9 +1297,9 @@
             <div class="section-header">
                 <div>
                     <div class="kicker">Selected Work</div>
-                    <h2>Projects with real systems underneath them</h2>
+                    <h2>What I’ve been building</h2>
                 </div>
-                <p>These are the pieces that best represent how I work: simulation, controls, audio tooling, and projects that turn physics thinking into software people can actually explore.</p>
+                <p>Vayu is the long-running project here. The others are smaller physics, controls, and coursework labs: places to try an idea, make it visible, and see where it breaks.</p>
             </div>
 
             <div class="work-grid">
@@ -1310,7 +1316,10 @@
                         </div>
                         <span class="chip accent-vayu">Audio</span>
                     </div>
-                    <p>Vayu is a modular multi-effect rack built for real DAW use, with a five-band EQ, drag-to-reorder processing, presets, installers, and a polished public-facing release workflow. It is a serious plugin shaped like a passion project rather than a throwaway experiment.</p>
+                    <a class="project-preview" href="vayu.html" aria-label="Open Vayu interface">
+                        <img src="assets/project-captures/vayu.jpg" alt="Vayu audio plugin interface showing the equalizer and effect rack" loading="lazy" width="2642" height="1546">
+                    </a>
+                    <p>This is the project I’ve spent the most time on: a modular multi-effect rack built around the way I work in a DAW, with a five-band EQ, reorderable effects, presets, and installer-based releases.</p>
                     <ul class="list">
                         <li>EQ, modulation, delay, reverb, stereo, distortion, and compression in one workflow</li>
                         <li>Installer-based releases across macOS, Windows, and Linux nightly builds</li>
@@ -1335,12 +1344,10 @@
                         </div>
                         <span class="chip accent-amber">Simulation</span>
                     </div>
-                    <p>A computational physics project exploring numerical integration, collision handling, multi-body behavior, and the translation from theory to interactive visualization. It now spans a C++ core, a polished Python sandbox, and browser demos people can actually play with.</p>
-                    <ul class="list">
-                        <li>Euler and RK4-based motion integration with collision handling</li>
-                        <li>Preset-driven sandbox with live controls, energy feedback, and pause/step inspection</li>
-                        <li>Now includes a Barnes-Hut compare lab, generated benchmark plots, and theta-tradeoff analysis</li>
-                    </ul>
+                    <a class="project-preview" href="physics-engine.html" aria-label="Open rigid-body physics engine project">
+                        <img src="assets/project-captures/physics-engine.jpg" alt="Physics Engine project page showing its rigid-body and Barnes-Hut work" loading="lazy" width="1440" height="1000">
+                    </a>
+                    <p>I started with a C++ sandbox for numerical integration and collisions, then connected it to a Python sandbox and browser demos. The newer Barnes-Hut work measures how the approximation changes the cost and error of many-body gravity.</p>
                     <div class="project-links">
                         <a class="project-link primary" href="physics-engine.html">Open Page</a>
                         <a class="project-link secondary" href="https://github.com/supashbhat/physics-engine" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
@@ -1360,12 +1367,10 @@
                         </div>
                         <span class="chip accent-ruby">Interactive</span>
                     </div>
-                    <p>The physics work also lives in lighter browser-native surfaces: a faster 2D sandbox for collisions and gravity changes, and a 3D viewer for spatial intuition, camera movement, and interaction feel.</p>
-                    <ul class="list">
-                        <li>2D canvas demo for quick collision and force intuition</li>
-                        <li>3D WebGL scene with orbit controls and spatial exploration</li>
-                        <li>Public-facing teaching and interaction layer over the simulation work</li>
-                    </ul>
+                    <a class="project-preview" href="2d-physics.html" aria-label="Open browser physics demos">
+                        <img class="preview-focus-top" src="assets/project-captures/physics-demos.jpg" alt="Interactive two-dimensional physics sandbox with live body and energy readouts" loading="lazy" width="1440" height="1000">
+                    </a>
+                    <p>These browser demos make the same physics easier to play with: drag bodies in 2D, change gravity, or orbit a 3D scene and watch the system respond.</p>
                     <div class="project-links">
                         <a class="project-link primary" href="2d-physics.html" target="_blank" rel="noopener noreferrer">Open 2D Demo</a>
                         <a class="project-link secondary" href="3d-physics.html" target="_blank" rel="noopener noreferrer">Open 3D Demo</a>
@@ -1385,12 +1390,10 @@
                         </div>
                         <span class="chip accent-amber">Controls</span>
                     </div>
-                    <p>A controls-focused quadcopter sandbox built around nonlinear 6-DOF dynamics, hover-state LQR, a tuned PID baseline, and Kalman state estimation. It turns control theory into something explorable instead of something that stays trapped in equations.</p>
-                    <ul class="list">
-                        <li>Guided demo flow with recovery benchmarks and controller comparison cards</li>
-                        <li>Wind rejection, route tracking, telemetry export, and live tuning controls</li>
-                        <li>A controls-focused sibling project to the physics-engine work, centered on estimation and feedback rather than many-body scaling</li>
-                    </ul>
+                    <a class="project-preview" href="aerial-control-lab/" aria-label="Open Aerial Control Lab simulation">
+                        <img src="assets/project-captures/aerial-control.jpg" alt="Aerial Control Lab quadcopter simulation with live state estimate and hover target" loading="lazy" width="1440" height="1000">
+                    </a>
+                    <p>A browser-based quadcopter simulation for comparing a PID baseline with LQR hover control and Kalman state estimates. The controls are tied to a nonlinear six-degree-of-freedom model.</p>
                     <div class="project-links">
                         <a class="project-link primary" href="aerial-control-lab/">Open Lab</a>
                         <a class="project-link secondary" href="https://github.com/supashbhat/quadcopter-lab" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
@@ -1411,14 +1414,9 @@
                         <span class="chip accent-vayu">Robotics</span>
                     </div>
                     <a class="project-preview" href="projects/physical-ai-learner-lab/" aria-label="Open the Physical AI Learner Lab case study">
-                        <img src="https://supashbhat.github.io/physical-ai-learner-lab/assets/demo.gif" alt="MuJoCo differential-drive robot demo with camera, range scan, and odometry" loading="lazy" width="960" height="540">
+                        <img src="assets/project-captures/physical-ai.jpg" alt="Still frame from a MuJoCo robot simulation showing the robot, range scan, and odometry plot" loading="lazy" width="960" height="540">
                     </a>
-                    <p>I built this macOS-first lab to trace a differential-drive robot from its MuJoCo model through control, simulated sensing, wheel odometry, and an optional ROS 2 bridge.</p>
-                    <ul class="list">
-                        <li>20 local tests and a clean virtual-environment setup</li>
-                        <li>Three reproducible demo videos and paired RGB/depth simulation data</li>
-                        <li>Cross-architecture macOS and ROS 2 container checks configured in CI</li>
-                    </ul>
+                    <p>A MuJoCo differential-drive robot for exploring its model, control, simulated camera and range scan, wheel odometry, and optional ROS 2 bridge. The images and videos come from running the included simulation scripts.</p>
                     <div class="project-links">
                         <a class="project-link primary" href="projects/physical-ai-learner-lab/">Read Case Study</a>
                         <a class="project-link secondary" href="https://supashbhat.github.io/physical-ai-learner-lab/" target="_blank" rel="noopener noreferrer">Open Tutorial</a>
@@ -1437,12 +1435,10 @@
                         </div>
                         <span class="chip accent-vayu">Quantum</span>
                     </div>
-                    <p>I built this applet as an enrichment project for Physics 137A. I can draw a sampled complex wavefunction and see its momentum-space representation, phase, probability density, and uncertainty update together.</p>
-                    <ul class="list">
-                        <li>Explore how changing a state in position space changes its Fourier representation</li>
-                        <li>Compare real and imaginary parts, phase, density, and momentum</li>
-                        <li>Use presets and guided explanations to connect the plots to the underlying physics</li>
-                    </ul>
+                    <a class="project-preview" href="https://supashbhat.github.io/fourier-applet/" aria-label="Open Wavefunction Graffiti applet">
+                        <img src="assets/project-captures/wavefunction-graffiti.jpg" alt="Wavefunction Graffiti app showing quantum-state presets and position and momentum panels" loading="lazy" width="1440" height="1000">
+                    </a>
+                    <p>An interactive Physics 137A applet for drawing a sampled complex wavefunction and seeing its Fourier representation, phase, probability density, and uncertainty update together. I built it to give the equations a place to go.</p>
                     <div class="project-links">
                         <a class="project-link primary" href="https://supashbhat.github.io/fourier-applet/" target="_blank" rel="noopener noreferrer">Open Applet</a>
                         <a class="project-link secondary" href="https://github.com/supashbhat/fourier-applet" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
