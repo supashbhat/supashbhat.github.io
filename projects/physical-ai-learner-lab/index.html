@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../../assets/icosa-shell.svg">
   <style>
     :root {
       color-scheme: dark;
@@ -37,7 +38,9 @@
     a:hover { color: #d2fff3; }
     .wrap { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; }
     .topbar { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1.1rem 0; border-bottom:1px solid var(--line); }
-    .brand { color:var(--text); text-decoration:none; font-weight:800; letter-spacing:-.02em; }
+    .brand { display:flex; align-items:center; gap:.55rem; color:var(--text); text-decoration:none; font-weight:800; letter-spacing:-.02em; }
+    .brand img { width:2rem; height:2rem; animation: brand-turn 24s linear infinite; }
+    @keyframes brand-turn { to { transform:rotate(360deg); } }
     .toplinks { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:.55rem 1.2rem; font-size:.9rem; }
     .hero { display:grid; grid-template-columns:1.02fr .98fr; gap:2rem; align-items:center; padding:clamp(2.8rem, 7vw, 5.8rem) 0 3.5rem; }
     .eyebrow { color:var(--coral); font:700 .75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.14em; text-transform:uppercase; }
@@ -84,7 +87,7 @@
 <body>
   <div class="wrap">
     <header class="topbar">
-      <a class="brand" href="../../">SUPASH BHAT <span aria-hidden="true">/</span> PROJECTS</a>
+      <a class="brand" href="../../"><img src="../../assets/icosa-shell.svg" alt=""><span>SUPASH BHAT <span aria-hidden="true">/</span> PROJECTS</span></a>
       <nav class="toplinks" aria-label="Project links">
         <a href="../../">Portfolio</a>
         <a href="https://supashbhat.github.io/physical-ai-learner-lab/">Tutorial</a>
@@ -97,7 +100,7 @@
         <div>
           <span class="eyebrow">Robotics · Simulation · Technical learning</span>
           <h1 id="project-title">Physical AI Learner Lab</h1>
-          <p class="lede">A macOS-first lab for building, driving, and inspecting a differential-drive robot with MuJoCo and ROS 2. It pairs a working simulator with a step-by-step tutorial, recorded demonstrations, exercises, and reproducible synthetic camera data.</p>
+          <p class="lede">I built this lab to follow one small robot from its MuJoCo model through control, simulated sensing, and wheel odometry. The tutorial grew out of places where my first checks were too shallow—and the fixes I had to make after watching a longer run.</p>
           <div class="buttons">
             <a class="button primary" href="https://supashbhat.github.io/physical-ai-learner-lab/">Explore the tutorial</a>
             <a class="button" href="https://github.com/supashbhat/physical-ai-learner-lab">Browse the code</a>
@@ -115,7 +118,7 @@
       <section class="section" aria-labelledby="watch-title">
         <span class="eyebrow">Watch</span>
         <h2 id="watch-title">Three views of the same simulation</h2>
-        <p class="section-intro">Each clip comes from the same model and scripted eight-second route. The scan is ray-cast from the simulated scene; odometry is integrated from wheel-joint motion and compared separately with simulator pose.</p>
+        <p class="section-intro">I recorded these clips from the same model and scripted eight-second route. The scan is ray-cast from the simulated scene; odometry comes from wheel-joint motion and stays separate from the simulator pose.</p>
         <div class="video-grid">
           <figure class="video-card">
             <h3>Drive and camera</h3>
