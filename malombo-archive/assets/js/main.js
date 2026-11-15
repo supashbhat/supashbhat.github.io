@@ -11,7 +11,7 @@ const setupArchiveChrome = () => {
     intro.setAttribute("aria-hidden", "true");
     intro.innerHTML = `
       <div class="intro-wrap">
-        <div class="intro-mark"><canvas class="icosa-shell" data-shell-size="72" aria-hidden="true"></canvas></div>
+        <div class="intro-mark"><canvas class="icosa-shell" data-shell-size="102" aria-hidden="true"></canvas></div>
         <div class="intro-title">Malombo Archive</div>
         <div class="intro-caption">Sound as action</div>
       </div>
@@ -22,7 +22,7 @@ const setupArchiveChrome = () => {
   if (!document.querySelector(".corner-orb")) {
     const orb = document.createElement("div");
     orb.className = "corner-orb";
-    orb.innerHTML = `<canvas class="icosa-shell" data-shell-size="56" aria-hidden="true"></canvas>`;
+    orb.innerHTML = `<canvas class="icosa-shell" data-shell-size="90" aria-hidden="true"></canvas>`;
     document.body.appendChild(orb);
   }
 };
